@@ -1,0 +1,21 @@
+{
+  "file_name": "cv_semi_data_manual.txt",
+  "email": "nguyenvana@email.com",
+  "phone": "0901234567",
+  "skills": [
+    "Excel",
+    "Dashboarding",
+    "Data Analysis"
+  ],
+  "target_role": "Data Analyst",
+  "experience_years": "Unknown",
+  "education_signals": [
+    "bachelor"
+  ],
+  "projects": [
+    "Excel, Dashboarding, Data Analysis",
+    "Worked with Excel dashboards for business monitoring",
+    "Sales dashboard project using Excel"
+  ],
+  "raw_text_preview": "NGUYEN VAN A Target Role: Data Analyst Email: nguyenvana@email.com Phone: 0901234567 Skills: Excel, Dashboarding, Data Analysis Experience: Business reporting support for sales team Created weekly reports and KPI summaries Worked with Excel dashboards for business monitoring Education: Bachelor of Business Administration Projects: Sales dashboard project using Excel"
+}

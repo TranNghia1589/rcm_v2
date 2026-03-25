@@ -1,0 +1,20 @@
+NGUYEN VAN A
+
+Target Role: Data Analyst
+
+Email: nguyenvana@email.com
+Phone: 0901234567
+
+Skills:
+Excel, Dashboarding, Data Analysis
+
+Experience:
+Business reporting support for sales team
+Created weekly reports and KPI summaries
+Worked with Excel dashboards for business monitoring
+
+Education:
+Bachelor of Business Administration
+
+Projects:
+Sales dashboard project using Excel

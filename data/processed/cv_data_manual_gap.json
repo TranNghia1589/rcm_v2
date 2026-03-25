@@ -1,0 +1,125 @@
+{
+  "target_role_from_cv": "Data Analyst",
+  "domain_fit": "high",
+  "best_fit_roles": [
+    "Data Analyst",
+    "Data Engineer",
+    "AI Engineer"
+  ],
+  "strengths": [
+    "Dashboarding",
+    "Excel",
+    "Python",
+    "SQL",
+    "Statistics"
+  ],
+  "missing_skills": [
+    "Power BI"
+  ],
+  "top_role_result": {
+    "role": "Data Analyst",
+    "score": 0.897,
+    "skill_overlap_score": 0.833,
+    "target_role_match_score": 1.0,
+    "keyword_match_score": 1.0,
+    "experience_score": 0.3,
+    "matched_skills": [
+      "Dashboarding",
+      "Excel",
+      "Python",
+      "SQL",
+      "Statistics"
+    ],
+    "missing_skills": [
+      "Power BI"
+    ]
+  },
+  "role_ranking": [
+    {
+      "role": "Data Analyst",
+      "score": 0.897,
+      "skill_overlap_score": 0.833,
+      "target_role_match_score": 1.0,
+      "keyword_match_score": 1.0,
+      "experience_score": 0.3,
+      "matched_skills": [
+        "Dashboarding",
+        "Excel",
+        "Python",
+        "SQL",
+        "Statistics"
+      ],
+      "missing_skills": [
+        "Power BI"
+      ]
+    },
+    {
+      "role": "Data Engineer",
+      "score": 0.347,
+      "skill_overlap_score": 0.333,
+      "target_role_match_score": 0.0,
+      "keyword_match_score": 0.5,
+      "experience_score": 0.3,
+      "matched_skills": [
+        "Python",
+        "SQL"
+      ],
+      "missing_skills": [
+        "Airflow",
+        "Data Warehouse",
+        "ETL",
+        "Spark"
+      ]
+    },
+    {
+      "role": "AI Engineer",
+      "score": 0.253,
+      "skill_overlap_score": 0.167,
+      "target_role_match_score": 0.0,
+      "keyword_match_score": 0.5,
+      "experience_score": 0.3,
+      "matched_skills": [
+        "Python"
+      ],
+      "missing_skills": [
+        "Deep Learning",
+        "LLM",
+        "Machine Learning",
+        "PyTorch",
+        "TensorFlow"
+      ]
+    },
+    {
+      "role": "AI Researcher",
+      "score": 0.253,
+      "skill_overlap_score": 0.167,
+      "target_role_match_score": 0.0,
+      "keyword_match_score": 0.5,
+      "experience_score": 0.3,
+      "matched_skills": [
+        "Statistics"
+      ],
+      "missing_skills": [
+        "Deep Learning",
+        "Experiment Design",
+        "Machine Learning",
+        "Paper Reading",
+        "Research"
+      ]
+    },
+    {
+      "role": "Data Labeling",
+      "score": 0.04,
+      "skill_overlap_score": 0.0,
+      "target_role_match_score": 0.0,
+      "keyword_match_score": 0.0,
+      "experience_score": 0.3,
+      "matched_skills": [],
+      "missing_skills": [
+        "Annotation",
+        "Data Labeling",
+        "Quality Control"
+      ]
+    }
+  ]
+}

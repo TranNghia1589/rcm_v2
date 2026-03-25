@@ -1,0 +1,42 @@
+{
+  "notebook_version": "preprocessing_v3_phobert",
+  "run_timestamp": "2026-03-21T13:48:54.354798",
+  "raw_input_path": "..\\data_topcv\\topcv_all_fields_merged_2026-03-16_20-57-23.xlsx",
+  "artifact_dir": "D:\\TTTN\\Project\\outputs_preprocessing_v3",
+  "n_jobs": 325,
+  "n_sections": 938,
+  "embedding_config": {
+    "model_name": "vinai/phobert-base",
+    "metric": "cosine",
+    "normalize_embeddings": true,
+    "job_text_field": "job_text_phobert_match",
+    "chatbot_text_field": "job_text_phobert_chatbot",
+    "section_text_field": "chunk_text_phobert",
+    "max_length_match": 256,
+    "max_length_chatbot": 320,
+    "max_length_chunk": 256,
+    "batch_size": 16,
+    "segmentation": "underthesea_if_available"
+  },
+  "downstream_field_guide": {
+    "tfidf_input": "job_text_sparse",
+    "phobert_matching_input": "job_text_phobert_match",
+    "phobert_chatbot_input": "job_text_phobert_chatbot",
+    "chatbot_chunk_table": "job_sections_df",
+    "chatbot_chunk_text_field": "chunk_text_phobert",
+    "skill_table": "job_skill_map_df",
+    "role_skill_stats": "role_skill_stats_df",
+    "retrieval_metric": "cosine_similarity_on_l2_normalized_embeddings"
+  },
+  "artifacts": {
+    "jobs_matching_ready_v3": "..\\outputs_preprocessing_v3\\jobs_matching_ready_v3.parquet",
+    "jobs_chatbot_ready_v3": "..\\outputs_preprocessing_v3\\jobs_chatbot_ready_v3.parquet",
+    "jobs_chatbot_sections_v3": "..\\outputs_preprocessing_v3\\jobs_chatbot_sections_v3.parquet",
+    "job_skill_map_v3": "..\\outputs_preprocessing_v3\\job_skill_map_v3.parquet",
+    "role_skill_stats_v3": "..\\outputs_preprocessing_v3\\role_skill_stats_v3.parquet",
+    "job_embedding_index_v3": "..\\outputs_preprocessing_v3\\job_embedding_index_v3.parquet",
+    "job_section_embedding_index_v3": "..\\outputs_preprocessing_v3\\job_section_embedding_index_v3.parquet",
+    "job_dense_embeddings_v3": "..\\outputs_preprocessing_v3\\job_dense_embeddings_v3.npy",
+    "section_dense_embeddings_v3": "..\\outputs_preprocessing_v3\\section_dense_embeddings_v3.npy"
+  }
+}

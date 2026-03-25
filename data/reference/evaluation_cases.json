@@ -1,0 +1,29 @@
+[
+  {
+    "case_id": "cv_accountant_outside_domain",
+    "description": "CV thuộc lĩnh vực kế toán, không thuộc Data/AI",
+    "cv_file": "data/raw/cv_samples/Resume.pdf.pdf",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "low",
+    "expected_best_fit_roles_contains": ["Data Analyst"],
+    "expected_missing_skills_contains": ["SQL", "Power BI", "Statistics"]
+  },
+  {
+    "case_id": "cv_semi_data_manual",
+    "description": "CV gần với Data Analyst, có Excel và dashboard",
+    "cv_file": "data/raw/cv_samples/cv_semi_data_manual.txt",
+    "expected_target_role": "Data Analyst",
+    "expected_domain_fit": "medium",
+    "expected_best_fit_roles_contains": ["Data Analyst"],
+    "expected_missing_skills_contains": ["SQL", "Power BI"]
+  },
+  {
+    "case_id": "cv_data_manual",
+    "description": "CV đúng domain Data Analyst",
+    "cv_file": "data/raw/cv_samples/cv_data_manual.txt",
+    "expected_target_role": "Data Analyst",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Data Analyst"],
+    "expected_missing_skills_contains": ["Power BI"]
+  }
+]

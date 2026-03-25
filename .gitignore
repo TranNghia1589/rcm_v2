@@ -1,0 +1,21 @@
+# Virtual environment
+venv/
+.env/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# HuggingFace cache
+hf_cache/
+notebooks/preprocessing/hf_cache/
+
+# Model files
+*.bin
+*.safetensors
+
+# ML artifacts
+models/

@@ -1,0 +1,21 @@
+TRAN THI B
+
+Target Role: Data Analyst
+
+Email: tranthib@email.com
+Phone: 0912345678
+
+Skills:
+Python, SQL, Excel, Dashboarding, Data Analysis, Statistics
+
+Experience:
+Analyzed customer sales data using Python and SQL
+Built Excel dashboards for monthly performance tracking
+Prepared KPI reports and performed statistical analysis
+
+Education:
+Bachelor of Data Science
+
+Projects:
+Customer churn analysis project
+Sales dashboard project using Excel and Python

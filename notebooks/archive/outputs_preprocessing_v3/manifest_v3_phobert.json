@@ -1,0 +1,59 @@
+{
+  "notebook_version": "preprocessing_v3_phobert",
+  "run_timestamp": "2026-03-25T16:06:57.689278",
+  "raw_input_path": "..\\..\\data\\raw\\jobs\\topcv_all_fields_merged_2026-03-21_19-27-47.csv",
+  "artifact_dir": "D:\\TTTN\\project_v2\\notebooks\\outputs_preprocessing_v3",
+  "n_jobs": 369,
+  "n_sections": 2931,
+  "embedding_config": {
+    "model_name": "vinai/phobert-base",
+    "metric": "cosine",
+    "normalize_embeddings": true,
+    "job_text_field": "job_text_phobert_match",
+    "chatbot_text_field": "job_text_phobert_chatbot",
+    "section_text_field": "chunk_text_phobert",
+    "max_length_match": 256,
+    "max_length_chatbot": 320,
+    "max_length_chunk": 256,
+    "batch_size": 16,
+    "segmentation": "underthesea_if_available"
+  },
+  "downstream_field_guide": {
+    "tfidf_input": "job_text_sparse",
+    "phobert_matching_input": "job_text_phobert_match",
+    "phobert_chatbot_input": "job_text_phobert_chatbot",
+    "chatbot_chunk_table": "job_sections_df",
+    "chatbot_chunk_text_field": "chunk_text_phobert",
+    "skill_table": "job_skill_map_df",
+    "role_skill_stats": "role_skill_stats_df",
+    "job_family_field": "job_family (final: title + description)",
+    "seniority_field": "seniority_final (from job_level_raw)",
+    "retrieval_metric": "cosine_similarity_on_l2_normalized_embeddings"
+  },
+  "derived_fields": {
+    "job_title_canonical": "normalized from job_title_raw after removing trailing noise, bracket noise, and synonym mapping",
+    "job_family_from_title": "inferred from job_title_canonical using JOB_FAMILY_RULES",
+    "job_family_from_description": "inferred from description_clean_strict using JOB_FAMILY_DESCRIPTION_HINTS",
+    "job_family": "final resolved job family using title priority over description",
+    "job_family_source": "source of final job_family: title / description / title+description / title_priority / unknown",
+    "job_level_norm": "normalized from job_level_raw using JOB_LEVEL_RULES",
+    "seniority_final": "final seniority derived from job_level_raw only",
+    "seniority_source": "source of final seniority, expected to be job_level_raw or unknown"
+  },
+  "output_schema_notes": {
+    "matching_table": "df_matching_ready uses job_family and seniority_final as final structured fields",
+    "chatbot_table": "df_chatbot_ready uses job_family and seniority_final for job summary display",
+    "section_table": "job_sections_ready uses job_family and seniority_final for chunk-level retrieval context"
+  },
+  "artifacts": {
+    "jobs_matching_ready_v3": "..\\outputs_preprocessing_v3\\jobs_matching_ready_v3.parquet",
+    "jobs_chatbot_ready_v3": "..\\outputs_preprocessing_v3\\jobs_chatbot_ready_v3.parquet",
+    "jobs_chatbot_sections_v3": "..\\outputs_preprocessing_v3\\jobs_chatbot_sections_v3.parquet",
+    "job_skill_map_v3": "..\\outputs_preprocessing_v3\\job_skill_map_v3.parquet",
+    "role_skill_stats_v3": "..\\outputs_preprocessing_v3\\role_skill_stats_v3.parquet",
+    "job_embedding_index_v3": "..\\outputs_preprocessing_v3\\job_embedding_index_v3.parquet",
+    "job_section_embedding_index_v3": "..\\outputs_preprocessing_v3\\job_section_embedding_index_v3.parquet",
+    "job_dense_embeddings_v3": "..\\outputs_preprocessing_v3\\job_dense_embeddings_v3.npy",
+    "section_dense_embeddings_v3": "..\\outputs_preprocessing_v3\\section_dense_embeddings_v3.npy"
+  }
+}
