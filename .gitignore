@@ -1,6 +1,7 @@
 # Virtual environment
 venv/
 .env/
+.venv/
 
 # Logs
 *.log
@@ -19,3 +20,14 @@ notebooks/preprocessing/hf_cache/
 
 # ML artifacts
 models/
+
+# Local docs with sensitive runtime notes
+docs/runbooks/USAGE_GUIDE.md
+
+__pycache__/
+*.pyc
+artifacts/
+data/processed/
+data/raw/jobs/
+hf_cache/
+

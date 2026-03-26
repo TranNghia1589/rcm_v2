@@ -903,7 +903,8 @@ if __name__ == "__main__":
     session = build_session()              # tạo session trước
     fields = build_fields_config(session)  # truyền session vào đây
 
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # Resolve project root from src/crawl/topcv_crawler.py
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     output_dir = os.path.join(BASE_DIR, "data", "raw", "jobs")
     os.makedirs(output_dir, exist_ok=True)
     
