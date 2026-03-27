@@ -1,0 +1,14 @@
+vector_top_k: 30
+graph_top_k: 30
+final_top_k: 10
+weights:
+  vector: 0.45
+  graph: 0.55
+enable_llm_explanation: true
+explanation_max_items: 5
+llm_explanation_timeout_sec: 90
+llm_explanation_retries: 1
+llm_explanation_temperature: 0.2
+ollama_url: http://localhost:11434/api/generate
+ollama_model: llama3:latest
+ollama_keep_alive: 10m

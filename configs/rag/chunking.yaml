@@ -1,0 +1,3 @@
+max_chars: 900
+overlap_chars: 150
+min_chunk_chars: 120

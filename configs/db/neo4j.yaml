@@ -1,0 +1,5 @@
+uri: bolt://127.0.0.1:7687
+user: neo4j
+password: "abcd@1234"
+database: neo4j
+encrypted: false

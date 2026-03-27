@@ -1,0 +1,11 @@
+max_context_chunks: 4
+language: vi
+style: clear_and_grounded
+ollama_timeout_sec: 240
+ollama_temperature: 0.25
+ollama_retries: 1
+ollama_url: http://localhost:11434/api/generate
+ollama_model: llama3:latest
+ollama_keep_alive: 10m
+ollama_retry_backoff_sec: 0.35
+strict_no_fallback: false

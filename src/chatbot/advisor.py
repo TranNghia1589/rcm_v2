@@ -337,3 +337,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""Legacy chatbot script kept for reference only.
+
+Active API chatbot flow lives under `apps/api/app/services/rag/`.
+"""

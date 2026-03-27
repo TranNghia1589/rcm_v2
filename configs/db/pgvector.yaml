@@ -1,0 +1,5 @@
+embedding_dim: 768
+distance_metric: cosine
+ivfflat_lists: 100
+upsert_batch_size: 128
+default_top_k: 10

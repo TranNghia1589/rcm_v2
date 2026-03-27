@@ -1,0 +1,15 @@
+nodes:
+  - User
+  - CV
+  - Skill
+  - Job
+  - Company
+  - Role
+relationships:
+  - HAS_CV
+  - HAS_SKILL
+  - REQUIRES_SKILL
+  - AT_COMPANY
+  - TARGETS_ROLE
+  - BEST_FIT_ROLE
+  - LACKS_SKILL

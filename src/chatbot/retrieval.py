@@ -501,3 +501,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+"""Legacy retrieval script kept for reference only."""

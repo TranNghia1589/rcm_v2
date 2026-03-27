@@ -1,0 +1,3 @@
+top_k: 10
+source_type: job
+max_preview_chars: 260

@@ -1,3 +1,9 @@
+"""Legacy module kept for reference only.
+
+Runtime API entrypoint is `apps/api/app/server.py`.
+Do not import this module in new code.
+"""
+
 import argparse
 import json
 import sys
