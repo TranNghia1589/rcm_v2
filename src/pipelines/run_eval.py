@@ -1,16 +1,30 @@
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-EVAL_CASES_PATH = BASE_DIR / "data" / "evaluation_cases.json"
+EVAL_CASES_PATH = BASE_DIR / "data" / "reference" / "evaluation_cases.json"
 PROCESSED_DIR = BASE_DIR / "data" / "processed"
+
+if sys.platform == "win32":
+    try:
+        import io
+
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8")
+    except Exception:
+        pass
 
 
 def run_command(command: list[str]) -> str:
+    cmd = command[:]
+    if cmd and cmd[0].lower() == "python":
+        cmd[0] = sys.executable
+
     result = subprocess.run(
-        command,
+        cmd,
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -19,7 +33,7 @@ def run_command(command: list[str]) -> str:
 
     if result.returncode != 0:
         print("Lỗi khi chạy lệnh:")
-        print(" ".join(command))
+        print(" ".join(cmd))
         print(result.stderr)
         return ""
 
@@ -40,19 +54,28 @@ def main():
         print(case["description"])
 
         cv_path = BASE_DIR / case["cv_file"]
+        if not cv_path.exists():
+            print(f"SKIP: CV file not found: {cv_path}")
+            continue
 
         extracted_path = PROCESSED_DIR / f"{case['case_id']}_extracted.json"
         gap_path = PROCESSED_DIR / f"{case['case_id']}_gap.json"
         if extracted_path.exists():
-            extracted_path.unlink()
+            try:
+                extracted_path.unlink()
+            except Exception:
+                pass
 
         if gap_path.exists():
-            gap_path.unlink()
+            try:
+                gap_path.unlink()
+            except Exception:
+                pass
         # Step 1: extract CV info
 
         extract_out = run_command([
             "python",
-            str(BASE_DIR / "src" / "cv_processing" / "extract_cv_info.py"),
+            str(BASE_DIR / "src" / "cv" / "extract_cv_info.py"),
             "--cv_path", str(cv_path),
             "--output_path", str(extracted_path)
         ])

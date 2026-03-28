@@ -90,3 +90,9 @@ def recommend_jobs_hybrid(payload: HybridRecommendRequest) -> HybridRecommendRes
         )
     except Exception as exc:  # pragma: no cover
         raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@router.post("/hybrid", response_model=HybridRecommendResponse)
+def recommend_hybrid(payload: HybridRecommendRequest) -> HybridRecommendResponse:
+    # Alias endpoint for frontend integration: same behavior as /recommend/hybrid/jobs
+    return recommend_jobs_hybrid(payload)

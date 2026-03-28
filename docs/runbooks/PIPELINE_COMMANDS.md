@@ -1,8 +1,8 @@
-# Pipeline Commands (Windows PowerShell)
+﻿# Pipeline Commands (Windows PowerShell)
 
 ## 0) Vao thu muc du an
 ```powershell
-cd <duong_dan_den_project_v2>
+cd D:\TTTN\project_v3
 ```
 
 ## 1) Tao va kich hoat venv
@@ -14,29 +14,38 @@ python -m pip install --upgrade pip
 
 ## 2) Cai dependencies
 ```powershell
-pip install -r requirements_chatbot.txt
-pip install beautifulsoup4 openpyxl pyarrow sentencepiece
-pip install torch tqdm transformers underthesea
+pip install -r requirements\dev.txt
+pip install -r requirements\api.txt
 ```
 
-## 3) Kiem tra nhanh moi truong
+## 3) Crawl jobs (tuy chon)
 ```powershell
-python -c "import torch,tqdm,transformers,underthesea,pandas,numpy; print('OK')"
+python src\crawl\topcv_crawler.py
 ```
 
-## 4) Crawl du lieu jobs (tuy chon, neu can data moi)
+## 4) Preprocess jobs + build artifacts
 ```powershell
-python scripts\crawl_topcv.py
+python src\pipelines\run_preprocess.py
 ```
 
-## 5) Chay preprocessing jobs
+## 4.1) Hoac chay full bootstrap theo thu tu
 ```powershell
-python src\pipelines\preprocessing.py
+powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_full_bootstrap.ps1
 ```
 
-## 6) Trich xuat thong tin CV
+## 4.2) CV scoring batch (Giai doan 3)
 ```powershell
-python src\cv_processing\extract_cv_info.py --cv_path data\raw\cv_samples\cv_data_manual.txt --output_path data\processed\resume_extracted.json
+powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_cv_scoring_batch.ps1
+```
+
+## 5) Trich xuat 1 CV
+```powershell
+python src\cv\extract_cv_info.py --cv_path data\raw\cv_samples\cv_data_manual.txt --output_path data\processed\resume_extracted.json
+```
+
+## 6) Trich xuat batch CV (folder)
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_cv_extract_batch.ps1
 ```
 
 ## 7) Gap analysis
@@ -44,33 +53,30 @@ python src\cv_processing\extract_cv_info.py --cv_path data\raw\cv_samples\cv_dat
 python src\matching\gap_analysis.py --cv_json data\processed\resume_extracted.json --output_path data\processed\gap_analysis_result.json
 ```
 
-## 8) Khoi dong Ollama
+## 8) Run API (active entrypoint)
 ```powershell
-ollama serve
+python -m uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Mo terminal thu 2:
+## 9) API quick checks
 ```powershell
-ollama pull llama3:latest
-ollama list
+curl http://127.0.0.1:8000/healthz
+curl http://127.0.0.1:8000/docs
+curl http://127.0.0.1:8000/api/v1/cv/score/1
 ```
 
-## 9) Test chatbot theo file gap analysis
+## 9.1) Hybrid recommend alias endpoint
 ```powershell
-python src\chatbot\chat_router.py --question "CV cua toi phu hop vi tri nao?" --gap_result data\processed\gap_analysis_result.json
+powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_hybrid_recommend.ps1 -CvId 1 -Question "Goi y cong viec phu hop"
 ```
 
-## 10) Chay interactive test (tuy chon)
+## 10) Evaluate baseline cases
 ```powershell
-python scripts\test_chatbot_interactive.py
+python src\pipelines\run_eval.py
 ```
 
-## 11) Neu bi loi proxy khi pull model
+## DB setup cho database moi
 ```powershell
-Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
-Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
-Remove-Item Env:ALL_PROXY -ErrorAction SilentlyContinue
-Remove-Item Env:GIT_HTTP_PROXY -ErrorAction SilentlyContinue
-Remove-Item Env:GIT_HTTPS_PROXY -ErrorAction SilentlyContinue
-ollama pull llama3:latest
+powershell -ExecutionPolicy Bypass -File scripts\db\init_postgres_pgvector.ps1
+powershell -ExecutionPolicy Bypass -File scripts\db\init_neo4j.ps1
 ```

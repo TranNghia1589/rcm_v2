@@ -1,10 +1,28 @@
-﻿-- Query performance indexes for RAG + recommendation workflow
+-- Query performance indexes for RAG + recommendation workflow
 
 -- users/cv
 CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_cv_profiles_user_id ON cv_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_cv_profiles_cv_key ON cv_profiles(cv_key);
 CREATE INDEX IF NOT EXISTS idx_cv_profiles_target_role ON cv_profiles(target_role);
+CREATE INDEX IF NOT EXISTS idx_cv_profiles_seniority_level ON cv_profiles(seniority_level);
 CREATE INDEX IF NOT EXISTS idx_cv_profiles_updated_at ON cv_profiles(updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_cv_profiles_source_path ON cv_profiles(source_path);
+CREATE INDEX IF NOT EXISTS idx_cv_profiles_schema_version ON cv_profiles(schema_version);
+
+-- cv detail tables
+CREATE INDEX IF NOT EXISTS idx_cv_educations_cv_id ON cv_educations(cv_id);
+CREATE INDEX IF NOT EXISTS idx_cv_educations_institution ON cv_educations(institution_name);
+CREATE INDEX IF NOT EXISTS idx_cv_experiences_cv_id ON cv_experiences(cv_id);
+CREATE INDEX IF NOT EXISTS idx_cv_experiences_company ON cv_experiences(company_name);
+CREATE INDEX IF NOT EXISTS idx_cv_experiences_position ON cv_experiences(position_name);
+CREATE INDEX IF NOT EXISTS idx_cv_projects_cv_id ON cv_projects(cv_id);
+CREATE INDEX IF NOT EXISTS idx_cv_projects_name ON cv_projects(project_name);
+CREATE INDEX IF NOT EXISTS idx_cv_languages_cv_id ON cv_languages(cv_id);
+CREATE INDEX IF NOT EXISTS idx_cv_languages_name ON cv_languages(language_name);
+CREATE INDEX IF NOT EXISTS idx_cv_certifications_cv_id ON cv_certifications(cv_id);
+CREATE INDEX IF NOT EXISTS idx_cv_certifications_provider ON cv_certifications(provider);
+CREATE INDEX IF NOT EXISTS idx_cv_links_cv_id ON cv_links(cv_id);
 
 -- skills
 CREATE INDEX IF NOT EXISTS idx_skills_group ON skills(skill_group);
@@ -34,6 +52,12 @@ CREATE INDEX IF NOT EXISTS idx_rag_chunks_created_at ON rag_chunks(created_at DE
 CREATE INDEX IF NOT EXISTS idx_jobs_metadata_gin ON jobs USING GIN (metadata);
 CREATE INDEX IF NOT EXISTS idx_rag_documents_metadata_gin ON rag_documents USING GIN (metadata);
 CREATE INDEX IF NOT EXISTS idx_rag_chunks_metadata_gin ON rag_chunks USING GIN (metadata);
+CREATE INDEX IF NOT EXISTS idx_cv_profiles_parsed_json_gin ON cv_profiles USING GIN (parsed_json);
+CREATE INDEX IF NOT EXISTS idx_cv_profiles_education_signals_gin ON cv_profiles USING GIN (education_signals);
+CREATE INDEX IF NOT EXISTS idx_cv_experiences_responsibilities_gin ON cv_experiences USING GIN (responsibilities);
+CREATE INDEX IF NOT EXISTS idx_cv_experiences_related_skills_gin ON cv_experiences USING GIN (related_skills);
+CREATE INDEX IF NOT EXISTS idx_cv_projects_tech_stack_gin ON cv_projects USING GIN (tech_stack);
+CREATE INDEX IF NOT EXISTS idx_cv_certifications_skills_gin ON cv_certifications USING GIN (certification_skills);
 CREATE INDEX IF NOT EXISTS idx_cv_gap_reports_role_ranking_gin ON cv_gap_reports USING GIN (role_ranking);
 CREATE INDEX IF NOT EXISTS idx_recommendation_results_reasons_gin ON recommendation_results USING GIN (reasons);
 CREATE INDEX IF NOT EXISTS idx_recommendation_results_matched_skills_gin ON recommendation_results USING GIN (matched_skills);

@@ -1,7 +1,7 @@
 ﻿provider: phobert
 model_name: vinai/phobert-base
 cache_dir: hf_cache
-local_files_only: false
+local_files_only: true
 normalize: true
 max_length: 256
 batch_size: 16

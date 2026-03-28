@@ -40,7 +40,7 @@ class HybridRecommendationItem(BaseModel):
     vector_score: float = 0.0
     graph_score: float = 0.0
     hybrid_score: float = 0.0
-    supporting_chunk_ids: list[int] = []
+    supporting_chunk_ids: list[int] = Field(default_factory=list)
 
 
 class HybridRecommendResponse(BaseModel):

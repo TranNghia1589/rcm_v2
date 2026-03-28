@@ -18,3 +18,18 @@ FOR (c:Company) REQUIRE c.name IS UNIQUE;
 
 CREATE CONSTRAINT role_name_unique IF NOT EXISTS
 FOR (r:Role) REQUIRE r.name IS UNIQUE;
+
+CREATE CONSTRAINT project_key_unique IF NOT EXISTS
+FOR (p:Project) REQUIRE p.project_key IS UNIQUE;
+
+CREATE CONSTRAINT certification_key_unique IF NOT EXISTS
+FOR (c:Certification) REQUIRE c.cert_key IS UNIQUE;
+
+CREATE CONSTRAINT language_name_unique IF NOT EXISTS
+FOR (l:Language) REQUIRE l.name IS UNIQUE;
+
+CREATE CONSTRAINT institution_key_unique IF NOT EXISTS
+FOR (i:Institution) REQUIRE i.inst_key IS UNIQUE;
+
+CREATE CONSTRAINT experience_key_unique IF NOT EXISTS
+FOR (e:Experience) REQUIRE e.exp_key IS UNIQUE;

@@ -75,14 +75,20 @@ def run_hybrid_recommendation(
     hybrid_config_path: str | Path,
 ) -> dict[str, Any]:
     cfg = HybridConfig.from_yaml(hybrid_config_path)
+    warnings: list[str] = []
 
-    vec = vector_candidates(
-        question=question,
-        postgres_config_path=postgres_config_path,
-        retrieval_config_path=retrieval_config_path,
-        embedding_config_path=embedding_config_path,
-        top_k=cfg.vector_top_k,
-    )
+    try:
+        vec = vector_candidates(
+            question=question,
+            postgres_config_path=postgres_config_path,
+            retrieval_config_path=retrieval_config_path,
+            embedding_config_path=embedding_config_path,
+            top_k=cfg.vector_top_k,
+        )
+    except Exception as exc:
+        vec = []
+        warnings.append(f"vector_candidates_failed: {exc}")
+
     grp = graph_candidates(
         cv_id=cv_id,
         neo4j_config_path=neo4j_config_path,
@@ -135,28 +141,33 @@ def run_hybrid_recommendation(
 
     explanation = ""
     if cfg.enable_llm_explanation:
-        explanation_generator = OllamaGenerator(
-            OllamaConfig(
-                url=cfg.ollama_url,
-                model=cfg.ollama_model,
+        try:
+            explanation_generator = OllamaGenerator(
+                OllamaConfig(
+                    url=cfg.ollama_url,
+                    model=cfg.ollama_model,
+                    timeout_sec=cfg.llm_explanation_timeout_sec,
+                    temperature=cfg.llm_explanation_temperature,
+                    retries=cfg.llm_explanation_retries,
+                    keep_alive=cfg.ollama_keep_alive,
+                )
+            )
+            explanation = generate_explanations(
+                question,
+                final_items[: cfg.explanation_max_items],
+                generator=explanation_generator,
                 timeout_sec=cfg.llm_explanation_timeout_sec,
                 temperature=cfg.llm_explanation_temperature,
                 retries=cfg.llm_explanation_retries,
-                keep_alive=cfg.ollama_keep_alive,
             )
-        )
-        explanation = generate_explanations(
-            question,
-            final_items[: cfg.explanation_max_items],
-            generator=explanation_generator,
-            timeout_sec=cfg.llm_explanation_timeout_sec,
-            temperature=cfg.llm_explanation_temperature,
-            retries=cfg.llm_explanation_retries,
-        )
+        except Exception as exc:
+            warnings.append(f"llm_explanation_failed: {exc}")
+            explanation = ""
 
     return {
         "cv_id": cv_id,
         "question": question,
         "items": final_items,
         "explanation": explanation,
+        "warnings": warnings,
     }

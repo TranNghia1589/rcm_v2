@@ -1,4 +1,4 @@
-﻿-- Fresh schema for a new PostgreSQL database (RAG + CV matching + recommendation)
+-- Fresh schema for a new PostgreSQL database (RAG + CV matching + recommendation)
 
 -- 1) Pipeline / ETL tracking
 CREATE TABLE IF NOT EXISTS etl_runs (
@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS etl_runs (
 -- 2) Users and CV profiles
 CREATE TABLE IF NOT EXISTS users (
     user_id BIGSERIAL PRIMARY KEY,
+    user_key TEXT UNIQUE,
     email TEXT UNIQUE,
     full_name TEXT,
     phone TEXT,
@@ -23,9 +24,17 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS cv_profiles (
     cv_id BIGSERIAL PRIMARY KEY,
+    cv_key TEXT NOT NULL UNIQUE,
     user_id BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     file_name TEXT,
+    source_path TEXT,
     source_type TEXT NOT NULL DEFAULT 'upload' CHECK (source_type IN ('upload','import','manual')),
+    schema_version TEXT NOT NULL DEFAULT 'cv_extracted.v1',
+    address TEXT,
+    career_objective TEXT,
+    seniority_level TEXT,
+    location_preference TEXT,
+    work_mode_preference TEXT,
     raw_text TEXT,
     parsed_json JSONB,
     target_role TEXT,
@@ -34,6 +43,68 @@ CREATE TABLE IF NOT EXISTS cv_profiles (
     etl_run_id BIGINT REFERENCES etl_runs(etl_run_id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cv_educations (
+    cv_education_id BIGSERIAL PRIMARY KEY,
+    cv_id BIGINT NOT NULL REFERENCES cv_profiles(cv_id) ON DELETE CASCADE,
+    institution_name TEXT,
+    degree_name TEXT,
+    major_field TEXT,
+    passing_year TEXT,
+    educational_result TEXT,
+    result_type TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cv_experiences (
+    cv_experience_id BIGSERIAL PRIMARY KEY,
+    cv_id BIGINT NOT NULL REFERENCES cv_profiles(cv_id) ON DELETE CASCADE,
+    company_name TEXT,
+    position_name TEXT,
+    start_date TEXT,
+    end_date TEXT,
+    location TEXT,
+    responsibilities JSONB,
+    related_skills JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cv_projects (
+    cv_project_id BIGSERIAL PRIMARY KEY,
+    cv_id BIGINT NOT NULL REFERENCES cv_profiles(cv_id) ON DELETE CASCADE,
+    project_name TEXT,
+    project_description TEXT,
+    tech_stack JSONB,
+    impact_summary TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cv_languages (
+    cv_language_id BIGSERIAL PRIMARY KEY,
+    cv_id BIGINT NOT NULL REFERENCES cv_profiles(cv_id) ON DELETE CASCADE,
+    language_name TEXT NOT NULL,
+    proficiency_level TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cv_certifications (
+    cv_certification_id BIGSERIAL PRIMARY KEY,
+    cv_id BIGINT NOT NULL REFERENCES cv_profiles(cv_id) ON DELETE CASCADE,
+    certification_name TEXT,
+    provider TEXT,
+    issue_date TEXT,
+    expiry_date TEXT,
+    certification_skills JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cv_links (
+    cv_link_id BIGSERIAL PRIMARY KEY,
+    cv_id BIGINT NOT NULL REFERENCES cv_profiles(cv_id) ON DELETE CASCADE,
+    link_url TEXT NOT NULL,
+    link_type TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- 3) Skills dictionary and links

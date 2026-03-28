@@ -18,6 +18,9 @@ class CVNode:
     file_name: str
     target_role: str
     experience_years: float | None
+    address: str = ""
+    career_objective: str = ""
+    seniority_level: str = ""
 
 
 @dataclass
@@ -36,3 +39,17 @@ class JobNode:
     job_family: str
     experience_min_years: float | None
     experience_max_years: float | None
+
+
+@dataclass
+class ProjectNode:
+    project_key: str
+    name: str
+    description: str
+
+
+@dataclass
+class CertificationNode:
+    cert_key: str
+    name: str
+    provider: str

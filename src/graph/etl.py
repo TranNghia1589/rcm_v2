@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 from dataclasses import dataclass
@@ -53,6 +53,11 @@ class GraphETLStats:
     job_skill_links: int = 0
     role_links: int = 0
     lack_skill_links: int = 0
+    education_links: int = 0
+    experience_links: int = 0
+    project_links: int = 0
+    certification_links: int = 0
+    language_links: int = 0
 
 
 class GraphETL:
@@ -100,18 +105,23 @@ class GraphETL:
     def _upsert_cvs(self, pg: PostgresClient, neo: Neo4jClient) -> int:
         rows = pg.fetch_all(
             """
-            SELECT cv_id, user_id, file_name, target_role, experience_years
+            SELECT cv_id, user_id, file_name, target_role, experience_years,
+                   address, career_objective, seniority_level, schema_version
             FROM cv_profiles
             """
         )
         count = 0
-        for cv_id, user_id, file_name, target_role, experience_years in rows:
+        for cv_id, user_id, file_name, target_role, experience_years, address, career_objective, seniority_level, schema_version in rows:
             neo.execute(
                 """
                 MERGE (cv:CV {cv_id: $cv_id})
                 SET cv.file_name = $file_name,
                     cv.target_role = $target_role,
-                    cv.experience_years = $experience_years
+                    cv.experience_years = $experience_years,
+                    cv.address = $address,
+                    cv.career_objective = $career_objective,
+                    cv.seniority_level = $seniority_level,
+                    cv.schema_version = $schema_version
                 WITH cv
                 MATCH (u:User {user_id: $user_id})
                 MERGE (u)-[:HAS_CV]->(cv)
@@ -122,6 +132,10 @@ class GraphETL:
                     "file_name": _safe_str(file_name),
                     "target_role": _safe_str(target_role),
                     "experience_years": _safe_float(experience_years),
+                    "address": _safe_str(address),
+                    "career_objective": _safe_str(career_objective),
+                    "seniority_level": _safe_str(seniority_level),
+                    "schema_version": _safe_str(schema_version),
                 },
             )
             count += 1
@@ -314,6 +328,230 @@ class GraphETL:
 
         return role_links, gap_links
 
+    def _link_cv_educations(self, pg: PostgresClient, neo: Neo4jClient) -> int:
+        rows = pg.fetch_all(
+            """
+            SELECT cv_education_id, cv_id, institution_name, degree_name, major_field, passing_year, educational_result, result_type
+            FROM cv_educations
+            """
+        )
+        count = 0
+        for edu_id, cv_id, institution_name, degree_name, major_field, passing_year, educational_result, result_type in rows:
+            inst_name = _safe_str(institution_name) or "Unknown Institution"
+            inst_key = f"{inst_name.lower()}"
+            neo.execute(
+                """
+                MERGE (i:Institution {inst_key: $inst_key})
+                SET i.name = $institution_name
+                WITH i
+                MATCH (cv:CV {cv_id: $cv_id})
+                MERGE (cv)-[r:STUDIED_AT]->(i)
+                SET r.degree_name = $degree_name,
+                    r.major_field = $major_field,
+                    r.passing_year = $passing_year,
+                    r.educational_result = $educational_result,
+                    r.result_type = $result_type,
+                    r.cv_education_id = $cv_education_id
+                """,
+                {
+                    "inst_key": inst_key,
+                    "institution_name": inst_name,
+                    "cv_id": int(cv_id),
+                    "degree_name": _safe_str(degree_name),
+                    "major_field": _safe_str(major_field),
+                    "passing_year": _safe_str(passing_year),
+                    "educational_result": _safe_str(educational_result),
+                    "result_type": _safe_str(result_type),
+                    "cv_education_id": int(edu_id),
+                },
+            )
+            count += 1
+        return count
+
+    def _link_cv_experiences(self, pg: PostgresClient, neo: Neo4jClient) -> int:
+        rows = pg.fetch_all(
+            """
+            SELECT cv_experience_id, cv_id, company_name, position_name, start_date, end_date, location, responsibilities, related_skills
+            FROM cv_experiences
+            """
+        )
+        count = 0
+        for exp_id, cv_id, company_name, position_name, start_date, end_date, location, responsibilities, related_skills in rows:
+            exp_key = f"cv{int(cv_id)}-exp{int(exp_id)}"
+            neo.execute(
+                """
+                MERGE (e:Experience {exp_key: $exp_key})
+                SET e.company_name = $company_name,
+                    e.position_name = $position_name,
+                    e.start_date = $start_date,
+                    e.end_date = $end_date,
+                    e.location = $location
+                WITH e
+                MATCH (cv:CV {cv_id: $cv_id})
+                MERGE (cv)-[:HAS_EXPERIENCE]->(e)
+                """,
+                {
+                    "exp_key": exp_key,
+                    "company_name": _safe_str(company_name),
+                    "position_name": _safe_str(position_name),
+                    "start_date": _safe_str(start_date),
+                    "end_date": _safe_str(end_date),
+                    "location": _safe_str(location),
+                    "cv_id": int(cv_id),
+                },
+            )
+            company = _safe_str(company_name)
+            if company:
+                neo.execute(
+                    """
+                    MERGE (c:Company {name: $company_name})
+                    WITH c
+                    MATCH (e:Experience {exp_key: $exp_key})
+                    MERGE (e)-[:AT_COMPANY]->(c)
+                    """,
+                    {"company_name": company, "exp_key": exp_key},
+                )
+
+            for skill in _to_list(related_skills):
+                s = _safe_str(skill)
+                if not s:
+                    continue
+                neo.execute(
+                    """
+                    MERGE (sk:Skill {canonical_name: $skill_name})
+                    WITH sk
+                    MATCH (e:Experience {exp_key: $exp_key})
+                    MERGE (e)-[:USED_SKILL]->(sk)
+                    """,
+                    {"skill_name": s, "exp_key": exp_key},
+                )
+            _ = responsibilities
+            count += 1
+        return count
+
+    def _link_cv_projects(self, pg: PostgresClient, neo: Neo4jClient) -> int:
+        rows = pg.fetch_all(
+            """
+            SELECT cv_project_id, cv_id, project_name, project_description, tech_stack, impact_summary
+            FROM cv_projects
+            """
+        )
+        count = 0
+        for project_id, cv_id, project_name, project_description, tech_stack, impact_summary in rows:
+            p_name = _safe_str(project_name) or f"Project {project_id}"
+            p_key = f"cv{int(cv_id)}-project{int(project_id)}"
+            neo.execute(
+                """
+                MERGE (p:Project {project_key: $project_key})
+                SET p.name = $name,
+                    p.description = $description,
+                    p.impact_summary = $impact_summary
+                WITH p
+                MATCH (cv:CV {cv_id: $cv_id})
+                MERGE (cv)-[:HAS_PROJECT]->(p)
+                """,
+                {
+                    "project_key": p_key,
+                    "name": p_name,
+                    "description": _safe_str(project_description),
+                    "impact_summary": _safe_str(impact_summary),
+                    "cv_id": int(cv_id),
+                },
+            )
+
+            for skill in _to_list(tech_stack):
+                s = _safe_str(skill)
+                if not s:
+                    continue
+                neo.execute(
+                    """
+                    MERGE (sk:Skill {canonical_name: $skill_name})
+                    WITH sk
+                    MATCH (p:Project {project_key: $project_key})
+                    MERGE (p)-[:USES_SKILL]->(sk)
+                    """,
+                    {"skill_name": s, "project_key": p_key},
+                )
+            count += 1
+        return count
+
+    def _link_cv_certifications(self, pg: PostgresClient, neo: Neo4jClient) -> int:
+        rows = pg.fetch_all(
+            """
+            SELECT cv_certification_id, cv_id, certification_name, provider, issue_date, expiry_date, certification_skills
+            FROM cv_certifications
+            """
+        )
+        count = 0
+        for cert_id, cv_id, certification_name, provider, issue_date, expiry_date, cert_skills in rows:
+            c_name = _safe_str(certification_name) or f"Certification {cert_id}"
+            cert_key = f"cv{int(cv_id)}-cert{int(cert_id)}"
+            neo.execute(
+                """
+                MERGE (c:Certification {cert_key: $cert_key})
+                SET c.name = $name,
+                    c.provider = $provider,
+                    c.issue_date = $issue_date,
+                    c.expiry_date = $expiry_date
+                WITH c
+                MATCH (cv:CV {cv_id: $cv_id})
+                MERGE (cv)-[:HAS_CERTIFICATION]->(c)
+                """,
+                {
+                    "cert_key": cert_key,
+                    "name": c_name,
+                    "provider": _safe_str(provider),
+                    "issue_date": _safe_str(issue_date),
+                    "expiry_date": _safe_str(expiry_date),
+                    "cv_id": int(cv_id),
+                },
+            )
+
+            for skill in _to_list(cert_skills):
+                s = _safe_str(skill)
+                if not s:
+                    continue
+                neo.execute(
+                    """
+                    MERGE (sk:Skill {canonical_name: $skill_name})
+                    WITH sk
+                    MATCH (c:Certification {cert_key: $cert_key})
+                    MERGE (c)-[:CERTIFIES_SKILL]->(sk)
+                    """,
+                    {"skill_name": s, "cert_key": cert_key},
+                )
+            count += 1
+        return count
+
+    def _link_cv_languages(self, pg: PostgresClient, neo: Neo4jClient) -> int:
+        rows = pg.fetch_all(
+            """
+            SELECT cv_id, language_name, proficiency_level
+            FROM cv_languages
+            """
+        )
+        count = 0
+        for cv_id, language_name, proficiency_level in rows:
+            lang = _safe_str(language_name)
+            if not lang:
+                continue
+            neo.execute(
+                """
+                MERGE (l:Language {name: $language_name})
+                WITH l
+                MATCH (cv:CV {cv_id: $cv_id})
+                MERGE (cv)-[r:SPEAKS_LANGUAGE]->(l)
+                SET r.proficiency = $proficiency
+                """,
+                {
+                    "language_name": lang,
+                    "cv_id": int(cv_id),
+                    "proficiency": _safe_str(proficiency_level),
+                },
+            )
+            count += 1
+        return count
+
     def run(self, *, reset_graph: bool = False) -> GraphETLStats:
         root_dir = Path(__file__).resolve().parents[2]
         pg_conf = PostgresConfig.from_yaml(self.postgres_cfg_path)
@@ -334,5 +572,10 @@ class GraphETL:
             stats.cv_skill_links = self._link_cv_skills(pg, neo)
             stats.job_skill_links = self._link_job_skills(pg, neo)
             stats.role_links, stats.lack_skill_links = self._link_roles_and_gaps(pg, neo)
+            stats.education_links = self._link_cv_educations(pg, neo)
+            stats.experience_links = self._link_cv_experiences(pg, neo)
+            stats.project_links = self._link_cv_projects(pg, neo)
+            stats.certification_links = self._link_cv_certifications(pg, neo)
+            stats.language_links = self._link_cv_languages(pg, neo)
 
         return stats

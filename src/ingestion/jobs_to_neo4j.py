@@ -40,7 +40,10 @@ def main() -> None:
         "[DONE] "
         f"users={stats.users}, cvs={stats.cvs}, skills={stats.skills}, jobs={stats.jobs}, "
         f"cv_skill_links={stats.cv_skill_links}, job_skill_links={stats.job_skill_links}, "
-        f"role_links={stats.role_links}, lack_skill_links={stats.lack_skill_links}"
+        f"role_links={stats.role_links}, lack_skill_links={stats.lack_skill_links}, "
+        f"education_links={stats.education_links}, experience_links={stats.experience_links}, "
+        f"project_links={stats.project_links}, certification_links={stats.certification_links}, "
+        f"language_links={stats.language_links}"
     )
 
 
