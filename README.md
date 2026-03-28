@@ -102,3 +102,57 @@ $body = @{
 
 Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8010/api/v1/chat/ask" -ContentType "application/json" -Body $body
 ```
+
+## How To Get `session_id` And `chat_messages`
+
+After calling `POST /api/v1/chat/ask`, the response includes:
+- `session_id`
+- `resolved_cv_id`
+- `resolved_gap_report_id`
+- `saved_to_history`
+
+Example:
+
+```powershell
+$body = @{
+  question = "CV này hợp role nào nhất và còn thiếu gì để apply tốt hơn?"
+  top_k = 3
+  cv_id = 4
+} | ConvertTo-Json
+
+$resp = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8010/api/v1/chat/ask" -ContentType "application/json" -Body $body
+$resp.session_id
+```
+
+Continue the same conversation by sending the returned `session_id`:
+
+```powershell
+$body = @{
+  question = "Vậy nếu HR screen nhanh thì nên hỏi thêm điểm nào?"
+  top_k = 3
+  session_id = "PASTE_SESSION_ID_HERE"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8010/api/v1/chat/ask" -ContentType "application/json" -Body $body
+```
+
+Check the saved chat session directly in PostgreSQL:
+
+```sql
+select session_id::text, user_id, cv_id, gap_report_id, title, model_name, created_at
+from chat_sessions
+order by created_at desc;
+```
+
+Check all saved messages of one session:
+
+```sql
+select message_id, session_id::text, role, content, grounded, latency_ms, metadata, created_at
+from chat_messages
+where session_id = 'PASTE_SESSION_ID_HERE'::uuid
+order by message_id;
+```
+
+Meaning:
+- `chat_sessions`: one row per conversation
+- `chat_messages`: one row per message (`user` or `assistant`)
