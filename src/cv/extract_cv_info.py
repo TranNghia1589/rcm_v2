@@ -207,7 +207,16 @@ def summarize_projects(text: str) -> List[str]:
     result = []
 
     project_keywords = ["project", "dự án", "dashboard"]
-    noisy_keywords = ["project management", "managed projects", "scheduling"]
+    noisy_keywords = [
+        "project management",
+        "managed projects",
+        "scheduling",
+        "skills:",
+        "technical skills",
+        "core competencies",
+        "tools:",
+        "technologies:",
+    ]
 
     for line in lines:
         lowered = line.lower()
@@ -227,7 +236,39 @@ def summarize_projects(text: str) -> List[str]:
             seen.add(key)
             unique.append(item)
 
-    return unique[:5]
+    return clean_project_entries(unique[:5])
+
+
+def clean_project_entries(projects: List[str]) -> List[str]:
+    cleaned: List[str] = []
+    seen = set()
+
+    for item in projects:
+        text = str(item).strip()
+        if not text:
+            continue
+        lowered = text.lower()
+
+        for marker in ["projects:", "project:", "dự án:"]:
+            idx = lowered.find(marker)
+            if idx != -1:
+                text = text[idx + len(marker) :].strip(" -:")
+                lowered = text.lower()
+                break
+
+        if lowered.startswith("skills:") or lowered.startswith("technical skills"):
+            continue
+        if lowered.startswith("tools:") or lowered.startswith("technologies:"):
+            continue
+        if len(text) < 12:
+            continue
+
+        key = lowered
+        if key not in seen:
+            seen.add(key)
+            cleaned.append(text)
+
+    return cleaned[:5]
 def extract_relevant_skill_text(raw_text: str) -> str:
     """
     Ưu tiên lấy text từ các section có khả năng chứa skill.

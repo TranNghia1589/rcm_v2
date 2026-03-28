@@ -16,6 +16,26 @@ Notebook is archival/reference only:
 - `scripts/dev/chatbot_1to1.py`: Interactive 1:1 chatbot CLI.
 - `apps/api/`: API layer (incremental implementation).
 
+## Update Today
+
+- PostgreSQL + Neo4j local database flow is active for the project.
+- FastAPI now supports CV upload into database tables:
+  - `users`
+  - `cv_profiles`
+  - `cv_skills`
+  - `cv_gap_reports`
+- Chatbot now supports context-aware chat using:
+  - `cv_id`
+  - latest gap report from database
+  - `session_id` history
+- Chat history is persisted into:
+  - `chat_sessions`
+  - `chat_messages`
+- Chatbot answer mode is tightened around processed CV context (`context_locked`) so answers stay closer to extracted CV, gap signals, and recent chat history.
+- Current backend generation model for chatbot API is `llama3.1:8b` via local Ollama.
+- Metric notebook for the current chatbot pipeline is available at:
+  - `legacy/src/chatbot/metric_test/metric_test.ipynb`
+
 ## Data & Artifact Layout
 
 - `data/raw/jobs/`: Fresh crawl output (`topcv_all_fields_merged_*.csv|xlsx`).
@@ -40,3 +60,45 @@ Notebook is archival/reference only:
 
 5. Chatbot (internal-only):
 - `python src/chatbot/retrieval.py --question "CV cua toi phu hop job nao?" --gap_result data/processed/gap_analysis_result.json --cv_json data/processed/resume_extracted.json --top_k_jobs 10`
+
+## API Flow
+
+1. Run API:
+- `powershell -ExecutionPolicy Bypass -File scripts/dev/run_api.ps1`
+
+2. Upload CV to database:
+- `POST /api/v1/cv/upload`
+
+3. Get CV detail from database:
+- `GET /api/v1/cv/{cv_id}`
+
+4. Chat with CV context:
+- `POST /api/v1/chat/ask`
+- minimal payload:
+  - `question`
+  - `cv_id`
+
+5. Continue same conversation:
+- resend returned `session_id`
+
+## Example API Usage
+
+Upload CV:
+
+```powershell
+curl.exe -X POST "http://127.0.0.1:8010/api/v1/cv/upload" `
+  -F "file=@C:\path\to\your_cv.txt" `
+  -F "full_name=Nguyen Van A"
+```
+
+Chat with uploaded CV:
+
+```powershell
+$body = @{
+  question = "CV này hợp role nào nhất và còn thiếu gì để apply tốt hơn?"
+  top_k = 3
+  cv_id = 4
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8010/api/v1/chat/ask" -ContentType "application/json" -Body $body
+```

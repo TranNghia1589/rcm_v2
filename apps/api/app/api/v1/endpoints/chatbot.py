@@ -30,7 +30,15 @@ def get_chat_service() -> ChatService:
 @router.post("/ask", response_model=ChatAskResponse)
 def ask_chatbot(payload: ChatAskRequest) -> ChatAskResponse:
     try:
-        result = get_chat_service().ask(question=payload.question, top_k=payload.top_k)
+        result = get_chat_service().ask(
+            question=payload.question,
+            top_k=payload.top_k,
+            session_id=payload.session_id,
+            user_id=payload.user_id,
+            cv_id=payload.cv_id,
+            gap_report_id=payload.gap_report_id,
+            title=payload.title,
+        )
         return ChatAskResponse(**result)
     except Exception as exc:  # pragma: no cover
         raise HTTPException(status_code=500, detail=str(exc)) from exc
@@ -39,7 +47,15 @@ def ask_chatbot(payload: ChatAskRequest) -> ChatAskResponse:
 @router.post("/ask-debug", response_model=ChatAskResponse)
 def ask_chatbot_debug(payload: ChatAskRequest) -> ChatAskResponse:
     try:
-        result = get_chat_service().ask(question=payload.question, top_k=payload.top_k)
+        result = get_chat_service().ask(
+            question=payload.question,
+            top_k=payload.top_k,
+            session_id=payload.session_id,
+            user_id=payload.user_id,
+            cv_id=payload.cv_id,
+            gap_report_id=payload.gap_report_id,
+            title=payload.title,
+        )
         return ChatAskResponse(**result)
     except Exception as exc:  # pragma: no cover
         raise HTTPException(status_code=500, detail=str(exc)) from exc
