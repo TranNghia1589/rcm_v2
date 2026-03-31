@@ -1,0 +1,76 @@
+﻿@baseUrl = http://127.0.0.1:8000
+
+### Health
+GET {{baseUrl}}/healthz
+
+### Chatbot Ask
+POST {{baseUrl}}/api/v1/chat/ask
+Content-Type: application/json
+
+{
+  "question": "Toi muon cai thien CV Data Analyst",
+  "top_k": 5
+}
+
+### Chatbot Ask Debug
+POST {{baseUrl}}/api/v1/chat/ask-debug
+Content-Type: application/json
+
+{
+  "question": "Goi y 3 ky nang uu tien cho CV cua toi",
+  "top_k": 5
+}
+
+### CV Score by CV ID
+GET {{baseUrl}}/api/v1/cv/score/1
+
+### CV Score Alias (scoring namespace)
+GET {{baseUrl}}/api/v1/scoring/cv/1
+
+### Jobs List
+GET {{baseUrl}}/api/v1/jobs?limit=20&offset=0
+
+### Recommend Hybrid (alias)
+POST {{baseUrl}}/api/v1/recommend/hybrid
+Content-Type: application/json
+
+{
+  "cv_id": 1,
+  "question": "Goi y cong viec phu hop voi CV"
+}
+
+### Recommend Hybrid Jobs
+POST {{baseUrl}}/api/v1/recommend/hybrid/jobs
+Content-Type: application/json
+
+{
+  "cv_id": 1,
+  "question": "Backend Python jobs tai Ha Noi"
+}
+
+### Recommend Graph Jobs
+POST {{baseUrl}}/api/v1/recommend/graph/jobs
+Content-Type: application/json
+
+{
+  "cv_id": 1,
+  "limit": 10
+}
+
+### Recommend Graph Skill Gap
+POST {{baseUrl}}/api/v1/recommend/graph/skill-gap
+Content-Type: application/json
+
+{
+  "cv_id": 1,
+  "limit": 15
+}
+
+### Recommend Graph Career Path
+POST {{baseUrl}}/api/v1/recommend/graph/career-path
+Content-Type: application/json
+
+{
+  "cv_id": 1,
+  "limit": 5
+}

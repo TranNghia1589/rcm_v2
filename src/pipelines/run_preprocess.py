@@ -1,10 +1,16 @@
 from __future__ import annotations
 
-try:
-    from IPython.display import display
-except Exception:
-    def display(obj):
-        print(obj)
+import sys
+
+def display(obj):
+    """
+    Console-safe display for script mode.
+    Avoid IPython display() here because Windows cp1252 console can raise UnicodeEncodeError.
+    """
+    text = str(obj)
+    encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+    safe_text = text.encode(encoding, errors="replace").decode(encoding, errors="replace")
+    print(safe_text)
 
 import re
 import os
@@ -39,6 +45,13 @@ NOTEBOOK_VERSION = "preprocessing_v3_phobert"
 BASE_DIR = Path(__file__).resolve().parents[2]
 RAW_JOBS_DIR = BASE_DIR / "data" / "raw" / "jobs"
 
+
+def env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "y", "on"}
+
 def find_latest_raw_file(data_dir: Path) -> Path:
     candidates = list(data_dir.glob("topcv_all_fields_merged_*.csv")) + list(data_dir.glob("topcv_all_fields_merged_*.xlsx"))
     if not candidates:
@@ -50,8 +63,8 @@ RAW_INPUT_PATH = find_latest_raw_file(RAW_JOBS_DIR)
 ARTIFACT_DIR = BASE_DIR / "artifacts" / "matching"
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
-RUN_EMBEDDING = True
-RUN_SECTION_EMBEDDING = True
+RUN_EMBEDDING = env_bool("PREPROCESS_RUN_EMBEDDING", True)
+RUN_SECTION_EMBEDDING = env_bool("PREPROCESS_RUN_SECTION_EMBEDDING", True)
 SAVE_INTERMEDIATE = True
 
 PHOBERT_MODEL_NAME = "vinai/phobert-base"
@@ -1898,10 +1911,11 @@ HF_CACHE_DIR = Path("./hf_cache")
 HF_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 HF_TOKEN = os.getenv("HF_TOKEN", "").strip() or None
 
-# USE_LOCAL_ONLY = False
-# HF_OFFLINE = False
-USE_LOCAL_ONLY = True
-HF_OFFLINE = True
+# Override via env when chạy pipeline script:
+# PREPROCESS_USE_LOCAL_ONLY=1 / 0
+# PREPROCESS_HF_OFFLINE=1 / 0
+USE_LOCAL_ONLY = env_bool("PREPROCESS_USE_LOCAL_ONLY", True)
+HF_OFFLINE = env_bool("PREPROCESS_HF_OFFLINE", True)
 os.environ["HF_HUB_ETAG_TIMEOUT"] = "10"
 os.environ["HF_HUB_DOWNLOAD_TIMEOUT"] = "60"
 os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
@@ -1928,14 +1942,21 @@ def load_phobert_model(model_name, cache_dir, local_only=False):
             local_files_only=True,
             token=HF_TOKEN
         )
-        model = AutoModel.from_pretrained(
-            model_name,
-            cache_dir=str(cache_dir),
-            local_files_only=True,
-            use_safetensors=True,
-            token=HF_TOKEN
-        )
-        return tokenizer, model
+        # Try safetensors first, then fallback to pytorch_model.bin in local cache.
+        last_exc = None
+        for use_safetensors in (True, False):
+            try:
+                model = AutoModel.from_pretrained(
+                    model_name,
+                    cache_dir=str(cache_dir),
+                    local_files_only=True,
+                    use_safetensors=use_safetensors,
+                    token=HF_TOKEN
+                )
+                return tokenizer, model
+            except Exception as exc:
+                last_exc = exc
+        raise last_exc  # type: ignore[misc]
 
     try:
         tokenizer = AutoTokenizer.from_pretrained(
@@ -1943,12 +1964,20 @@ def load_phobert_model(model_name, cache_dir, local_only=False):
             cache_dir=str(cache_dir),
             token=HF_TOKEN
         )
-        model = AutoModel.from_pretrained(
-            model_name,
-            cache_dir=str(cache_dir),
-            use_safetensors=True,
-            token=HF_TOKEN
-        )
+        try:
+            model = AutoModel.from_pretrained(
+                model_name,
+                cache_dir=str(cache_dir),
+                use_safetensors=True,
+                token=HF_TOKEN
+            )
+        except Exception:
+            model = AutoModel.from_pretrained(
+                model_name,
+                cache_dir=str(cache_dir),
+                use_safetensors=False,
+                token=HF_TOKEN
+            )
         return tokenizer, model
 
     except Exception as e:
@@ -1961,13 +1990,22 @@ def load_phobert_model(model_name, cache_dir, local_only=False):
             local_files_only=True,
             token=HF_TOKEN
         )
-        model = AutoModel.from_pretrained(
-            model_name,
-            cache_dir=str(cache_dir),
-            local_files_only=True,
-            use_safetensors=True,
-            token=HF_TOKEN
-        )
+        try:
+            model = AutoModel.from_pretrained(
+                model_name,
+                cache_dir=str(cache_dir),
+                local_files_only=True,
+                use_safetensors=True,
+                token=HF_TOKEN
+            )
+        except Exception:
+            model = AutoModel.from_pretrained(
+                model_name,
+                cache_dir=str(cache_dir),
+                local_files_only=True,
+                use_safetensors=False,
+                token=HF_TOKEN
+            )
         return tokenizer, model
 
 
@@ -2211,10 +2249,17 @@ artifact_paths["job_embedding_index_v3"] = save_table(
 )
 
 if len(job_sections_df) > 0:
+    section_index_cols = [
+        "section_embedding_row_id",
+        "job_url",
+        "job_title_display",
+        "section_type",
+        "chunk_order",
+        "chunk_text_raw",
+    ]
+    section_index_cols = [c for c in section_index_cols if c in job_sections_df.columns]
     artifact_paths["job_section_embedding_index_v3"] = save_table(
-        job_sections_df[
-            ["section_embedding_row_id", "job_url", "job_title_display", "section_type", "chunk_order", "chunk_text_raw"]
-        ],
+        job_sections_df[section_index_cols],
         ARTIFACT_DIR / "job_section_embedding_index_v3"
     )
 

@@ -7,7 +7,7 @@ from typing import Dict, List, Tuple
 
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-ROLE_PROFILE_PATH = BASE_DIR / "data" / "role_profiles" / "role_profiles.json"
+ROLE_PROFILE_PATH = BASE_DIR / "data" / "reference" / "role_profiles.json"
 DEFAULT_OUTPUT_PATH = BASE_DIR / "data" / "processed" / "gap_analysis_result.json"
 DEFAULT_CV_JSON = BASE_DIR / "data" / "processed" / "resume_extracted.json"
 

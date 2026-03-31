@@ -1,0 +1,6 @@
+﻿host: postgres
+port: 5432
+database: job_recommendation_system
+user: postgres
+password: "123456"
+sslmode: prefer

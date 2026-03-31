@@ -4,8 +4,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from time import perf_counter
 import re
+from typing import Any
 
 from apps.api.app.services.rag.retrieval_service import RetrievalService
+from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
 from src.rag.generate import OllamaConfig, OllamaGenerator
 from src.rag.prompting import (
     PromptingConfig,
@@ -42,6 +44,113 @@ class ChatService:
                 keep_alive=self._prompt_cfg.ollama_keep_alive,
             )
         )
+        self._postgres_cfg = PostgresConfig.from_yaml(self.postgres_config_path)
+
+    def _to_list(self, value: Any) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return [str(x).strip() for x in value if str(x).strip()]
+        text = str(value).strip()
+        if not text:
+            return []
+        text = text.strip("[]")
+        if not text:
+            return []
+        parts = [x.strip(" '\"") for x in text.split(",")]
+        return [x for x in parts if x]
+
+    def _load_cv_profile_context(self, cv_id: int | None) -> str:
+        if cv_id is None:
+            return ""
+        try:
+            with PostgresClient(self._postgres_cfg) as client:
+                profile_row = client.fetch_one(
+                    """
+                    SELECT
+                        COALESCE(target_role, ''),
+                        COALESCE(experience_years::text, ''),
+                        COALESCE(parsed_json->'skills', '[]'::jsonb),
+                        COALESCE(career_objective, '')
+                    FROM cv_profiles
+                    WHERE cv_id = %s
+                    LIMIT 1
+                    """,
+                    (int(cv_id),),
+                )
+                score_row = client.fetch_one(
+                    """
+                    SELECT
+                        COALESCE(benchmark_role, ''),
+                        COALESCE(grade, ''),
+                        COALESCE(total_score, 0),
+                        COALESCE(strengths, '[]'::jsonb),
+                        COALESCE(missing_skills, '[]'::jsonb),
+                        COALESCE(priority_skills, '[]'::jsonb)
+                    FROM cv_scoring_results
+                    WHERE cv_id = %s
+                    LIMIT 1
+                    """,
+                    (int(cv_id),),
+                )
+                gap_row = client.fetch_one(
+                    """
+                    SELECT
+                        COALESCE(target_role_from_cv, ''),
+                        COALESCE(best_fit_roles, '[]'::jsonb),
+                        COALESCE(missing_skills, '[]'::jsonb)
+                    FROM cv_gap_reports
+                    WHERE cv_id = %s
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                    """,
+                    (int(cv_id),),
+                )
+        except Exception:
+            return ""
+
+        lines = [f"cv_id={int(cv_id)}"]
+        if profile_row:
+            target_role, exp_years, skills, objective = profile_row
+            skill_list = self._to_list(skills)[:15]
+            if target_role:
+                lines.append(f"target_role={target_role}")
+            if exp_years:
+                lines.append(f"experience_years={exp_years}")
+            if skill_list:
+                lines.append(f"cv_skills={', '.join(skill_list)}")
+            if objective:
+                lines.append(f"career_objective={str(objective)[:220]}")
+
+        if score_row:
+            benchmark_role, grade, total_score, strengths, missing, priority = score_row
+            if benchmark_role:
+                lines.append(f"benchmark_role={benchmark_role}")
+            if grade:
+                lines.append(f"cv_grade={grade}")
+            lines.append(f"cv_total_score={float(total_score):.2f}")
+            strengths_list = self._to_list(strengths)[:10]
+            missing_list = self._to_list(missing)[:10]
+            priority_list = self._to_list(priority)[:10]
+            if strengths_list:
+                lines.append(f"strengths={', '.join(strengths_list)}")
+            if missing_list:
+                lines.append(f"missing_skills={', '.join(missing_list)}")
+            if priority_list:
+                lines.append(f"priority_skills={', '.join(priority_list)}")
+
+        if gap_row:
+            target_from_cv, best_fit_roles, gap_missing = gap_row
+            if target_from_cv:
+                lines.append(f"gap_target_role={target_from_cv}")
+            best_fit_list = self._to_list(best_fit_roles)[:5]
+            gap_missing_list = self._to_list(gap_missing)[:10]
+            if best_fit_list:
+                lines.append(f"best_fit_roles={', '.join(best_fit_list)}")
+            if gap_missing_list:
+                lines.append(f"gap_missing_skills={', '.join(gap_missing_list)}")
+
+        return "\n".join(lines)
 
     def _rerank_chunks(self, question: str, chunks: list[dict], intent: str) -> list[dict]:
         q_tokens = set(re.findall(r"[a-zA-ZÀ-ỹ0-9]+", (question or "").lower()))
@@ -72,14 +181,17 @@ class ChatService:
             retries=retries,
         )
 
-    def ask(self, *, question: str, top_k: int = 5) -> dict:
+    def ask(self, *, question: str, top_k: int = 5, cv_id: int | None = None) -> dict:
         t0 = perf_counter()
         intent = classify_intent(question)
+        profile_context = self._load_cv_profile_context(cv_id)
         retrieval_query = question
         if intent in {"cv_improvement", "career_transition"}:
             retrieval_query = f"{question}. yeu cau ky nang kinh nghiem du an trong tin tuyen dung data ai"
         elif intent == "job_recommendation":
             retrieval_query = f"{question}. goi y vi tri tuyen dung phu hop ky nang"
+        if profile_context:
+            retrieval_query = f"{retrieval_query}. du lieu cv: {profile_context.replace(chr(10), '; ')}"
 
         chunks = self._retrieval.search(question=retrieval_query, top_k=max(6, top_k + 2))
         chunks = self._rerank_chunks(question, chunks, intent)[:top_k]
@@ -88,6 +200,7 @@ class ChatService:
             retrieved_chunks=chunks,
             config=self._prompt_cfg,
             intent=intent,
+            profile_context=profile_context,
         )
 
         used_fallback = False

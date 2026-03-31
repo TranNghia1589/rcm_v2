@@ -19,7 +19,7 @@ if str(BASE_DIR) not in sys.path:
 from src.data_contracts.schemas import CVExtractedRecord
 from src.data_contracts.validators import normalize_cv_record, validate_cv_record
 
-SKILL_CATALOG_PATH = BASE_DIR / "data" / "skill_catalog.json"
+SKILL_CATALOG_PATH = BASE_DIR / "data" / "reference" / "skill_catalog.json"
 
 ROLE_KEYWORDS = {
     "Data Analyst": ["data analyst", "bi analyst", "business intelligence", "power bi", "tableau", "dashboard"],

@@ -1,0 +1,373 @@
+﻿openapi: 3.0.3
+info:
+  title: Career AI API
+  version: 0.1.0
+servers:
+  - url: http://127.0.0.1:8000
+paths:
+  /healthz:
+    get:
+      tags: [system]
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /api/v1/chat/ask:
+    post:
+      tags: [chatbot]
+      summary: Ask chatbot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatAskRequest'
+      responses:
+        '200':
+          description: Chat answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatAskResponse'
+  /api/v1/chat/ask-debug:
+    post:
+      tags: [chatbot]
+      summary: Ask chatbot debug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatAskRequest'
+      responses:
+        '200':
+          description: Chat answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatAskResponse'
+  /api/v1/cv/score/{cv_id}:
+    get:
+      tags: [cv]
+      summary: Get CV score by id
+      parameters:
+        - in: path
+          name: cv_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: CV score
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CVScoreResponse'
+  /api/v1/scoring/cv/{cv_id}:
+    get:
+      tags: [scoring]
+      summary: Get CV score alias endpoint
+      parameters:
+        - in: path
+          name: cv_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: CV score
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CVScoreResponse'
+  /api/v1/jobs:
+    get:
+      tags: [jobs]
+      summary: List jobs
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Job list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobsListResponse'
+  /api/v1/recommend/hybrid:
+    post:
+      tags: [recommendation]
+      summary: Hybrid recommendation alias
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HybridRecommendRequest'
+      responses:
+        '200':
+          description: Hybrid recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HybridRecommendResponse'
+  /api/v1/recommend/hybrid/jobs:
+    post:
+      tags: [recommendation]
+      summary: Hybrid job recommendation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HybridRecommendRequest'
+      responses:
+        '200':
+          description: Hybrid recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HybridRecommendResponse'
+  /api/v1/recommend/graph/jobs:
+    post:
+      tags: [recommendation]
+      summary: Graph-based job recommendation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphRecommendRequest'
+      responses:
+        '200':
+          description: Graph recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphRecommendResponse'
+  /api/v1/recommend/graph/skill-gap:
+    post:
+      tags: [recommendation]
+      summary: Graph skill gap
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphSkillGapRequest'
+      responses:
+        '200':
+          description: Skill gap response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphSkillGapResponse'
+  /api/v1/recommend/graph/career-path:
+    post:
+      tags: [recommendation]
+      summary: Graph career path
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphCareerPathRequest'
+      responses:
+        '200':
+          description: Career path response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphCareerPathResponse'
+components:
+  schemas:
+    ChatAskRequest:
+      type: object
+      required: [question]
+      properties:
+        question:
+          type: string
+          minLength: 3
+        top_k:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 5
+    ChatSource:
+      type: object
+      properties:
+        chunk_id: { type: integer }
+        document_id: { type: integer }
+        title: { type: string }
+        distance: { type: number }
+    ChatAskResponse:
+      type: object
+      properties:
+        answer: { type: string }
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatSource'
+        retrieval_count: { type: integer }
+        used_fallback: { type: boolean }
+        fallback_reason: { type: string }
+        fallback_stage: { type: string }
+    CVScoreResponse:
+      type: object
+      properties:
+        cv_id: { type: integer }
+        total_score: { type: number }
+        grade: { type: string }
+        benchmark_role: { type: string }
+        skill_score: { type: number }
+        experience_score: { type: number }
+        project_score: { type: number }
+        education_score: { type: number }
+        completeness_score: { type: number }
+        strengths:
+          type: array
+          items: { type: string }
+        missing_skills:
+          type: array
+          items: { type: string }
+        priority_skills:
+          type: array
+          items: { type: string }
+        development_plan_30_60_90: { type: object }
+        subscores_json: { type: object }
+        metadata: { type: object }
+        model_version: { type: string }
+        updated_at: { type: string }
+    JobItem:
+      type: object
+      properties:
+        job_id: { type: integer }
+        title: { type: string }
+        company_name: { type: string }
+        location: { type: string }
+        job_family: { type: string }
+        work_mode: { type: string }
+        is_active: { type: boolean }
+        updated_at: { type: string }
+    JobsListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobItem'
+    HybridRecommendRequest:
+      type: object
+      required: [cv_id, question]
+      properties:
+        cv_id:
+          type: integer
+          minimum: 1
+        question:
+          type: string
+          minLength: 3
+    HybridRecommendationItem:
+      type: object
+      properties:
+        job_id: { type: integer }
+        title: { type: string }
+        company_name: { type: string }
+        location: { type: string }
+        matched_skills: { type: integer }
+        total_required: { type: integer }
+        coverage: { type: number }
+        vector_score: { type: number }
+        graph_score: { type: number }
+        hybrid_score: { type: number }
+        supporting_chunk_ids:
+          type: array
+          items: { type: integer }
+    HybridRecommendResponse:
+      type: object
+      properties:
+        cv_id: { type: integer }
+        question: { type: string }
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/HybridRecommendationItem'
+        explanation: { type: string }
+    GraphRecommendRequest:
+      type: object
+      required: [cv_id]
+      properties:
+        cv_id: { type: integer, minimum: 1 }
+        limit: { type: integer, minimum: 1, maximum: 50, default: 10 }
+    GraphJobRecommendation:
+      type: object
+      properties:
+        job_id: { type: integer }
+        title: { type: string }
+        company_name: { type: string }
+        location: { type: string }
+        matched_skills: { type: integer }
+        total_required: { type: integer }
+        coverage: { type: number }
+        score: { type: number }
+    GraphRecommendResponse:
+      type: object
+      properties:
+        cv_id: { type: integer }
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphJobRecommendation'
+    GraphSkillGapRequest:
+      type: object
+      required: [cv_id]
+      properties:
+        cv_id: { type: integer, minimum: 1 }
+        limit: { type: integer, minimum: 1, maximum: 100, default: 15 }
+    GraphSkillGapItem:
+      type: object
+      properties:
+        missing_skill: { type: string }
+        freq: { type: integer }
+    GraphSkillGapResponse:
+      type: object
+      properties:
+        cv_id: { type: integer }
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphSkillGapItem'
+    GraphCareerPathRequest:
+      type: object
+      required: [cv_id]
+      properties:
+        cv_id: { type: integer, minimum: 1 }
+        limit: { type: integer, minimum: 1, maximum: 50, default: 5 }
+    GraphCareerPathItem:
+      type: object
+      properties:
+        role_name: { type: string }
+        priority_skills:
+          type: array
+          items: { type: string }
+        supporting_jobs: { type: integer }
+    GraphCareerPathResponse:
+      type: object
+      properties:
+        cv_id: { type: integer }
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphCareerPathItem'

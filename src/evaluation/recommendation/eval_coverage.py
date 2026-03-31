@@ -6,9 +6,6 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.evaluation.recommendation.metrics import mean
-
-
 def _load_table(path: str | Path) -> pd.DataFrame:
     p = Path(path)
     if not p.exists():
@@ -75,17 +72,6 @@ def evaluate_coverage(
             # Catalog coverage: unique recommended jobs / total jobs
             unique_jobs = int(topk["job_id"].nunique())
             summary[f"catalog_coverage@{k}"] = (float(unique_jobs) / float(job_total)) if job_total > 0 else 0.0
-
-            # Intra-list diversity proxy by job_family dispersion
-            if "job_family" in topk.columns:
-                per_query_div: list[float] = []
-                for _, group in topk.groupby("cv_id"):
-                    fam_count = int(group["job_family"].fillna("").nunique())
-                    denom = min(k, len(group))
-                    per_query_div.append((float(fam_count) / float(denom)) if denom > 0 else 0.0)
-                summary[f"intra_list_diversity@{k}"] = mean(per_query_div)
-            else:
-                summary[f"intra_list_diversity@{k}"] = 0.0
 
         rows_out.append(summary)
 

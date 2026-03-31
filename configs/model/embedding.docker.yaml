@@ -1,0 +1,3 @@
+provider: hash
+dimension: 768
+normalize: true

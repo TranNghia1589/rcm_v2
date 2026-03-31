@@ -1,8 +1,3 @@
-﻿"""Deprecated legacy module.
+﻿from apps.api.app.server import app, create_app
 
-Runtime API entrypoint is:
-`apps/api/app/server.py`
-
-Legacy source moved to:
-`legacy/deprecated_2026_03_27/apps/api/app/main.py`
-"""
+__all__ = ["app", "create_app"]

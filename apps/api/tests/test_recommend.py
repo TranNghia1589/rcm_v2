@@ -1,4 +1,4 @@
-﻿from apps.api.app.api.v1.endpoints import recommend as recommend_endpoint
+﻿from apps.api.app.api.v1 import recommendations as recommend_endpoint
 from apps.api.app.server import app
 from fastapi.testclient import TestClient
 

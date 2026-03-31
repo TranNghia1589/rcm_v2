@@ -58,6 +58,7 @@ def build_grounded_prompt(
     retrieved_chunks: list[dict[str, Any]],
     config: PromptingConfig,
     intent: str = "general",
+    profile_context: str = "",
 ) -> str:
     top_chunks = retrieved_chunks[: config.max_context_chunks]
     context_lines: list[str] = []
@@ -66,6 +67,7 @@ def build_grounded_prompt(
             f"[chunk_id={c.get('chunk_id')}] title={c.get('title', '')}\n{c.get('content', '')}"
         )
     context_text = "\n\n".join(context_lines) if context_lines else "Khong co context."
+    profile_text = profile_context.strip() if profile_context and profile_context.strip() else "Khong co ho so CV."
 
     intent_guide = ""
     if intent == "job_recommendation":
@@ -99,6 +101,9 @@ Khi nêu thông tin quan trọng, thêm trích dẫn dạng [chunk_id=...].
 
 CONTEXT:
 {context_text}
+
+HO_SO_CV:
+{profile_text}
 
 CÂU HỎI:
 {question}

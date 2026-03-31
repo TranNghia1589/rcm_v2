@@ -7,16 +7,26 @@
 )
 
 $ErrorActionPreference = "Stop"
-
 $env:PGPASSWORD = $Password
 
 Write-Host "[INFO] Init PostgreSQL + pgvector schema on ${DbHost}:$Port/$Database"
 
+$newRoot = "apps/api/migrations"
+$oldRoot = "database/postgres/migrations"
+
+if (Test-Path $newRoot) {
+  $root = $newRoot
+} elseif (Test-Path $oldRoot) {
+  $root = $oldRoot
+} else {
+  throw "Migration root not found. Expected '$newRoot' or '$oldRoot'."
+}
+
 $files = @(
-  "database/postgres/migrations/001_enable_pgvector.sql",
-  "database/postgres/migrations/002_create_rag_tables.sql",
-  "database/postgres/migrations/003_create_rag_indexes.sql",
-  "database/postgres/migrations/004_create_cv_scoring_tables.sql"
+  "$root/001_enable_pgvector.sql",
+  "$root/002_create_rag_tables.sql",
+  "$root/003_create_rag_indexes.sql",
+  "$root/004_create_cv_scoring_tables.sql"
 )
 
 foreach ($f in $files) {
@@ -31,4 +41,3 @@ foreach ($f in $files) {
 }
 
 Write-Host "[DONE] PostgreSQL schema initialized."
-

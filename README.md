@@ -1,57 +1,77 @@
-﻿# Project V3 - Job Recommendation + CV Chatbot
+﻿# Career AI Platform (Project V3)
 
-Production preprocessing source is now unified at:
-- `src/pipelines/run_preprocess.py`
+Backend cho hệ thống gợi ý việc làm + phân tích CV + chatbot tư vấn CV.
 
-Notebook is archival/reference only:
-- `notebooks/archive/legacy_notebooks/preprocessing_ver_phobert_copy_2.ipynb`
+## Runtime Chính
+- API: `apps/api/app/server.py`
+- Pipeline local runner: `scripts/run_local_pipeline.py`
+- Preprocess jobs: `src/pipelines/run_preprocess.py`
 
-## Main Components
+Notebook cũ chỉ để tham khảo, không phải nguồn chạy production.
 
-- `src/crawl/`: Job crawling and raw normalization.
-- `src/pipelines/run_preprocess.py`: Main preprocessing + artifact build pipeline.
-- `src/cv/`: CV extraction.
-- `src/matching/`: Recommendation and gap analysis engines.
-- `apps/api/`: Active API layer (`apps/api/app/server.py`).
-- `legacy/deprecated_2026_03_27/`: Deprecated modules/scripts kept for reference only.
+## Cấu trúc dữ liệu
+- `data/raw/jobs/`: dữ liệu crawl job đầu vào (`topcv_all_fields_merged_*.csv|xlsx`)
+- `data/raw/cv_samples/INFORMATION-TECHNOLOGY/`: CV PDF
+- `data/processed/cv_extracted/`: CV JSON + dataset parquet/jsonl
+- `data/processed/cv_gap_reports/`: kết quả gap theo CV
+- `artifacts/matching/`: artifacts cho matching/rag
 
-## Data & Artifact Layout
+## Setup môi trường
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\bootstrap.ps1
+```
 
-- `data/raw/jobs/`: Fresh crawl output (`topcv_all_fields_merged_*.csv|xlsx`).
-- `data/raw/cv_samples/`: CV sample files.
-- `data/processed/`: Processed intermediate outputs (`jobs_nlp_ready_*`, extracted CV, gap JSON).
-- `data/reference/`: Static reference dictionaries/cases.
-- `artifacts/matching/`: Final model-ready artifacts for recommender/chatbot.
+## Khởi tạo DB schema
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\db\init_postgres_pgvector.ps1
+powershell -ExecutionPolicy Bypass -File scripts\db\init_neo4j.ps1 -CypherShellPath "<path-to-cypher-shell.bat>" -Neo4jUser neo4j -Neo4jPassword "<password>" -Neo4jDatabase neo4j
+```
 
-## Standard Pipeline
+## Chạy pipeline (khuyến nghị)
+Dry-run (xem lệnh):
+```powershell
+python scripts/run_local_pipeline.py --dry-run
+```
 
-1. Crawl:
-- `python src/crawl/topcv_crawler.py`
+Chạy full stages:
+```powershell
+python scripts/run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests
+```
 
-2. Preprocess + build artifacts:
-- `python src/pipelines/run_preprocess.py`
+Nếu môi trường PhoBERT chưa sẵn sàng (model/torch), có thể tạm skip embedding ở preprocess:
+```powershell
+python scripts/run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests --skip-preprocess-embedding
+```
 
-3. Extract CV:
-- `python src/cv/extract_cv_info.py --cv_path <cv_file> --output_path data/processed/resume_extracted.json`
+## Chạy từng stage
+```powershell
+python scripts/run_local_pipeline.py --stages preprocess_jobs
+python scripts/run_local_pipeline.py --stages extract_cv cv_gap
+python scripts/run_local_pipeline.py --stages load_core_tables cv_scoring
+python scripts/run_local_pipeline.py --stages rag_ingest
+python scripts/run_local_pipeline.py --stages graph_etl
+python scripts/run_local_pipeline.py --stages api_tests
+```
 
-4. Extract batch CV:
-- `python src/cv/extract_cv_batch.py --input_dir data/raw/cv_samples/INFORMATION-TECHNOLOGY --output_dir data/processed/cv_extracted --aggregate_jsonl data/processed/cv_extracted/cv_extracted_dataset.jsonl --aggregate_parquet data/processed/cv_extracted/cv_extracted_dataset.parquet`
+## Chạy API local
+```powershell
+python -m uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000 --reload
+```
 
-5. Gap analysis batch:
-- `python src/cv/run_gap_batch.py --cv_dataset data/processed/cv_extracted/cv_extracted_dataset.parquet --output_dir data/processed/cv_gap_reports --aggregate_jsonl data/processed/cv_gap_reports/cv_gap_dataset.jsonl --aggregate_parquet data/processed/cv_gap_reports/cv_gap_dataset.parquet`
+## Chạy bằng Docker Compose
+```powershell
+docker compose up -d postgres neo4j
+docker compose up -d api
+```
 
-6. Load PostgreSQL core tables:
-- `python src/ingestion/load_core_tables.py --jobs_parquet artifacts/matching/jobs_matching_ready_v3.parquet --job_skill_map artifacts/matching/job_skill_map_v3.parquet --cv_dataset data/processed/cv_extracted/cv_extracted_dataset.parquet --gap_dir data/processed/cv_gap_reports`
+Tắt dịch vụ:
+```powershell
+docker compose down
+```
 
-7. CV scoring batch:
-- `python src/scoring/run_cv_scoring_batch.py --postgres_config configs/db/postgres.yaml --role_profiles data/role_profiles/role_profiles.json --model_version cv_scoring_v1`
-
-8. Sync RAG + Graph:
-- `python src/ingestion/jobs_to_pgvector.py`
-- `python src/ingestion/jobs_to_neo4j.py --reset_graph`
-
-9. Chatbot API:
-- `uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000 --reload`
+Endpoints chính:
+- `GET /healthz`
 - `POST /api/v1/chat/ask`
 - `GET /api/v1/cv/score/{cv_id}`
 - `POST /api/v1/recommend/hybrid`
+- `POST /api/v1/recommend/graph/jobs`

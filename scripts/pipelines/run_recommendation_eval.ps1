@@ -5,9 +5,10 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$py = if (Test-Path ".\.venv\Scripts\python.exe") { ".\.venv\Scripts\python.exe" } else { "python" }
 
 Write-Host "=== Step 1: Build predictions (vector, graph, hybrid) ==="
-python -m src.evaluation.recommendation.build_predictions `
+& $py -m src.evaluation.recommendation.build_predictions `
   --cv_ids $CvIds `
   --methods $Methods `
   --top_k $TopK `
@@ -17,7 +18,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "=== Step 2: Build qrels template for labeling ==="
-python -m src.evaluation.recommendation.build_qrels_template `
+& $py -m src.evaluation.recommendation.build_qrels_template `
   --predictions "artifacts/evaluation/predictions.csv" `
   --output "artifacts/evaluation/qrels_template.csv"
 if ($LASTEXITCODE -ne 0) {

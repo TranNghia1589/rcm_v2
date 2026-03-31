@@ -1,0 +1,13 @@
+name,method,path,json,params,notes
+health_check,GET,/healthz,{},{},liveness
+jobs_list,GET,/api/v1/jobs,{},"{""limit"":10,""offset"":0}",catalog listing
+chat_ask_cv_1,POST,/api/v1/chat/ask,"{""question"":""CV này thiếu gì để ứng tuyển Data Analyst?"",""top_k"":3,""cv_id"":1}",{},chat probe
+cv_score_1,GET,/api/v1/cv/score/1,{},{},scoring probe
+chat_ask_cv_2,POST,/api/v1/chat/ask,"{""question"":""CV này thiếu gì để ứng tuyển Data Analyst?"",""top_k"":3,""cv_id"":2}",{},chat probe
+cv_score_2,GET,/api/v1/cv/score/2,{},{},scoring probe
+chat_ask_cv_3,POST,/api/v1/chat/ask,"{""question"":""CV này thiếu gì để ứng tuyển Data Analyst?"",""top_k"":3,""cv_id"":3}",{},chat probe
+cv_score_3,GET,/api/v1/cv/score/3,{},{},scoring probe
+chat_ask_cv_4,POST,/api/v1/chat/ask,"{""question"":""CV này thiếu gì để ứng tuyển Data Analyst?"",""top_k"":3,""cv_id"":4}",{},chat probe
+cv_score_4,GET,/api/v1/cv/score/4,{},{},scoring probe
+chat_ask_cv_5,POST,/api/v1/chat/ask,"{""question"":""CV này thiếu gì để ứng tuyển Data Analyst?"",""top_k"":3,""cv_id"":5}",{},chat probe
+cv_score_5,GET,/api/v1/cv/score/5,{},{},scoring probe

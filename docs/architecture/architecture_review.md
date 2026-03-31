@@ -23,8 +23,8 @@
 - `preprocess/preprocessing.py` -> `src/pipelines/preprocessing.py`
 - `preprocess/*.ipynb` -> `notebooks/preprocessing/*`
 - `outputs_preprocessing_v3/*` -> `artifacts/matching/*`
-- `Resume_recommendation/career_chatbot/data/skill_catalog.json` -> `data/skill_catalog.json` và `data/reference/skill_catalog.json`
-- `Resume_recommendation/career_chatbot/data/role_profiles/role_profiles.json` -> `data/role_profiles/role_profiles.json` và `data/reference/role_profiles.json`
+- `Resume_recommendation/career_chatbot/data/skill_catalog.json` -> `data/reference/skill_catalog.json` (canonical)
+- `Resume_recommendation/career_chatbot/data/role_profiles/role_profiles.json` -> `data/reference/role_profiles.json` (canonical)
 - `Resume_recommendation/career_chatbot/data/processed/*.json` -> `data/processed/*.json`
 - dữ liệu mẫu jobs/cv -> `data/raw/jobs`, `data/raw/cv_samples`
 
