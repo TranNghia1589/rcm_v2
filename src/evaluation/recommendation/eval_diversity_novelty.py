@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import math
@@ -105,7 +105,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/recommendation_diversity_novelty.csv",
+        default="experiments/artifacts/evaluation/recommendation_diversity_novelty.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -123,3 +123,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

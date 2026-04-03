@@ -1,0 +1,473 @@
+{
+  ".NET": [
+    ".net",
+    "asp.net",
+    "asp.net core",
+    "dotnet"
+  ],
+  "A/B Testing": [
+    "a/b testing",
+    "ab testing",
+    "experiment design"
+  ],
+  "API": [
+    "api",
+    "rest api"
+  ],
+  "API Testing": [
+    "api testing",
+    "newman",
+    "postman"
+  ],
+  "AWS": [
+    "amazon web services",
+    "aws"
+  ],
+  "Agile/Scrum": [
+    "agile",
+    "agile/scrum",
+    "kanban",
+    "scrum"
+  ],
+  "Airflow": [
+    "airflow",
+    "apache airflow"
+  ],
+  "Angular": [
+    "angular",
+    "angularjs"
+  ],
+  "Annotation": [
+    "annotation",
+    "gan nhan du lieu"
+  ],
+  "Automation Testing": [
+    "automation testing",
+    "cypress",
+    "playwright",
+    "selenium",
+    "test automation"
+  ],
+  "Azure": [
+    "azure",
+    "microsoft azure"
+  ],
+  "BPMN/UML": [
+    "bpmn",
+    "bpmn/uml",
+    "uml",
+    "use case diagram"
+  ],
+  "Business Analysis": [
+    "ba",
+    "business analysis",
+    "phan tich nghiep vu"
+  ],
+  "C/C++": [
+    "c",
+    "c++",
+    "c/c++",
+    "cpp"
+  ],
+  "CI/CD": [
+    "ci/cd",
+    "cicd",
+    "continuous delivery",
+    "continuous integration"
+  ],
+  "Cloud Computing": [
+    "cloud",
+    "cloud computing",
+    "dien toan dam may"
+  ],
+  "Computer Vision": [
+    "computer vision",
+    "thi giac may tinh"
+  ],
+  "Dashboarding": [
+    "dashboard",
+    "dashboarding"
+  ],
+  "Data Analysis": [
+    "data analysis",
+    "phan tich du lieu"
+  ],
+  "Data Labeling": [
+    "data labeler",
+    "data labeling"
+  ],
+  "Data Visualization": [
+    "data visualization",
+    "truc quan hoa du lieu",
+    "visualization"
+  ],
+  "Data Warehouse": [
+    "data warehouse",
+    "kho du lieu"
+  ],
+  "Deep Learning": [
+    "deep learning",
+    "dl"
+  ],
+  "DevOps": [
+    "devops",
+    "devsecops",
+    "site reliability engineering",
+    "sre"
+  ],
+  "Docker": [
+    "containerization",
+    "docker"
+  ],
+  "Documentation": [
+    "documentation",
+    "viet tai lieu"
+  ],
+  "ETL": [
+    "etl"
+  ],
+  "Elasticsearch": [
+    "elastic search",
+    "elasticsearch"
+  ],
+  "Embedded Systems": [
+    "embedded",
+    "embedded systems",
+    "firmware"
+  ],
+  "Excel": [
+    "excel",
+    "excel nang cao",
+    "microsoft excel"
+  ],
+  "Experiment Design": [
+    "experiment",
+    "experiment design",
+    "thiet ke thi nghiem"
+  ],
+  "Express.js": [
+    "express",
+    "express.js",
+    "expressjs"
+  ],
+  "FastAPI": [
+    "fastapi"
+  ],
+  "Flask": [
+    "flask"
+  ],
+  "GCP": [
+    "gcp",
+    "google cloud",
+    "google cloud platform"
+  ],
+  "Git": [
+    "git"
+  ],
+  "GitHub Actions": [
+    "github actions"
+  ],
+  "GitLab CI": [
+    "gitlab ci",
+    "gitlab-ci"
+  ],
+  "Go": [
+    "go",
+    "golang"
+  ],
+  "GraphQL": [
+    "graphql"
+  ],
+  "HTML/CSS": [
+    "css",
+    "css3",
+    "html",
+    "html/css",
+    "html5",
+    "sass",
+    "scss"
+  ],
+  "Hardware Debugging": [
+    "hardware debugging",
+    "logic analyzer",
+    "oscilloscope"
+  ],
+  "Integration Testing": [
+    "integration test",
+    "integration testing"
+  ],
+  "IoT": [
+    "internet of things",
+    "iot"
+  ],
+  "Java": [
+    "core java",
+    "java",
+    "java se"
+  ],
+  "JavaScript": [
+    "ecmascript",
+    "javascript",
+    "js"
+  ],
+  "Jenkins": [
+    "jenkins"
+  ],
+  "Kafka": [
+    "apache kafka",
+    "kafka"
+  ],
+  "Kotlin": [
+    "kotlin"
+  ],
+  "Kubernetes": [
+    "k8s",
+    "kubernetes"
+  ],
+  "LLM": [
+    "large language model",
+    "llm"
+  ],
+  "LangChain": [
+    "langchain"
+  ],
+  "Laravel": [
+    "laravel"
+  ],
+  "Linux": [
+    "linux",
+    "unix"
+  ],
+  "MLOps": [
+    "machine learning operations",
+    "mlops"
+  ],
+  "MQTT": [
+    "mqtt"
+  ],
+  "Machine Learning": [
+    "machine learning",
+    "ml"
+  ],
+  "Microservices": [
+    "microservice architecture",
+    "microservices"
+  ],
+  "MongoDB": [
+    "mongodb"
+  ],
+  "Monitoring": [
+    "grafana",
+    "monitoring",
+    "observability",
+    "prometheus"
+  ],
+  "MySQL": [
+    "mysql"
+  ],
+  "NLP": [
+    "natural language processing",
+    "nlp",
+    "xu ly ngon ngu tu nhien"
+  ],
+  "NestJS": [
+    "nest",
+    "nest.js",
+    "nestjs"
+  ],
+  "Next.js": [
+    "next",
+    "next.js",
+    "nextjs"
+  ],
+  "Node.js": [
+    "node",
+    "node.js",
+    "nodejs"
+  ],
+  "NumPy": [
+    "numpy"
+  ],
+  "OKR/KPI": [
+    "kpi",
+    "north star metric",
+    "okr",
+    "okr/kpi"
+  ],
+  "PHP": [
+    "php"
+  ],
+  "Pandas": [
+    "pandas"
+  ],
+  "Performance Testing": [
+    "jmeter",
+    "k6",
+    "load testing",
+    "performance testing"
+  ],
+  "PostgreSQL": [
+    "postgres",
+    "postgresql"
+  ],
+  "Power BI": [
+    "power bi",
+    "powerbi"
+  ],
+  "Prioritization": [
+    "impact effort",
+    "moscow",
+    "prioritization",
+    "rice"
+  ],
+  "Product Management": [
+    "pm",
+    "product management",
+    "product manager"
+  ],
+  "Product Ownership": [
+    "po",
+    "product owner",
+    "product ownership"
+  ],
+  "PyTorch": [
+    "pytorch",
+    "torch"
+  ],
+  "Python": [
+    "python"
+  ],
+  "Quality Control": [
+    "qc",
+    "quality control"
+  ],
+  "RAG": [
+    "rag",
+    "retrieval augmented generation"
+  ],
+  "REST API": [
+    "api design",
+    "rest api",
+    "restful api"
+  ],
+  "RTOS": [
+    "free rtos",
+    "freertos",
+    "rtos"
+  ],
+  "RabbitMQ": [
+    "rabbitmq"
+  ],
+  "React": [
+    "react",
+    "react.js",
+    "reactjs"
+  ],
+  "Redis": [
+    "redis"
+  ],
+  "Redux": [
+    "redux",
+    "redux toolkit"
+  ],
+  "Requirement Gathering": [
+    "elicitation",
+    "requirement gathering",
+    "thu thap yeu cau"
+  ],
+  "Research": [
+    "nghien cuu",
+    "research"
+  ],
+  "Roadmapping": [
+    "product roadmap",
+    "roadmap",
+    "roadmapping"
+  ],
+  "Rust": [
+    "rust"
+  ],
+  "SQL": [
+    "mysql",
+    "postgres",
+    "postgresql",
+    "sql",
+    "sql server"
+  ],
+  "SQL Server": [
+    "mssql",
+    "sql server"
+  ],
+  "Scikit-learn": [
+    "scikit-learn",
+    "sklearn"
+  ],
+  "Spark": [
+    "apache spark",
+    "spark"
+  ],
+  "Spring Boot": [
+    "spring",
+    "spring boot",
+    "springboot"
+  ],
+  "Stakeholder Management": [
+    "cross-functional collaboration",
+    "stakeholder management"
+  ],
+  "Statistics": [
+    "statistical analysis",
+    "statistics",
+    "thong ke"
+  ],
+  "Streamlit": [
+    "streamlit"
+  ],
+  "Swift": [
+    "swift"
+  ],
+  "Tableau": [
+    "tableau"
+  ],
+  "Tailwind CSS": [
+    "tailwind",
+    "tailwind css",
+    "tailwindcss"
+  ],
+  "TensorFlow": [
+    "tensorflow"
+  ],
+  "Terraform": [
+    "iac",
+    "infrastructure as code",
+    "terraform"
+  ],
+  "Testing": [
+    "software testing",
+    "test case design",
+    "testing"
+  ],
+  "TypeScript": [
+    "ts",
+    "typescript"
+  ],
+  "Unit Testing": [
+    "junit",
+    "pytest",
+    "unit test",
+    "unit testing",
+    "xunit"
+  ],
+  "User Story": [
+    "acceptance criteria",
+    "user story"
+  ],
+  "Vue.js": [
+    "vue",
+    "vue.js",
+    "vuejs"
+  ],
+  "gRPC": [
+    "grpc"
+  ]
+}

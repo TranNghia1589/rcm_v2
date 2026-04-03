@@ -1,0 +1,17 @@
+{
+  "role_profiles_path": "D:\\TTTN\\job_recommendation_system\\data\\reference\\staging\\role_profiles.json",
+  "cv_root": "D:\\TTTN\\job_recommendation_system\\data\\raw\\cv_samples",
+  "synthetic_folder": "D:\\TTTN\\job_recommendation_system\\data\\raw\\cv_samples\\SYNTHETIC_EVAL",
+  "total_cases": 6,
+  "manual_cases_included": true,
+  "synthetic_matched": 6,
+  "synthetic_skipped": 0,
+  "case_ids": [
+    "synthetic_cloud_engineer_devops_engineer",
+    "synthetic_business_analyst_ph_n_t_ch_nghi_p_v",
+    "synthetic_software_engineer",
+    "synthetic_cloud_engineer_devops_engineer_2",
+    "synthetic_product_owner_product_manager",
+    "synthetic_software_engineer_2"
+  ]
+}

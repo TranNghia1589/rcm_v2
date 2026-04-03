@@ -12,7 +12,7 @@ from apps.api.app.services.jobs_service import JobsQueryService
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 BASE_DIR = Path(__file__).resolve().parents[5]
-POSTGRES_CFG = BASE_DIR / "configs" / "db" / "postgres.yaml"
+POSTGRES_CFG = BASE_DIR / "config" / "db" / "postgres.yaml"
 
 
 @lru_cache(maxsize=1)

@@ -1,82 +1,64 @@
 ﻿# Pipeline Commands (Windows PowerShell)
 
-## 0) Vao thu muc du an
+Tai lieu nay da duoc dong bo theo cau truc hien tai cua repo.
+
+## 0) Di chuyen vao root du an
 ```powershell
-cd D:\TTTN\project_v3
+cd D:\TTTN\job_recommendation_system
 ```
 
-## 1) Tao va kich hoat venv
+## 1) Bootstrap nhanh (tao venv + cai dependencies)
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
+powershell -ExecutionPolicy Bypass -File deploy\scripts\bootstrap.ps1
 ```
 
-## 2) Cai dependencies
+## 2) Khoi tao schema DB
 ```powershell
-pip install -r requirements\dev.txt
-pip install -r requirements\api.txt
+powershell -ExecutionPolicy Bypass -File deploy\scripts\db\init_postgres_pgvector.ps1
+powershell -ExecutionPolicy Bypass -File deploy\scripts\db\init_neo4j.ps1 -CypherShellPath "<path-to-cypher-shell.bat>" -Neo4jUser neo4j -Neo4jPassword "<password>" -Neo4jDatabase neo4j
 ```
 
-## 3) Crawl jobs (tuy chon)
+## 3) Chay pipeline local (khuyen nghi)
+Dry-run:
 ```powershell
-python src\crawl\topcv_crawler.py
+python deploy\scripts\run_local_pipeline.py --dry-run
 ```
 
-## 4) Preprocess jobs + build artifacts
+Full stages:
 ```powershell
-python src\pipelines\run_preprocess.py
+python deploy\scripts\run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests
 ```
 
-## 4.1) Hoac chay full bootstrap theo thu tu
+Neu muon skip PhoBERT embedding trong preprocess:
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_full_bootstrap.ps1
+python deploy\scripts\run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests --skip-preprocess-embedding
 ```
 
-## 4.2) CV scoring batch (Giai doan 3)
+## 4) Chay tung stage
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_cv_scoring_batch.ps1
+python deploy\scripts\run_local_pipeline.py --stages preprocess_jobs
+python deploy\scripts\run_local_pipeline.py --stages extract_cv cv_gap
+python deploy\scripts\run_local_pipeline.py --stages load_core_tables cv_scoring
+python deploy\scripts\run_local_pipeline.py --stages rag_ingest
+python deploy\scripts\run_local_pipeline.py --stages graph_etl
+python deploy\scripts\run_local_pipeline.py --stages api_tests
 ```
 
-## 5) Trich xuat 1 CV
-```powershell
-python src\cv\extract_cv_info.py --cv_path data\raw\cv_samples\cv_data_manual.txt --output_path data\processed\resume_extracted.json
-```
-
-## 6) Trich xuat batch CV (folder)
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_cv_extract_batch.ps1
-```
-
-## 7) Gap analysis
-```powershell
-python src\matching\gap_analysis.py --cv_json data\processed\resume_extracted.json --output_path data\processed\gap_analysis_result.json
-```
-
-## 8) Run API (active entrypoint)
+## 5) Chay API local
 ```powershell
 python -m uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-## 9) API quick checks
+## 6) API smoke checks
 ```powershell
 curl http://127.0.0.1:8000/healthz
 curl http://127.0.0.1:8000/docs
 curl http://127.0.0.1:8000/api/v1/cv/score/1
 ```
 
-## 9.1) Hybrid recommend alias endpoint
+## 7) Chay Docker Compose (tuy chon)
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\pipelines\run_hybrid_recommend.ps1 -CvId 1 -Question "Goi y cong viec phu hop"
-```
-
-## 10) Evaluate baseline cases
-```powershell
-python src\pipelines\run_eval.py
-```
-
-## DB setup cho database moi
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\db\init_postgres_pgvector.ps1
-powershell -ExecutionPolicy Bypass -File scripts\db\init_neo4j.ps1
+docker compose up -d postgres neo4j
+docker compose up -d api
+docker compose down
 ```

@@ -1,0 +1,74 @@
+[
+  {
+    "case_id": "cv_data_manual_high_fit",
+    "description": "CV data manual in-domain for Data Analyst baseline.",
+    "cv_file": "../data/raw/cv_samples/cv_data_manual.txt",
+    "expected_target_role": "Data Analyst",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Data Analyst"],
+    "expected_missing_skills_contains": ["Power BI"]
+  },
+  {
+    "case_id": "cv_semi_data_manual_medium_fit",
+    "description": "CV semi-data profile, expected medium fit for Data Analyst.",
+    "cv_file": "../data/raw/cv_samples/cv_semi_data_manual.txt",
+    "expected_target_role": "Data Analyst",
+    "expected_domain_fit": "medium",
+    "expected_best_fit_roles_contains": ["Data Analyst"],
+    "expected_missing_skills_contains": ["SQL", "Power BI"]
+  },
+  {
+    "case_id": "synthetic_backend_developer",
+    "description": "Synthetic backend CV with Node.js, API and DB stack.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/backend_dev_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Backend Developer"],
+    "expected_missing_skills_contains": ["Kubernetes"]
+  },
+  {
+    "case_id": "synthetic_frontend_developer",
+    "description": "Synthetic frontend CV with React/Next.js/TypeScript.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/frontend_dev_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Frontend Developer"],
+    "expected_missing_skills_contains": ["GraphQL"]
+  },
+  {
+    "case_id": "synthetic_devops_engineer",
+    "description": "Synthetic DevOps CV with Docker/Kubernetes/Terraform/CI-CD.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/devops_engineer_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["DevOps Engineer"],
+    "expected_missing_skills_contains": ["Security"]
+  },
+  {
+    "case_id": "synthetic_business_analyst",
+    "description": "Synthetic BA CV with requirement gathering and BPMN/UML.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/business_analyst_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Business Analyst"],
+    "expected_missing_skills_contains": ["Product Management"]
+  },
+  {
+    "case_id": "synthetic_product_owner",
+    "description": "Synthetic PO/PM CV with roadmap, prioritization and OKR.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/product_owner_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Product Owner/Product Manager"],
+    "expected_missing_skills_contains": ["A/B Testing"]
+  },
+  {
+    "case_id": "synthetic_software_engineer",
+    "description": "Synthetic software engineer CV with Java/Spring and deployment.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/software_engineer_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": ["Software Engineer"],
+    "expected_missing_skills_contains": ["Cloud Computing"]
+  }
+]

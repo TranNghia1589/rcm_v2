@@ -1,11 +1,34 @@
-﻿services:
+﻿name: rcm_sys
+
+services:
+  embedding:
+    image: rcm_sys-embedding:latest
+    build:
+      context: .
+      dockerfile: deploy/docker/embedding.Dockerfile
+    container_name: rcm_sys-embedding
+    environment:
+      HF_TOKEN: ${HF_TOKEN}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: job_recommendation_system
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_SSLMODE: prefer
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./:/app
+      - ./hf_cache:/app/hf_cache
+      - ./config/model/embedding.yaml:/app/config/model/embedding.yaml:ro
+
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: career-postgres
+    container_name: rcm_sys-postgres
     environment:
       POSTGRES_DB: job_recommendation_system
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "123456"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -18,9 +41,9 @@
 
   neo4j:
     image: neo4j:5.26
-    container_name: career-neo4j
+    container_name: rcm_sys-neo4j
     environment:
-      NEO4J_AUTH: neo4j/abcd@1234
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD}
       NEO4J_server_memory_heap_initial__size: 512m
       NEO4J_server_memory_heap_max__size: 1g
       NEO4J_server_memory_pagecache_size: 512m
@@ -31,32 +54,53 @@
       - neo4j_data:/data
       - neo4j_logs:/logs
     healthcheck:
-      test: ["CMD-SHELL", "cypher-shell -u neo4j -p abcd@1234 \"RETURN 1\" || exit 1"]
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p ${NEO4J_PASSWORD} \"RETURN 1\" || exit 1"]
       interval: 15s
       timeout: 10s
       retries: 15
 
   api:
+    image: rcm_sys-api:latest
     build:
       context: .
-      dockerfile: infra/docker/api.Dockerfile
-    container_name: career-api
+      dockerfile: deploy/docker/api.Dockerfile
+    container_name: rcm_sys-api
     depends_on:
+      embedding:
+        condition: service_started
       postgres:
         condition: service_healthy
       neo4j:
         condition: service_healthy
+    environment:
+      HF_TOKEN: ${HF_TOKEN}
+      EMBEDDING_SERVICE_URL: http://embedding:8081
+      APP_WARMUP_ON_STARTUP: "0"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: job_recommendation_system
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_SSLMODE: prefer
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: neo4j
+      NEO4J_ENCRYPTED: "false"
     ports:
       - "8000:8000"
     volumes:
       - ./:/app
-      - ./configs/db/postgres.docker.yaml:/app/configs/db/postgres.yaml:ro
-      - ./configs/db/neo4j.docker.yaml:/app/configs/db/neo4j.yaml:ro
+      - ./config/db/postgres.docker.yaml:/app/config/db/postgres.yaml:ro
+      - ./config/db/neo4j.docker.yaml:/app/config/db/neo4j.yaml:ro
     working_dir: /app
     command: >
-      python -m uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000 --reload
+      python -m uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000
 
 volumes:
   postgres_data:
   neo4j_data:
   neo4j_logs:
+
+
+

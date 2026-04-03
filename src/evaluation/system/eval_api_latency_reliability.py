@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import json
@@ -100,7 +100,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout_sec", type=float, default=30.0)
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/system_api_latency_reliability.csv",
+        default="experiments/artifacts/evaluation/system_api_latency_reliability.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -123,3 +123,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

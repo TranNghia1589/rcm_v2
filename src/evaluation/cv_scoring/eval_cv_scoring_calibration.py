@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import math
@@ -89,7 +89,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tolerance", type=float, default=10.0, help="Absolute error tolerance.")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/cv_scoring_calibration.csv",
+        default="experiments/artifacts/evaluation/cv_scoring_calibration.csv",
         help="Output summary path (csv/parquet).",
     )
     return parser.parse_args()
@@ -107,3 +107,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
@@ -81,7 +81,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/recommendation_explanation_grounding.csv",
+        default="experiments/artifacts/evaluation/recommendation_explanation_grounding.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -99,3 +99,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

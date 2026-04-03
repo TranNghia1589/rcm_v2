@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import json
@@ -8,7 +8,7 @@ from typing import Any
 import pandas as pd
 
 from src.evaluation.common import mean, parse_list, read_table, save_outputs
-from src.rag.retrieve import retrieve_chunks
+from src.models.rag.retrieve import retrieve_chunks
 
 
 def _parse_ks(raw: str) -> list[int]:
@@ -110,13 +110,13 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Cases file (csv/parquet/jsonl) with columns: query, relevant_chunk_ids.",
     )
-    parser.add_argument("--postgres_config", default="configs/db/postgres.yaml")
-    parser.add_argument("--retrieval_config", default="configs/rag/retrieval.yaml")
-    parser.add_argument("--embedding_config", default="configs/model/embedding.yaml")
+    parser.add_argument("--postgres_config", default="config/db/postgres.yaml")
+    parser.add_argument("--retrieval_config", default="config/rag/retrieval.yaml")
+    parser.add_argument("--embedding_config", default="config/model/embedding.yaml")
     parser.add_argument("--k_list", default="5,10")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/rag_retrieval.csv",
+        default="experiments/artifacts/evaluation/rag_retrieval.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -140,3 +140,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

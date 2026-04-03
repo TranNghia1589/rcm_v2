@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
@@ -7,8 +7,8 @@ from typing import Any
 import pandas as pd
 
 from src.evaluation.common import mean, save_outputs
-from src.infrastructure.db.neo4j_client import Neo4jClient, Neo4jConfig
-from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
+from src.utils.infrastructure.db.neo4j_client import Neo4jClient, Neo4jConfig
+from src.utils.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
 
 
 def _pg_count(client: PostgresClient, query: str) -> int:
@@ -65,11 +65,11 @@ def evaluate_graph_completeness(postgres_config: str | Path, neo4j_config: str |
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate graph completeness vs PostgreSQL source tables.")
-    parser.add_argument("--postgres_config", default="configs/db/postgres.yaml")
-    parser.add_argument("--neo4j_config", default="configs/db/neo4j.yaml")
+    parser.add_argument("--postgres_config", default="config/db/postgres.yaml")
+    parser.add_argument("--neo4j_config", default="config/db/neo4j.yaml")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/graph_completeness.csv",
+        default="experiments/artifacts/evaluation/graph_completeness.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -86,3 +86,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

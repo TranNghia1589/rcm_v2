@@ -15,7 +15,7 @@ This folder is the canonical evaluation suite for the project (excluding the cha
 3. Make every metric traceable to an external research/book source.
 
 See metric references in:
-- [METRIC_SOURCES.md](d:/TTTN/project_v3/src/evaluation/METRIC_SOURCES.md)
+- [METRIC_SOURCES.md](./METRIC_SOURCES.md)
 
 ## Folder Structure
 
@@ -79,4 +79,3 @@ Each evaluator writes:
 2. Details file (`<stem>_details.<ext>`)
 
 This supports dashboarding + debugging from the same run.
-

@@ -1,4 +1,4 @@
-# Recommendation Evaluation Guide
+﻿# Recommendation Evaluation Guide
 
 This project keeps evaluation code separate from runtime pipeline code:
 
@@ -51,10 +51,10 @@ Optional:
 Before ranking metrics, build prediction file and qrels template:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/pipelines/run_recommendation_eval.ps1 -CvIds "1,2" -TopK 20
+powershell -ExecutionPolicy Bypass -File deploy/scripts/pipelines/run_recommendation_eval.ps1 -CvIds "1,2" -TopK 20
 ```
 
-Then label `artifacts/evaluation/qrels_template.csv` and save it as `artifacts/evaluation/qrels.csv`.
+Then label `experiments/artifacts/evaluation/qrels_template.csv` and save it as `experiments/artifacts/evaluation/qrels.csv`.
 
 Run:
 
@@ -98,8 +98,9 @@ src/
   recommendation/        # serving/ranking logic used by API
   evaluation/
     recommendation/      # offline metrics + benchmark scripts
-artifacts/
+experiments/artifacts/
   evaluation/            # qrels, predictions, summary outputs
 docs/runbooks/
   RECOMMENDATION_EVAL_GUIDE.md
 ```
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import re
@@ -93,7 +93,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/rag_citation_correctness.csv",
+        default="experiments/artifacts/evaluation/rag_citation_correctness.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -111,3 +111,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

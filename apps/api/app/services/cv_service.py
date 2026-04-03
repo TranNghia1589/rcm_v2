@@ -1,11 +1,11 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
+from src.utils.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
 
 
 def _to_list(value: Any) -> list[Any]:
@@ -104,3 +104,4 @@ class CVScoreService:
             "model_version": str(model_version),
             "updated_at": str(updated_at),
         }
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
@@ -141,7 +141,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--scalar_fields", default=",".join(DEFAULT_SCALAR_FIELDS), help="Comma-separated scalar fields.")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/cv_extraction_field_accuracy.csv",
+        default="experiments/artifacts/evaluation/cv_extraction_field_accuracy.csv",
         help="Output summary csv/parquet path.",
     )
     return parser.parse_args()
@@ -165,3 +165,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

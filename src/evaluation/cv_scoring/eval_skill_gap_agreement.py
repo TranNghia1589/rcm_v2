@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
@@ -14,7 +14,7 @@ from src.evaluation.common import (
     read_table,
     save_outputs,
 )
-from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
+from src.utils.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
 
 
 def _load_predictions_from_db(postgres_config: str | Path) -> pd.DataFrame:
@@ -102,13 +102,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--postgres_config",
-        default="configs/db/postgres.yaml",
+        default="config/db/postgres.yaml",
         help="Used only when --predictions is omitted.",
     )
     parser.add_argument("--top_k", type=int, default=5, help="Hit@k for missing-skill list.")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/skill_gap_agreement.csv",
+        default="experiments/artifacts/evaluation/skill_gap_agreement.csv",
         help="Output summary path (csv/parquet).",
     )
     return parser.parse_args()
@@ -131,3 +131,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

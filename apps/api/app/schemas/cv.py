@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -21,3 +23,9 @@ class CVScoreResponse(BaseModel):
     metadata: dict = Field(default_factory=dict)
     model_version: str = "cv_scoring_v1"
     updated_at: str
+
+
+class CVUploadResponse(BaseModel):
+    file_name: str
+    content_type: str
+    extracted: dict[str, Any] = Field(default_factory=dict)

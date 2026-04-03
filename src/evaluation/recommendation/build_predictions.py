@@ -1,14 +1,14 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
 import pandas as pd
 
-from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
-from src.recommendation.candidate_generation import vector_candidates
-from src.recommendation.graph_ranking import graph_candidates
-from src.recommendation.orchestrator import run_hybrid_recommendation
+from src.utils.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
+from src.models.recommendation.candidate_generation import vector_candidates
+from src.models.recommendation.graph_ranking import graph_candidates
+from src.models.recommendation.orchestrator import run_hybrid_recommendation
 
 
 BASE_DIR = Path(__file__).resolve().parents[3]
@@ -163,27 +163,27 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--top_k", type=int, default=20, help="Top K per method per cv.")
     parser.add_argument(
         "--postgres_config",
-        default=str(BASE_DIR / "configs" / "db" / "postgres.yaml"),
+        default=str(BASE_DIR / "config" / "db" / "postgres.yaml"),
         help="Postgres yaml config path.",
     )
     parser.add_argument(
         "--neo4j_config",
-        default=str(BASE_DIR / "configs" / "db" / "neo4j.yaml"),
+        default=str(BASE_DIR / "config" / "db" / "neo4j.yaml"),
         help="Neo4j yaml config path.",
     )
     parser.add_argument(
         "--retrieval_config",
-        default=str(BASE_DIR / "configs" / "rag" / "retrieval.yaml"),
+        default=str(BASE_DIR / "config" / "rag" / "retrieval.yaml"),
         help="Retrieval yaml config path.",
     )
     parser.add_argument(
         "--embedding_config",
-        default=str(BASE_DIR / "configs" / "model" / "embedding.yaml"),
+        default=str(BASE_DIR / "config" / "model" / "embedding.yaml"),
         help="Embedding yaml config path.",
     )
     parser.add_argument(
         "--hybrid_config",
-        default=str(BASE_DIR / "configs" / "recommendation" / "hybrid.yaml"),
+        default=str(BASE_DIR / "config" / "recommendation" / "hybrid.yaml"),
         help="Hybrid yaml config path.",
     )
     parser.add_argument(
@@ -247,3 +247,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

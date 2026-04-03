@@ -28,11 +28,11 @@ from apps.api.app.services.recommendation.hybrid_recommender import HybridRecomm
 router = APIRouter(prefix="/recommend", tags=["recommendation"])
 
 BASE_DIR = Path(__file__).resolve().parents[5]
-NEO4J_CFG = BASE_DIR / "configs" / "db" / "neo4j.yaml"
-POSTGRES_CFG = BASE_DIR / "configs" / "db" / "postgres.yaml"
-RETRIEVAL_CFG = BASE_DIR / "configs" / "rag" / "retrieval.yaml"
-EMBEDDING_CFG = BASE_DIR / "configs" / "model" / "embedding.yaml"
-HYBRID_CFG = BASE_DIR / "configs" / "recommendation" / "hybrid.yaml"
+NEO4J_CFG = BASE_DIR / "config" / "db" / "neo4j.yaml"
+POSTGRES_CFG = BASE_DIR / "config" / "db" / "postgres.yaml"
+RETRIEVAL_CFG = BASE_DIR / "config" / "rag" / "retrieval.yaml"
+EMBEDDING_CFG = BASE_DIR / "config" / "model" / "embedding.yaml"
+HYBRID_CFG = BASE_DIR / "config" / "recommendation" / "hybrid.yaml"
 
 
 @lru_cache(maxsize=1)

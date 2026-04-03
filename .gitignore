@@ -2,6 +2,10 @@
 venv/
 .env/
 .venv/
+.env
+apps/web/node_modules/
+apps/web/.next/
+*.tsbuildinfo
 
 # Logs
 *.log

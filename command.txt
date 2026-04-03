@@ -1,0 +1,282 @@
+Lệnh bật docker: docker compose up -d postgres neo4j embedding api
+
+Lệnh kiểm tra healthy: docker compose ps
+
+Chạy pipeline data: từ preprocess_jobs -> extract_cv -> cv_gap -> load_core_tables -> rag_ingest -> graph_etl
+python deploy\scripts\run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables rag_ingest graph_etl
+
+Test API tự động: python -m pytest apps/api/tests -q -p no:cacheprovider
+
+Test endpoint: 
+curl -X POST http://localhost:8000/api/v1/chat/ask -H "Content-Type: application/json" -d "{\"question\":\"Gợi ý công việc Data Analyst cho CV này\",\"cv_id\":1}"
+curl -X POST http://localhost:8000/api/v1/recommend/hybrid -H "Content-Type: application/json" -d "{\"cv_id\":1,\"question\":\"Gợi ý việc làm phù hợp\"}"
+Nếu lỗi quote thì dùng bản này:
+curl -Method POST "http://localhost:8000/api/v1/chat/ask" -Headers @{"Content-Type"="application/json"} -Body '{"question":"Gợi ý công việc Data Analyst cho CV này","cv_id":1}'
+curl -Method POST "http://localhost:8000/api/v1/recommend/hybrid" -Headers @{"Content-Type"="application/json"} -Body '{"cv_id":1,"question":"Gợi ý việc làm phù hợp"}'
+
+Kiểm tra dữ liệu trong DB trên docker
+postgres:
+docker exec -it career-postgres psql -U postgres -d job_recommendation_system -c "\dt"
+docker exec -it career-postgres psql -U postgres -d job_recommendation_system -c "SELECT COUNT(*) FROM jobs;"
+docker exec -it career-postgres psql -U postgres -d job_recommendation_system -c "SELECT COUNT(*) FROM cv_profiles;"
+docker exec -it career-postgres psql -U postgres -d job_recommendation_system -c "SELECT COUNT(*) FROM rag_chunks;"
+
+xem mẫu data:
+
+
+neo4j:
+docker exec -it career-neo4j cypher-shell -u neo4j -p "abcd@1234" -d neo4j "MATCH (n) RETURN labels(n) AS labels, count(*) AS c ORDER BY c DESC;"
+docker exec -it career-neo4j cypher-shell -u neo4j -p "abcd@1234" -d neo4j "MATCH ()-[r]->() RETURN type(r) AS rel, count(*) AS c ORDER BY c DESC;"
+
+
+
+Các lệnh reset:
+LOCAL:
+# 1) Reset workspace output (giữ source + cv pdf)
+powershell -ExecutionPolicy Bypass -File deploy/scripts/dev/reset_workspace.ps1
+
+# 2) Init Postgres schema local
+powershell -ExecutionPolicy Bypass -File deploy/scripts/db/init_postgres_pgvector.ps1
+
+# 3) Init Neo4j schema local
+powershell -ExecutionPolicy Bypass -File deploy/scripts/db/init_neo4j.ps1 -Neo4jUser neo4j -Neo4jPassword 'abcd@1234' -Neo4jDatabase neo4j -CypherShellPath "C:\Program Files\Neo4j Desktop 2\resources\offline\dbmss\neo4j-enterprise-2026.01.4\bin\cypher-shell.bat"
+
+# 4) Crawl (chạy 1 lần)
+.\.venv\Scripts\python.exe src\data_processing\crawl\topcv_crawler.py
+
+# 5) Preprocess -> tạo data clean/artifact
+$env:PREPROCESS_OUTPUT_TAG=''
+$env:PREPROCESS_HF_OFFLINE='0'
+$env:PREPROCESS_USE_LOCAL_ONLY='0'
+.\.venv\Scripts\python.exe -m src.data_processing.pipelines.run_preprocess
+
+# 6) Import + scoring + rag + graph + test api
+.\.venv\Scripts\python.exe deploy\scripts\run_local_pipeline.py --stages extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests --skip-preprocess-embedding
+
+# 7) Health check
+curl -UseBasicParsing http://127.0.0.1:8000/healthz
+
+
+DOCKER
+# 1) Reset DB docker sạch
+docker compose down -v --remove-orphans
+docker compose up -d postgres neo4j api embedding
+
+# 2) Trỏ config runtime sang DB docker qua env
+$env:POSTGRES_HOST='localhost'
+$env:POSTGRES_PORT='5432'
+$env:POSTGRES_DB='job_recommendation_system'
+$env:POSTGRES_USER='postgres'
+$env:POSTGRES_PASSWORD='123456'
+
+$env:NEO4J_URI='bolt://127.0.0.1:7687'
+$env:NEO4J_USER='neo4j'
+$env:NEO4J_PASSWORD='abcd@1234'
+$env:NEO4J_DATABASE='neo4j'
+$env:NEO4J_ENCRYPTED='false'
+
+# 3) Init schema (DB docker)
+powershell -ExecutionPolicy Bypass -File deploy/scripts/db/init_postgres_pgvector.ps1
+powershell -ExecutionPolicy Bypass -File deploy/scripts/db/init_neo4j.ps1 -Neo4jUser neo4j -Neo4jPassword 'abcd@1234' -Neo4jDatabase neo4j -CypherShellPath "C:\Program Files\Neo4j Desktop 2\resources\offline\dbmss\neo4j-enterprise-2026.01.4\bin\cypher-shell.bat"
+
+# 4) Preprocess lại (không crawl lại)
+$env:PREPROCESS_OUTPUT_TAG=''
+.\.venv\Scripts\python.exe -m src.data_processing.pipelines.run_preprocess
+
+# 5) Import + scoring + rag + graph + test
+.\.venv\Scripts\python.exe deploy\scripts\run_local_pipeline.py --stages extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests --skip-preprocess-embedding
+
+# 6) Health check docker api
+curl -UseBasicParsing http://127.0.0.1:8000/healthz
+
+JOB_FAMILY_SOURCE_NOTES = {
+    # Global trend signal for role clusters (AI/ML, Big Data, Software/App dev, Security)
+    "wef_future_of_jobs_2025": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/2-jobs-outlook/",
+    # Occupation duty baselines for Data Scientist / Software / DBA families
+    "bls_data_scientists": "https://www.bls.gov/ooh/math/data-scientists.htm",
+    "bls_software_developers": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+    "bls_database_admin": "https://www.bls.gov/ooh/computer-and-information-technology/database-administrators.htm",
+    # BA standard body of knowledge
+    "iiba_babok": "https://www.iiba.org/standards-and-resources/babok/",
+}
+
+
+Chuẩn, giờ bạn chạy theo đúng flow này (PowerShell, tại root repo `d:\TTTN\job_recommendation_system`).
+
+## 0) Chuẩn bị môi trường
+```powershell
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+$py = if (Test-Path ".\.venv\Scripts\python.exe") { ".\.venv\Scripts\python.exe" } else { "python" }
+```
+
+## 1) Build reference mới từ job raw (skill/role/eval -> final)
+```powershell
+& $py deploy/scripts/reference/run_reference_pipeline.py `
+  --jobs_path data/raw/jobs/topcv_all_fields_merged_2026-04-01_19-41-42.csv `
+  --base_catalog data/reference/final/skill_catalog.json `
+  --seed_catalog data/reference/seed/skill_catalog_seed.json `
+  --staging_dir data/reference/staging `
+  --final_dir data/reference/final `
+  --archive_dir data/reference/archive `
+  --review_report data/reference/review/validation_report.json `
+  --promote `
+  --include_eval_cases
+```
+
+## 2) Preprocess job raw -> artifacts matching
+`run_preprocess.py` tự lấy file mới nhất trong `data/raw/jobs`. Để tránh dính `openpyxl`, ưu tiên CSV:
+```powershell
+(Get-Item "data/raw/jobs/topcv_all_fields_merged_2026-04-01_19-41-42.csv").LastWriteTime = Get-Date
+$env:PREPROCESS_RUN_EMBEDDING='0'
+$env:PREPROCESS_RUN_SECTION_EMBEDDING='0'
+& $py -m src.data_processing.pipelines.run_preprocess
+```
+
+## 3) Extract CV batch
+```powershell
+& $py -m src.models.cv.extract_cv_batch `
+  --input_dir data/raw/cv_samples/INFORMATION-TECHNOLOGY `
+  --output_dir data/processed/cv_extracted `
+  --aggregate_jsonl data/processed/cv_extracted/cv_extracted_dataset.jsonl `
+  --aggregate_parquet data/processed/cv_extracted/cv_extracted_dataset.parquet
+```
+
+## 4) Gap analysis batch
+```powershell
+& $py -m src.models.cv.run_gap_batch `
+  --cv_dataset data/processed/cv_extracted/cv_extracted_dataset.parquet `
+  --role_profiles data/reference/final/role_profiles.json `
+  --output_dir data/processed/cv_gap_reports `
+  --aggregate_jsonl data/processed/cv_gap_reports/cv_gap_dataset.jsonl `
+  --aggregate_parquet data/processed/cv_gap_reports/cv_gap_dataset.parquet
+```
+
+## 5) Init PostgreSQL local (migrations)
+Nhớ truyền password DB local của bạn:
+```powershell
+.\deploy\scripts\db\init_postgres_pgvector.ps1 `
+  -DbHost localhost -Port 5432 `
+  -Database job_recommendation_system `
+  -User postgres -Password "<YOUR_DB_PASSWORD>"
+```
+
+## 6) Load core tables vào PostgreSQL
+```powershell
+& $py -m src.data_processing.ingestion.load_core_tables `
+  --postgres_config config/db/postgres.yaml `
+  --jobs_parquet experiments/artifacts/matching/jobs_matching_ready.parquet `
+  --job_skill_map experiments/artifacts/matching/job_skill_map.parquet `
+  --cv_dataset data/processed/cv_extracted/cv_extracted_dataset.parquet `
+  --gap_dir data/processed/cv_gap_reports
+```
+
+## 7) Chạy cơ chế chấm điểm CV mới (rubric + role benchmark + gap)
+```powershell
+& $py -m src.models.scoring.run_cv_scoring_batch `
+  --postgres_config config/db/postgres.yaml `
+  --role_profiles data/reference/final/role_profiles.json `
+  --model_version cv_scoring_v1
+```
+
+---
+
+## 8) Lệnh kiểm tra dữ liệu trên PostgreSQL
+
+```powershell
+$env:PGPASSWORD="<YOUR_DB_PASSWORD>"
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT COUNT(*) AS jobs FROM jobs;"
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT COUNT(*) AS cvs FROM cv_profiles;"
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT COUNT(*) AS gaps FROM cv_gap_reports;"
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT COUNT(*) AS scores FROM cv_scoring_results;"
+```
+
+```powershell
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT cv_id, benchmark_role, total_score, grade, model_version, updated_at FROM cv_scoring_results ORDER BY updated_at DESC LIMIT 10;"
+```
+
+```powershell
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT cv_id, domain_fit, target_role_from_cv, created_at FROM cv_gap_reports ORDER BY created_at DESC LIMIT 10;"
+```
+
+```powershell
+psql -h localhost -p 5432 -U postgres -d job_recommendation_system -c "SELECT etl_run_id, pipeline_name, status, started_at, finished_at FROM etl_runs ORDER BY etl_run_id DESC LIMIT 5;"
+```
+
+---
+
+## 9) (Tuỳ chọn) kiểm tra Neo4j sau khi load graph
+```powershell
+.\deploy\scripts\db\init_neo4j.ps1 -Neo4jUser neo4j -Neo4jPassword "<YOUR_NEO4J_PASSWORD>"
+& $py -m src.data_processing.ingestion.jobs_to_neo4j --postgres_config config/db/postgres.yaml --neo4j_config config/db/neo4j.yaml --reset_graph
+```
+
+```powershell
+cypher-shell -u neo4j -p "<YOUR_NEO4J_PASSWORD>" "MATCH (n) RETURN labels(n), count(*) ORDER BY count(*) DESC;"
+```
+
+Nếu bạn muốn, mình có thể viết luôn 1 file `deploy/scripts/pipelines/run_new_scoring_e2e.ps1` để bạn chỉ chạy 1 lệnh cho toàn bộ flow trên.
+
+
+
+
+# phiên bản mới
+
+Nếu đi từ bước làm sạch raw data đến bước test chatbot, thứ tự chạy local nên là như này:
+
+**1. Bật môi trường**
+```powershell
+cd D:\TTTN\job_recommendation_system
+.\.venv\Scripts\Activate.ps1
+```
+
+**2. Bảo đảm các service nền đang chạy**
+- PostgreSQL
+- Neo4j
+- Ollama
+- Embedding service
+
+**3. Khởi tạo schema DB**
+Postgres:
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy\scripts\db\init_postgres_pgvector.ps1 -DbHost localhost -Port 5432 -Database job_recommendation_system -User postgres -Password "<postgres_password>"
+```
+
+Neo4j:
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy\scripts\db\init_neo4j.ps1 -CypherShellPath "<path-to-cypher-shell.bat>" -Neo4jUser neo4j -Neo4jPassword "<neo4j_password>" -Neo4jDatabase neo4j
+```
+
+**4. Làm sạch raw data, extract CV, gap, load DB, scoring, ingest, graph ETL, test API**
+Nếu bạn chưa muốn chạy embedding của bước preprocess ngay:
+```powershell
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+.\.venv\Scripts\python.exe deploy\scripts\run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests --skip-preprocess-embedding
+```
+
+**5. Chạy API server ở terminal riêng**
+```powershell
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+$env:EMBEDDING_SERVICE_URL='http://127.0.0.1:8081'
+.\.venv\Scripts\python.exe -m uvicorn apps.api.app.server:app --host 0.0.0.0 --port 8000 --reload
+```
+
+**6. Test chatbot**
+Chạy sau khi API server đã lên:
+```powershell
+$env:PYTHONUTF8='1'
+$env:PYTHONIOENCODING='utf-8'
+$env:API_BASE_URL='http://127.0.0.1:8000'
+$env:CHATBOT_QUESTION='Toi la data analyst, nen chuan bi gi de len senior?'
+$env:CHATBOT_TOP_K='5'
+.\.venv\Scripts\python.exe deploy\scripts\run_local_pipeline.py --stages chatbot_smoke
+```
+
+**Lưu ý quan trọng**
+- `chatbot_smoke` phải chạy sau khi `uvicorn` đã bật.
+- `rag_ingest` cần embedding model local cache hoặc embedding config phù hợp.
+- Nếu `PREPROCESS` chạy lỗi do PhoBERT chưa có cache, bạn có thể giữ `--skip-preprocess-embedding` như trên.
+
+Nếu bạn muốn, mình có thể viết tiếp cho bạn một bản **rút gọn chỉ còn 3 lệnh chính** để bạn copy chạy nhanh mỗi lần.

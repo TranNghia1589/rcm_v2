@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
@@ -7,7 +7,7 @@ from typing import Any
 import pandas as pd
 
 from src.evaluation.common import mean, parse_list, read_table, save_outputs
-from src.graph.query_service import GraphQueryService
+from src.models.graph.query_service import GraphQueryService
 
 
 def _run_case(service: GraphQueryService, case: dict[str, Any]) -> list[dict[str, Any]]:
@@ -92,10 +92,10 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="CSV/parquet/jsonl with columns: query,cv_id[,limit,expected_contains,expected_not_contains].",
     )
-    parser.add_argument("--neo4j_config", default="configs/db/neo4j.yaml")
+    parser.add_argument("--neo4j_config", default="config/db/neo4j.yaml")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/graph_query_correctness.csv",
+        default="experiments/artifacts/evaluation/graph_query_correctness.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -113,3 +113,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
+from src.utils.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
 
 
 @dataclass
@@ -57,3 +57,4 @@ class JobsQueryService:
                 }
             )
         return out
+

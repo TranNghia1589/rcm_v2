@@ -1,3 +1,4 @@
-﻿from src.infrastructure.db.neo4j_client import Neo4jClient, Neo4jConfig
+﻿from src.utils.infrastructure.db.neo4j_client import Neo4jClient, Neo4jConfig
 
 __all__ = ["Neo4jClient", "Neo4jConfig"]
+

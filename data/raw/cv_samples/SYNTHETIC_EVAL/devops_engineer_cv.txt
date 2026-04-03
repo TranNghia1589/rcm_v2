@@ -1,0 +1,4 @@
+﻿Candidate profile: DevOps engineer with 3 years experience.
+Skills: DevOps, Docker, Kubernetes, Terraform, CI/CD, Linux, AWS, Monitoring.
+Built deployment pipeline and reduced release time by 40%.
+Managed observability stack with Prometheus and Grafana.

@@ -1,3 +1,4 @@
-﻿from src.cv.extract_cv_info import extract_cv_info
+﻿from src.models.cv.extract_cv_info import extract_cv_info
 
 __all__ = ["extract_cv_info"]
+

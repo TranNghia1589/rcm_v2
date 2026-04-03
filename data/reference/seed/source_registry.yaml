@@ -1,0 +1,54 @@
+version: "1.0"
+updated_at: "2026-04-01T00:00:00Z"
+owner: "data-platform-team"
+notes: "Registry of reference data sources used to build skill catalog and role profiles."
+
+sources:
+  - source_id: "topcv_raw_jobs_2026q1"
+    source_type: "internal_crawl"
+    name: "TopCV Raw Jobs"
+    path: "data/raw/jobs/topcv_all_fields_merged_2026-03-19_19-22-12.xlsx"
+    format: "xlsx"
+    scope_roles:
+      - "Data Analyst"
+      - "Data Engineer"
+      - "Data Scientist"
+      - "AI Engineer"
+      - "AI Researcher"
+      - "Data Labeling"
+    language: "vi"
+    region: "VN"
+    reliability_tier: "A"
+    freshness_days: 30
+    active: true
+    used_for:
+      - "skill_catalog_build"
+      - "role_profiles_build"
+    contact: "you@example.com"
+    license: "internal-use"
+    tags:
+      - "job-market"
+      - "primary"
+
+  - source_id: "external_seed_skills_placeholder"
+    source_type: "external_taxonomy"
+    name: "External Skill Taxonomy Seed"
+    path: "data/reference/seed/skill_catalog_seed.json"
+    format: "json"
+    scope_roles:
+      - "Data/AI"
+      - "Software Engineering"
+      - "Product"
+    language: "en"
+    region: "global"
+    reliability_tier: "B"
+    freshness_days: 180
+    active: false
+    used_for:
+      - "seed_enrichment"
+    contact: "you@example.com"
+    license: "check-source-license"
+    tags:
+      - "seed"
+      - "taxonomy"
+

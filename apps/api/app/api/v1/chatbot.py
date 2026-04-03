@@ -12,10 +12,11 @@ from apps.api.app.services.rag.chat_service import ChatService
 router = APIRouter(prefix="/chat", tags=["chatbot"])
 
 BASE_DIR = Path(__file__).resolve().parents[5]
-POSTGRES_CFG = BASE_DIR / "configs" / "db" / "postgres.yaml"
-RETRIEVAL_CFG = BASE_DIR / "configs" / "rag" / "retrieval.yaml"
-PROMPTING_CFG = BASE_DIR / "configs" / "rag" / "prompting.yaml"
-EMBEDDING_CFG = BASE_DIR / "configs" / "model" / "embedding.yaml"
+POSTGRES_CFG = BASE_DIR / "config" / "db" / "postgres.yaml"
+RETRIEVAL_CFG = BASE_DIR / "config" / "rag" / "retrieval.yaml"
+PROMPTING_CFG = BASE_DIR / "config" / "rag" / "prompting.yaml"
+EMBEDDING_CFG = BASE_DIR / "config" / "model" / "embedding.yaml"
+EMBEDDING_SERVICE_CFG = BASE_DIR / "config" / "model" / "embedding_service.yaml"
 
 
 @lru_cache(maxsize=1)
@@ -25,6 +26,7 @@ def get_chat_service() -> ChatService:
         retrieval_config_path=RETRIEVAL_CFG,
         prompting_config_path=PROMPTING_CFG,
         embedding_config_path=EMBEDDING_CFG,
+        embedding_service_config_path=EMBEDDING_SERVICE_CFG,
     )
 
 

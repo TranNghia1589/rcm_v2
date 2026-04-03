@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from pathlib import Path
@@ -15,7 +15,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/qrels_template.csv",
+        default="experiments/artifacts/evaluation/qrels_template.csv",
         help="Output qrels template path.",
     )
     return parser.parse_args()
@@ -66,3 +66,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

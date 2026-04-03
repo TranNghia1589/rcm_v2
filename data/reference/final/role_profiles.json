@@ -1,0 +1,1767 @@
+{
+  "Business Analyst (phân Tích Nghiệp Vụ)": {
+    "role_name": "Business Analyst (phân Tích Nghiệp Vụ)",
+    "job_count": 182,
+    "common_skills": [
+      "Business Analysis",
+      "Agile/Scrum",
+      "SQL",
+      "User Story",
+      "BPMN/UML",
+      "Product Management",
+      "Product Ownership",
+      "API"
+    ],
+    "common_keywords": [
+      "nghi",
+      "business",
+      "tri",
+      "quy",
+      "chuy",
+      "analyst",
+      "theo",
+      "thu"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "2 năm",
+      "1 năm",
+      "4 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "Excel",
+      "Testing",
+      "Documentation",
+      "OKR/KPI"
+    ]
+  },
+  "Software Engineer": {
+    "role_name": "Software Engineer",
+    "job_count": 123,
+    "common_skills": [
+      "SQL",
+      "C/C++",
+      "API",
+      "JavaScript",
+      "Python",
+      "Git",
+      "Java",
+      "Agile/Scrum"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "theo",
+      "gia",
+      "thi",
+      "ngh",
+      "tham",
+      "software"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm",
+      "3 năm",
+      "Không yêu cầu",
+      "Dưới 1 năm"
+    ],
+    "recommended_next_skills": [
+      "MySQL",
+      "React",
+      "PostgreSQL",
+      "Testing"
+    ]
+  },
+  "Automation Tester": {
+    "role_name": "Automation Tester",
+    "job_count": 118,
+    "common_skills": [
+      "Testing",
+      "API",
+      "Automation Testing",
+      "Agile/Scrum",
+      "SQL",
+      "API Testing",
+      "Business Analysis",
+      "Performance Testing"
+    ],
+    "common_keywords": [
+      "nghi",
+      "test",
+      "theo",
+      "tester",
+      "automation",
+      "quy",
+      "testing",
+      "tri"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm",
+      "1 năm",
+      "Không yêu cầu",
+      "Dưới 1 năm"
+    ],
+    "recommended_next_skills": [
+      "Quality Control",
+      "CI/CD",
+      "Product Management",
+      "Java"
+    ]
+  },
+  "Ai Engineer": {
+    "role_name": "Ai Engineer",
+    "job_count": 108,
+    "common_skills": [
+      "Python",
+      "Machine Learning",
+      "LLM",
+      "PyTorch",
+      "NLP",
+      "TensorFlow",
+      "Deep Learning",
+      "Cloud Computing"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "ngh",
+      "theo",
+      "thu",
+      "chuy",
+      "gia",
+      "quy"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm",
+      "1 năm",
+      "Không yêu cầu",
+      "Dưới 1 năm"
+    ],
+    "recommended_next_skills": [
+      "Computer Vision",
+      "Docker",
+      "RAG",
+      "API"
+    ]
+  },
+  "Data Analyst": {
+    "role_name": "Data Analyst",
+    "job_count": 108,
+    "common_skills": [
+      "SQL",
+      "Excel",
+      "Power BI",
+      "Dashboarding",
+      "Tableau",
+      "Python",
+      "Data Analysis",
+      "Business Analysis"
+    ],
+    "common_keywords": [
+      "nghi",
+      "theo",
+      "chuy",
+      "quy",
+      "tri",
+      "thu",
+      "doanh",
+      "ngh"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm",
+      "1 năm",
+      "Dưới 1 năm",
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "OKR/KPI",
+      "ETL",
+      "Data Visualization",
+      "SQL Server"
+    ]
+  },
+  "Product Owner/product Manager": {
+    "role_name": "Product Owner/product Manager",
+    "job_count": 102,
+    "common_skills": [
+      "Product Management",
+      "Product Ownership",
+      "Agile/Scrum",
+      "Roadmapping",
+      "Business Analysis",
+      "Testing",
+      "Research",
+      "User Story"
+    ],
+    "common_keywords": [
+      "product",
+      "nghi",
+      "tri",
+      "theo",
+      "owner",
+      "quy",
+      "thu",
+      "ngh"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "2 năm",
+      "1 năm",
+      "Dưới 1 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "A/B Testing",
+      "OKR/KPI",
+      "Go",
+      "Quality Control"
+    ]
+  },
+  "Cloud Engineer | Devops Engineer": {
+    "role_name": "Cloud Engineer | Devops Engineer",
+    "job_count": 98,
+    "common_skills": [
+      "DevOps",
+      "Cloud Computing",
+      "CI/CD",
+      "Kubernetes",
+      "Docker",
+      "Linux",
+      "Monitoring",
+      "AWS"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "devops",
+      "ngh",
+      "cloud",
+      "engineer",
+      "khai",
+      "theo"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm",
+      "1 năm",
+      "5 năm",
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "Terraform",
+      "Jenkins",
+      "Python",
+      "GitLab CI"
+    ]
+  },
+  "Fullstack Developer": {
+    "role_name": "Fullstack Developer",
+    "job_count": 98,
+    "common_skills": [
+      "SQL",
+      "API",
+      "JavaScript",
+      "React",
+      "HTML/CSS",
+      "PostgreSQL",
+      "MySQL",
+      "Node.js"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "ngh",
+      "theo",
+      "thu",
+      "thi",
+      "quy",
+      "developer"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm",
+      "3 năm",
+      "Không yêu cầu",
+      "4 năm"
+    ],
+    "recommended_next_skills": [
+      "Docker",
+      "REST API",
+      "Git",
+      "CI/CD"
+    ]
+  },
+  "Software Engineer | Backend Developer | Fullstack Developer": {
+    "role_name": "Software Engineer | Backend Developer | Fullstack Developer",
+    "job_count": 91,
+    "common_skills": [
+      "Java",
+      "SQL",
+      "Spring Boot",
+      "API",
+      "PostgreSQL",
+      "Docker",
+      "CI/CD",
+      "MySQL"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "java",
+      "theo",
+      "thi",
+      "ngh",
+      "gia",
+      "tham"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "2 năm",
+      "4 năm",
+      "1 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "Agile/Scrum",
+      "Git",
+      "Kubernetes",
+      "Redis"
+    ]
+  },
+  "Backend Developer": {
+    "role_name": "Backend Developer",
+    "job_count": 87,
+    "common_skills": [
+      "SQL",
+      "API",
+      "PostgreSQL",
+      "MySQL",
+      "Docker",
+      "Git",
+      "C/C++",
+      "Cloud Computing"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "backend",
+      "thi",
+      "theo",
+      "ngh",
+      "gia",
+      "developer"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "1 năm",
+      "3 năm",
+      "4 năm",
+      "Dưới 1 năm"
+    ],
+    "recommended_next_skills": [
+      "Redis",
+      "CI/CD",
+      "JavaScript",
+      "MongoDB"
+    ]
+  },
+  "Frontend Developer": {
+    "role_name": "Frontend Developer",
+    "job_count": 72,
+    "common_skills": [
+      "JavaScript",
+      "React",
+      "HTML/CSS",
+      "Git",
+      "TypeScript",
+      "API",
+      "Angular",
+      "CI/CD"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "frontend",
+      "theo",
+      "ngh",
+      "developer",
+      "thi",
+      "gia"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "2 năm",
+      "1 năm",
+      "4 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "Agile/Scrum",
+      "Redux",
+      "Vue.js",
+      "Next.js"
+    ]
+  },
+  "Data Engineer": {
+    "role_name": "Data Engineer",
+    "job_count": 52,
+    "common_skills": [
+      "SQL",
+      "ETL",
+      "Python",
+      "Spark",
+      "Data Warehouse",
+      "Kafka",
+      "Airflow",
+      "AWS"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "engineer",
+      "theo",
+      "ngh",
+      "chuy",
+      "thi",
+      "quy"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "2 năm",
+      "1 năm",
+      "5 năm",
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "Java",
+      "Cloud Computing",
+      "PostgreSQL",
+      "Machine Learning"
+    ]
+  },
+  "Embedded Engineer/lập Trình Nhúng": {
+    "role_name": "Embedded Engineer/lập Trình Nhúng",
+    "job_count": 38,
+    "common_skills": [
+      "Embedded Systems",
+      "C/C++",
+      "Linux",
+      "Python",
+      "IoT",
+      "RTOS",
+      "Testing",
+      "Git"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "thi",
+      "thu",
+      "embedded",
+      "ngh",
+      "chuy",
+      "gia"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm",
+      "3 năm",
+      "Không yêu cầu",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "CI/CD",
+      "Documentation",
+      "Unit Testing",
+      "Agile/Scrum"
+    ]
+  },
+  "Data Labeling (gán Nhãn Dữ Liệu)": {
+    "role_name": "Data Labeling (gán Nhãn Dữ Liệu)",
+    "job_count": 22,
+    "common_skills": [
+      "Data Labeling",
+      "Excel",
+      "OKR/KPI",
+      "Annotation",
+      "Monitoring",
+      "Product Management"
+    ],
+    "common_keywords": [
+      "nghi",
+      "theo",
+      "anh",
+      "quy",
+      "thi",
+      "chuy",
+      "labeling",
+      "thu"
+    ],
+    "common_experience_patterns": [
+      "Không yêu cầu",
+      "3 năm",
+      "Dưới 1 năm",
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "API",
+      "Python",
+      "Agile/Scrum"
+    ]
+  },
+  "Data Scientist": {
+    "role_name": "Data Scientist",
+    "job_count": 21,
+    "common_skills": [
+      "Machine Learning",
+      "Python",
+      "SQL",
+      "Cloud Computing",
+      "MLOps",
+      "Scikit-learn",
+      "Deep Learning",
+      "Docker"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "ngh",
+      "chuy",
+      "thu",
+      "theo",
+      "doanh",
+      "quy"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "1 năm",
+      "5 năm",
+      "Không yêu cầu",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Statistics",
+      "TensorFlow",
+      "Data Visualization",
+      "GCP"
+    ]
+  },
+  "Kỹ Sư Iot (iot Engineer)": {
+    "role_name": "Kỹ Sư Iot (iot Engineer)",
+    "job_count": 16,
+    "common_skills": [
+      "IoT",
+      "C/C++",
+      "Embedded Systems",
+      "Excel",
+      "Cloud Computing",
+      "Dashboarding",
+      "MQTT",
+      "Python"
+    ],
+    "common_keywords": [
+      "thi",
+      "nghi",
+      "iot",
+      "thu",
+      "theo",
+      "tri",
+      "chuy",
+      "ngh"
+    ],
+    "common_experience_patterns": [
+      "Không yêu cầu",
+      "1 năm",
+      "2 năm",
+      "Dưới 1 năm",
+      "3 năm"
+    ],
+    "recommended_next_skills": [
+      "AWS",
+      "API",
+      "Azure",
+      "Business Analysis"
+    ]
+  },
+  "Frontend Developer | Fullstack Developer": {
+    "role_name": "Frontend Developer | Fullstack Developer",
+    "job_count": 15,
+    "common_skills": [
+      "JavaScript",
+      "Node.js",
+      "React",
+      "API",
+      "HTML/CSS",
+      "SQL",
+      "TypeScript",
+      "MySQL"
+    ],
+    "common_keywords": [
+      "nghi",
+      "thi",
+      "tri",
+      "gia",
+      "tham",
+      "developer",
+      "fullstack",
+      "theo"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "5 năm",
+      "Dưới 1 năm",
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Git",
+      "REST API",
+      "Next.js",
+      "AWS"
+    ]
+  },
+  "Software Engineer | Frontend Developer": {
+    "role_name": "Software Engineer | Frontend Developer",
+    "job_count": 15,
+    "common_skills": [
+      "HTML/CSS",
+      "JavaScript",
+      "React",
+      "Angular",
+      "TypeScript",
+      "API",
+      "Git",
+      "CI/CD"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "gia",
+      "thi",
+      "tham",
+      "chuy",
+      "theo",
+      "ngh"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "4 năm",
+      "Dưới 1 năm",
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Redux",
+      "Agile/Scrum",
+      "Business Analysis",
+      "GraphQL"
+    ]
+  },
+  "Software Engineer | Backend Developer | Frontend Developer | Fullstack Developer": {
+    "role_name": "Software Engineer | Backend Developer | Frontend Developer | Fullstack Developer",
+    "job_count": 13,
+    "common_skills": [
+      "Java",
+      "SQL",
+      "API",
+      "React",
+      "Spring Boot",
+      "REST API",
+      "Business Analysis",
+      "CI/CD"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "java",
+      "theo",
+      "gia",
+      "tham",
+      "thi",
+      "quy"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm",
+      "Trên 5 năm",
+      "1 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "Git",
+      "MySQL",
+      "PostgreSQL",
+      "Agile/Scrum"
+    ]
+  },
+  "Backend Developer | Fullstack Developer": {
+    "role_name": "Backend Developer | Fullstack Developer",
+    "job_count": 12,
+    "common_skills": [
+      "Laravel",
+      "PHP",
+      "SQL",
+      "API",
+      "MySQL",
+      "JavaScript",
+      "Node.js",
+      "Cloud Computing"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "php",
+      "ngh",
+      "theo",
+      "backend",
+      "developer",
+      "thi"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "4 năm",
+      "1 năm",
+      "2 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "Docker",
+      "Git",
+      "Redis",
+      "Agile/Scrum"
+    ]
+  },
+  "Database Administrator (dba)": {
+    "role_name": "Database Administrator (dba)",
+    "job_count": 12,
+    "common_skills": [
+      "SQL",
+      "MySQL",
+      "SQL Server",
+      "Monitoring",
+      "Linux",
+      "MongoDB",
+      "PostgreSQL",
+      "AWS"
+    ],
+    "common_keywords": [
+      "nghi",
+      "database",
+      "thi",
+      "tri",
+      "chuy",
+      "theo",
+      "oracle",
+      "quy"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "4 năm",
+      "2 năm",
+      "3 năm",
+      "Trên 5 năm"
+    ],
+    "recommended_next_skills": [
+      "Azure",
+      "Kafka",
+      "Cloud Computing",
+      "DevOps"
+    ]
+  },
+  "Ai Researcher": {
+    "role_name": "Ai Researcher",
+    "job_count": 9,
+    "common_skills": [
+      "Machine Learning",
+      "Python",
+      "LLM",
+      "NLP",
+      "SQL",
+      "Cloud Computing",
+      "Computer Vision",
+      "Deep Learning"
+    ],
+    "common_keywords": [
+      "nghi",
+      "automation",
+      "tri",
+      "chuy",
+      "product",
+      "experience",
+      "intern",
+      "ngh"
+    ],
+    "common_experience_patterns": [
+      "Không yêu cầu",
+      "1 năm",
+      "Dưới 1 năm"
+    ],
+    "recommended_next_skills": [
+      "Documentation",
+      "Experiment Design",
+      "PyTorch",
+      "RAG"
+    ]
+  },
+  "Software Engineer | Fullstack Developer": {
+    "role_name": "Software Engineer | Fullstack Developer",
+    "job_count": 7,
+    "common_skills": [
+      "SQL",
+      "API",
+      "Business Analysis",
+      "JavaScript",
+      "CI/CD",
+      "DevOps",
+      "Docker",
+      "Go"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "gia",
+      "tham",
+      "thu",
+      "thi",
+      "giao",
+      "theo"
+    ],
+    "common_experience_patterns": [
+      "5 năm",
+      "Không yêu cầu",
+      "2 năm",
+      "3 năm",
+      "4 năm"
+    ],
+    "recommended_next_skills": [
+      "Node.js",
+      "Python",
+      "React",
+      "Integration Testing"
+    ]
+  },
+  "Product Analyst/research": {
+    "role_name": "Product Analyst/research",
+    "job_count": 6,
+    "common_skills": [
+      "Research",
+      "Agile/Scrum",
+      "Excel",
+      "Experiment Design",
+      "Power BI",
+      "Product Management",
+      "Product Ownership",
+      "Quality Control"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "theo",
+      "thi",
+      "ng.",
+      "product",
+      "quy",
+      "thu"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm",
+      "Dưới 1 năm",
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "Tableau",
+      "SQL",
+      "API",
+      "Python"
+    ]
+  },
+  "Cloud Engineer": {
+    "role_name": "Cloud Engineer",
+    "job_count": 5,
+    "common_skills": [
+      "AWS",
+      "Cloud Computing",
+      "CI/CD",
+      "DevOps",
+      "Monitoring",
+      "Docker",
+      "GCP",
+      "Go"
+    ],
+    "common_keywords": [
+      "aws",
+      "devops",
+      "gia",
+      "theo",
+      "chuy",
+      "nghi",
+      "cloud",
+      "engineer"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm",
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "Kubernetes",
+      "Linux",
+      "Python",
+      "Terraform"
+    ]
+  },
+  "Software Engineer | Backend Developer": {
+    "role_name": "Software Engineer | Backend Developer",
+    "job_count": 5,
+    "common_skills": [
+      "PostgreSQL",
+      "SQL",
+      "Docker",
+      "Java",
+      "Kafka",
+      "MongoDB",
+      "MySQL",
+      "Redis"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "theo",
+      "thi",
+      "thu",
+      "ngh",
+      "backend",
+      "chuy"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "API",
+      "CI/CD",
+      "Go",
+      "Kubernetes"
+    ]
+  },
+  "Ai Engineer | Ai Researcher": {
+    "role_name": "Ai Engineer | Ai Researcher",
+    "job_count": 4,
+    "common_skills": [
+      "Python",
+      "Computer Vision",
+      "LLM",
+      "PyTorch",
+      "RAG",
+      "Research",
+      "TensorFlow",
+      "API"
+    ],
+    "common_keywords": [
+      "nghi",
+      "thi",
+      "llm",
+      "theo",
+      "ngh",
+      "technical",
+      "vision",
+      "research"
+    ],
+    "common_experience_patterns": [
+      "4 năm",
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Dashboarding",
+      "Data Analysis",
+      "Deep Learning",
+      "DevOps"
+    ]
+  },
+  "Data Analyst | Data Engineer": {
+    "role_name": "Data Analyst | Data Engineer",
+    "job_count": 4,
+    "common_skills": [
+      "ETL",
+      "Python",
+      "SQL",
+      "Cloud Computing",
+      "Dashboarding",
+      "Data Warehouse",
+      "GCP",
+      "Power BI"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "chuy",
+      "khai",
+      "theo",
+      "quy",
+      "thi",
+      "engineer"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Tableau",
+      "AWS",
+      "Agile/Scrum",
+      "Azure"
+    ]
+  },
+  "Ai Engineer | Fullstack Developer": {
+    "role_name": "Ai Engineer | Fullstack Developer",
+    "job_count": 3,
+    "common_skills": [
+      "API",
+      "Business Analysis",
+      "Data Warehouse",
+      "Deep Learning",
+      "Laravel",
+      "MySQL",
+      "Next.js",
+      "Python"
+    ],
+    "common_keywords": [
+      "nghi",
+      "doanh",
+      "theo",
+      "tri",
+      "hbr",
+      "ngh",
+      "thu",
+      "sinh"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "1 năm"
+    ],
+    "recommended_next_skills": [
+      "REST API",
+      "SQL",
+      "Vue.js",
+      "Cloud Computing"
+    ]
+  },
+  "Data Analyst | Business Analyst (phân Tích Nghiệp Vụ)": {
+    "role_name": "Data Analyst | Business Analyst (phân Tích Nghiệp Vụ)",
+    "job_count": 3,
+    "common_skills": [
+      "Data Warehouse",
+      "SQL",
+      "AWS",
+      "Business Analysis",
+      "Cloud Computing",
+      "Documentation",
+      "ETL",
+      "Requirement Gathering"
+    ],
+    "common_keywords": [
+      "business",
+      "experience",
+      "analyst",
+      "excellent",
+      "knowledge",
+      "nghi",
+      "about",
+      "bank"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "BPMN/UML",
+      "Data Analysis",
+      "OKR/KPI",
+      "Python"
+    ]
+  },
+  "Ai Engineer | Software Engineer": {
+    "role_name": "Ai Engineer | Software Engineer",
+    "job_count": 2,
+    "common_skills": [
+      "AWS",
+      "Azure",
+      "LLM",
+      "Machine Learning",
+      "PyTorch",
+      "Python",
+      "TensorFlow",
+      "API"
+    ],
+    "common_keywords": [
+      "backend",
+      "experience",
+      "nghi",
+      "engineer",
+      "python",
+      "performance",
+      "thu",
+      "working"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "3 năm"
+    ],
+    "recommended_next_skills": [
+      "Agile/Scrum",
+      "CI/CD",
+      "Cloud Computing",
+      "Computer Vision"
+    ]
+  },
+  "Backend Developer | Cloud Engineer | Devops Engineer": {
+    "role_name": "Backend Developer | Cloud Engineer | Devops Engineer",
+    "job_count": 2,
+    "common_skills": [
+      "DevOps",
+      "Docker",
+      "Machine Learning",
+      "API",
+      "AWS",
+      "C/C++",
+      "CI/CD",
+      "Cloud Computing"
+    ],
+    "common_keywords": [
+      "backend",
+      "nghi",
+      "thu",
+      "aws",
+      "bonuses",
+      "developer",
+      "docker",
+      "experience"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "GitHub Actions",
+      "Java",
+      "Jenkins",
+      "Linux"
+    ]
+  },
+  "Backend Developer | Frontend Developer | Fullstack Developer": {
+    "role_name": "Backend Developer | Frontend Developer | Fullstack Developer",
+    "job_count": 2,
+    "common_skills": [
+      "JavaScript",
+      "PHP",
+      "SQL",
+      "API",
+      "AWS",
+      "Agile/Scrum",
+      "CI/CD",
+      "Docker"
+    ],
+    "common_keywords": [
+      "nghi",
+      "ngh",
+      "gia",
+      "tri",
+      "chuy",
+      "quy",
+      "tham",
+      "theo"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "FastAPI",
+      "Flask",
+      "Git",
+      "HTML/CSS"
+    ]
+  },
+  "Data Engineer | Ai Engineer": {
+    "role_name": "Data Engineer | Ai Engineer",
+    "job_count": 2,
+    "common_skills": [
+      "Machine Learning",
+      "PyTorch",
+      "Python",
+      "API",
+      "C/C++",
+      "CI/CD",
+      "Cloud Computing",
+      "Computer Vision"
+    ],
+    "common_keywords": [
+      "nghi",
+      "learning",
+      "machine",
+      "engineer",
+      "experience",
+      "python",
+      "chuy",
+      "60m"
+    ],
+    "common_experience_patterns": [
+      "3 năm"
+    ],
+    "recommended_next_skills": [
+      "Deep Learning",
+      "DevOps",
+      "Docker",
+      "Flask"
+    ]
+  },
+  "Data Engineer | Cloud Engineer | Devops Engineer": {
+    "role_name": "Data Engineer | Cloud Engineer | Devops Engineer",
+    "job_count": 2,
+    "common_skills": [
+      "Airflow",
+      "MySQL",
+      "SQL",
+      "AWS",
+      "CI/CD",
+      "Cloud Computing",
+      "Data Warehouse",
+      "Docker"
+    ],
+    "common_keywords": [
+      "nghi",
+      "ngh",
+      "big",
+      "chuy",
+      "theo",
+      "tri",
+      "thi",
+      "engineer"
+    ],
+    "common_experience_patterns": [
+      "1 năm",
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "ETL",
+      "Kafka",
+      "Kubernetes",
+      "MongoDB"
+    ]
+  },
+  "Data Scientist | Ai Engineer": {
+    "role_name": "Data Scientist | Ai Engineer",
+    "job_count": 2,
+    "common_skills": [
+      "Machine Learning",
+      "Python",
+      "AWS",
+      "Azure",
+      "Cloud Computing",
+      "Documentation",
+      "Excel",
+      "Kafka"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "learning",
+      "machine",
+      "quy",
+      "science",
+      "thi",
+      "thu"
+    ],
+    "common_experience_patterns": [
+      "3 năm",
+      "4 năm"
+    ],
+    "recommended_next_skills": [
+      "LLM",
+      "MLOps",
+      "MongoDB",
+      "MySQL"
+    ]
+  },
+  "Software Engineer | Cloud Engineer | Devops Engineer": {
+    "role_name": "Software Engineer | Cloud Engineer | Devops Engineer",
+    "job_count": 2,
+    "common_skills": [
+      "AWS",
+      "Azure",
+      "CI/CD",
+      "DevOps",
+      "Docker",
+      "Jenkins",
+      "Kubernetes",
+      "Agile/Scrum"
+    ],
+    "common_keywords": [
+      "experience",
+      "devops",
+      "nghi",
+      "engineer",
+      "management",
+      "new",
+      "other",
+      "skills"
+    ],
+    "common_experience_patterns": [
+      "2 năm",
+      "4 năm"
+    ],
+    "recommended_next_skills": [
+      "Cloud Computing",
+      "GCP",
+      "Git",
+      "Java"
+    ]
+  },
+  "Ai Engineer | Backend Developer": {
+    "role_name": "Ai Engineer | Backend Developer",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "AWS",
+      "Agile/Scrum",
+      "CI/CD",
+      "Cloud Computing",
+      "Docker",
+      "GCP",
+      "Git"
+    ],
+    "common_keywords": [
+      "crm",
+      "chatbot",
+      "performance",
+      "backend",
+      "experience",
+      "system",
+      "work",
+      "conversation"
+    ],
+    "common_experience_patterns": [
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "JavaScript",
+      "LLM",
+      "MongoDB",
+      "Monitoring"
+    ]
+  },
+  "Ai Engineer | Cloud Engineer | Devops Engineer": {
+    "role_name": "Ai Engineer | Cloud Engineer | Devops Engineer",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "Docker",
+      "LLM",
+      "LangChain",
+      "Microservices",
+      "MongoDB",
+      "PostgreSQL",
+      "Python"
+    ],
+    "common_keywords": [
+      "ngh",
+      "nghi",
+      "tri",
+      "thi",
+      "thu",
+      "abbank",
+      "chuy",
+      "docker"
+    ],
+    "common_experience_patterns": [
+      "5 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "Agile/Scrum",
+      "Business Analysis",
+      "Cloud Computing"
+    ]
+  },
+  "Ai Engineer | Data Labeling (gán Nhãn Dữ Liệu)": {
+    "role_name": "Ai Engineer | Data Labeling (gán Nhãn Dữ Liệu)",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "Data Labeling"
+    ],
+    "common_keywords": [
+      "nghi",
+      "quy",
+      "sinh",
+      "agent",
+      "n8n",
+      "30-12",
+      "30-17",
+      "30.000"
+    ],
+    "common_experience_patterns": [
+      "Không yêu cầu"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "Python",
+      "Agile/Scrum",
+      "Business Analysis"
+    ]
+  },
+  "Ai Engineer | Embedded Engineer/lập Trình Nhúng": {
+    "role_name": "Ai Engineer | Embedded Engineer/lập Trình Nhúng",
+    "job_count": 1,
+    "common_skills": [
+      "Business Analysis",
+      "Embedded Systems",
+      "OKR/KPI"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "khai",
+      "ban",
+      "ng.",
+      "ngh",
+      "theo",
+      "thi"
+    ],
+    "common_experience_patterns": [
+      "1 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "API",
+      "Python",
+      "Agile/Scrum"
+    ]
+  },
+  "Ai Engineer | Product Owner/product Manager": {
+    "role_name": "Ai Engineer | Product Owner/product Manager",
+    "job_count": 1,
+    "common_skills": [
+      "Dashboarding",
+      "Go",
+      "OKR/KPI",
+      "Product Management",
+      "Product Ownership",
+      "Roadmapping"
+    ],
+    "common_keywords": [
+      "tri",
+      "nghi",
+      "theo",
+      "quy",
+      "khai",
+      "cao",
+      "ngh",
+      "thu"
+    ],
+    "common_experience_patterns": [
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "API",
+      "Python",
+      "Agile/Scrum"
+    ]
+  },
+  "Data Analyst | Data Scientist": {
+    "role_name": "Data Analyst | Data Scientist",
+    "job_count": 1,
+    "common_skills": [
+      "A/B Testing",
+      "AWS",
+      "Azure",
+      "C/C++",
+      "Docker",
+      "Git",
+      "MLOps",
+      "Machine Learning"
+    ],
+    "common_keywords": [
+      "chuy",
+      "tri",
+      "nghi",
+      "doanh",
+      "gia",
+      "khai",
+      "cao",
+      "chi"
+    ],
+    "common_experience_patterns": [
+      "1 năm"
+    ],
+    "recommended_next_skills": [
+      "Monitoring",
+      "Product Ownership",
+      "PyTorch",
+      "Python"
+    ]
+  },
+  "Data Engineer | Database Administrator (dba)": {
+    "role_name": "Data Engineer | Database Administrator (dba)",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "MongoDB",
+      "PostgreSQL",
+      "SQL",
+      "SQL Server"
+    ],
+    "common_keywords": [
+      "database",
+      "nghi",
+      "sql",
+      "optimization",
+      "postgresql",
+      "quy",
+      "engineer",
+      "performance"
+    ],
+    "common_experience_patterns": [
+      "3 năm"
+    ],
+    "recommended_next_skills": [
+      "Python",
+      "Agile/Scrum",
+      "Business Analysis",
+      "Cloud Computing"
+    ]
+  },
+  "Data Engineer | Software Engineer | Backend Developer | Fullstack Developer": {
+    "role_name": "Data Engineer | Software Engineer | Backend Developer | Fullstack Developer",
+    "job_count": 1,
+    "common_skills": [
+      "Business Analysis",
+      "ETL",
+      "Java",
+      "Kafka",
+      "Python",
+      "Spark"
+    ],
+    "common_keywords": [
+      "nghi",
+      "ngh",
+      "tri",
+      "chuy",
+      "engineer",
+      "hadoop",
+      "kafka",
+      "khai"
+    ],
+    "common_experience_patterns": [
+      "3 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "API",
+      "Agile/Scrum",
+      "Cloud Computing"
+    ]
+  },
+  "Frontend Developer | Automation Tester": {
+    "role_name": "Frontend Developer | Automation Tester",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "Automation Testing",
+      "CI/CD",
+      "Documentation",
+      "GitHub Actions",
+      "Integration Testing",
+      "Java",
+      "PostgreSQL"
+    ],
+    "common_keywords": [
+      "automation",
+      "mobile",
+      "nghi",
+      "test",
+      "firebase",
+      "anh",
+      "app",
+      "backend"
+    ],
+    "common_experience_patterns": [
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Quality Control",
+      "REST API",
+      "React",
+      "SQL"
+    ]
+  },
+  "Fullstack Developer | Cloud Engineer | Devops Engineer": {
+    "role_name": "Fullstack Developer | Cloud Engineer | Devops Engineer",
+    "job_count": 1,
+    "common_skills": [
+      "DevOps",
+      "Monitoring"
+    ],
+    "common_keywords": [
+      "tri",
+      "gia",
+      "khai",
+      "tham",
+      "chuy",
+      "quy",
+      "cao",
+      "devops"
+    ],
+    "common_experience_patterns": [
+      "1 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "API",
+      "Python",
+      "Agile/Scrum"
+    ]
+  },
+  "Fullstack Developer | Embedded Engineer/lập Trình Nhúng": {
+    "role_name": "Fullstack Developer | Embedded Engineer/lập Trình Nhúng",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "Angular",
+      "C/C++",
+      "Embedded Systems",
+      "JavaScript",
+      "MySQL",
+      "Python",
+      "React"
+    ],
+    "common_keywords": [
+      "nghi",
+      "tri",
+      "doanh",
+      "duy",
+      "ngh",
+      "quy",
+      "theo",
+      "thu"
+    ],
+    "common_experience_patterns": [
+      "1 năm"
+    ],
+    "recommended_next_skills": [
+      "SQL",
+      "SQL Server",
+      "Vue.js",
+      "Agile/Scrum"
+    ]
+  },
+  "Software Engineer | Automation Tester": {
+    "role_name": "Software Engineer | Automation Tester",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "AWS",
+      "Agile/Scrum",
+      "Automation Testing",
+      "Azure",
+      "CI/CD",
+      "Cloud Computing",
+      "DevOps"
+    ],
+    "common_keywords": [
+      "automation",
+      "test",
+      "solution",
+      "engineer",
+      "software",
+      "devops",
+      "engineering",
+      "generation"
+    ],
+    "common_experience_patterns": [
+      "Dưới 1 năm"
+    ],
+    "recommended_next_skills": [
+      "GCP",
+      "GitHub Actions",
+      "JavaScript",
+      "Jenkins"
+    ]
+  },
+  "Software Engineer | Embedded Engineer/lập Trình Nhúng": {
+    "role_name": "Software Engineer | Embedded Engineer/lập Trình Nhúng",
+    "job_count": 1,
+    "common_skills": [
+      "API",
+      "C/C++",
+      "Cloud Computing",
+      "Embedded Systems",
+      "IoT",
+      "MQTT",
+      "OKR/KPI",
+      "RTOS"
+    ],
+    "common_keywords": [
+      "firmware",
+      "thi",
+      "nghi",
+      "embedded",
+      "audio",
+      "debug",
+      "gia",
+      "ota"
+    ],
+    "common_experience_patterns": [
+      "2 năm"
+    ],
+    "recommended_next_skills": [
+      "Testing",
+      "SQL",
+      "Python",
+      "Agile/Scrum"
+    ]
+  },
+  "Software Engineer | Frontend Developer | Fullstack Developer": {
+    "role_name": "Software Engineer | Frontend Developer | Fullstack Developer",
+    "job_count": 1,
+    "common_skills": [
+      ".NET",
+      "Agile/Scrum",
+      "C/C++",
+      "CI/CD",
+      "Cloud Computing",
+      "DevOps",
+      "Docker",
+      "JavaScript"
+    ],
+    "common_keywords": [
+      "financial",
+      "hours",
+      ".net",
+      "development",
+      "experience",
+      "interview",
+      "round",
+      "time"
+    ],
+    "common_experience_patterns": [
+      "4 năm"
+    ],
+    "recommended_next_skills": [
+      "Performance Testing",
+      "PostgreSQL",
+      "Product Management",
+      "Python"
+    ]
+  }
+}

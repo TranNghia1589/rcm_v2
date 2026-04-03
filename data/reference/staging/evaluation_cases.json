@@ -1,0 +1,110 @@
+[
+  {
+    "case_id": "synthetic_cloud_engineer_devops_engineer",
+    "description": "Synthetic CV case aligned to role Cloud Engineer | Devops Engineer.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/backend_dev_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": [
+      "Cloud Engineer | Devops Engineer"
+    ],
+    "expected_missing_skills_contains": [
+      "Terraform",
+      "Jenkins"
+    ],
+    "_meta": {
+      "source": "synthetic_eval_folder",
+      "role_guess": "Backend Dev"
+    }
+  },
+  {
+    "case_id": "synthetic_business_analyst_ph_n_t_ch_nghi_p_v",
+    "description": "Synthetic CV case aligned to role Business Analyst (phân Tích Nghiệp Vụ).",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/business_analyst_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": [
+      "Business Analyst (phân Tích Nghiệp Vụ)"
+    ],
+    "expected_missing_skills_contains": [
+      "Excel",
+      "Testing"
+    ],
+    "_meta": {
+      "source": "synthetic_eval_folder",
+      "role_guess": "Business Analyst"
+    }
+  },
+  {
+    "case_id": "synthetic_software_engineer",
+    "description": "Synthetic CV case aligned to role Software Engineer.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/devops_engineer_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": [
+      "Software Engineer"
+    ],
+    "expected_missing_skills_contains": [
+      "MySQL",
+      "React"
+    ],
+    "_meta": {
+      "source": "synthetic_eval_folder",
+      "role_guess": "Devops Engineer"
+    }
+  },
+  {
+    "case_id": "synthetic_cloud_engineer_devops_engineer_2",
+    "description": "Synthetic CV case aligned to role Cloud Engineer | Devops Engineer.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/frontend_dev_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": [
+      "Cloud Engineer | Devops Engineer"
+    ],
+    "expected_missing_skills_contains": [
+      "Terraform",
+      "Jenkins"
+    ],
+    "_meta": {
+      "source": "synthetic_eval_folder",
+      "role_guess": "Frontend Dev"
+    }
+  },
+  {
+    "case_id": "synthetic_product_owner_product_manager",
+    "description": "Synthetic CV case aligned to role Product Owner/product Manager.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/product_owner_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": [
+      "Product Owner/product Manager"
+    ],
+    "expected_missing_skills_contains": [
+      "A/B Testing",
+      "OKR/KPI"
+    ],
+    "_meta": {
+      "source": "synthetic_eval_folder",
+      "role_guess": "Product Owner"
+    }
+  },
+  {
+    "case_id": "synthetic_software_engineer_2",
+    "description": "Synthetic CV case aligned to role Software Engineer.",
+    "cv_file": "../data/raw/cv_samples/SYNTHETIC_EVAL/software_engineer_cv.txt",
+    "expected_target_role": "Unknown",
+    "expected_domain_fit": "high",
+    "expected_best_fit_roles_contains": [
+      "Software Engineer"
+    ],
+    "expected_missing_skills_contains": [
+      "MySQL",
+      "React"
+    ],
+    "_meta": {
+      "source": "synthetic_eval_folder",
+      "role_guess": "Software Engineer"
+    }
+  }
+]

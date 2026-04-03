@@ -1,0 +1,4 @@
+﻿Candidate profile: Software engineer with 3 years experience.
+Skills: Java, Spring Boot, SQL, Git, Docker, CI/CD.
+Built backend services and improved throughput by 30%.
+Worked on microservices and cloud deployment.

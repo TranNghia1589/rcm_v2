@@ -1,4 +1,4 @@
-# Eval Label Templates
+﻿# Eval Label Templates
 
 Thu muc nay chua cac file mau de ban dan nhan thu cong cho bo metric trong `src/evaluation/`.
 
@@ -27,13 +27,13 @@ Neu ban muon dat muc do tin cay cao hon (CI hep hon), co the tang quy mo theo cu
 Chay:
 
 ```powershell
-.\.venv\Scripts\python scripts/evaluation/generate_eval_templates.py --num_cv 122 --num_jobs 367
+.\.venv\Scripts\python deploy/scripts/evaluation/generate_eval_templates.py --num_cv 122 --num_jobs 367
 ```
 
 Script se doc:
 
 - `data/processed/cv_extracted/cv_extracted_dataset.parquet` (lay file name CV)
-- `artifacts/matching/jobs_matching_ready_v3.parquet` (lay so luong job)
+- `experiments/artifacts/matching/jobs_matching_ready_v3.parquet` (lay so luong job)
 
 va ghi de cac file trong thu muc nay.
 
@@ -79,4 +79,5 @@ Cac cot list dung JSON string:
 - Cac file co `cv_id`, `job_id` can trung voi ID thuc te trong DB khi ban chay eval.
 - Template duoc tao de dan nhan, nen cac cot nhan (relevance, human_score, expected_missing_skills...) de trong la binh thuong.
 - Dan nhan xong moi chay metric.
+
 

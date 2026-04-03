@@ -1,212 +1,136 @@
-# Migration Runbook: RAG + KG Recommendation
+﻿# Migration Runbook: RAG + KG Recommendation (Current Structure)
 
-This runbook gives the exact implementation order from current project state to target architecture.
+Tai lieu nay da duoc cap nhat theo cau truc hien tai cua repo.
 
-## Phase 0 - Environment and services
+## Phase 0 - Environment
 
-1. Setup PostgreSQL + pgvector
-- Tool/app: PostgreSQL + pgvector extension
-- Files:
+1. Bootstrap moi truong Python
+- Script: `deploy/scripts/bootstrap.ps1`
+
+2. Khoi tao PostgreSQL + pgvector
+- Migrations:
   - `database/postgres/migrations/001_enable_pgvector.sql`
   - `database/postgres/migrations/002_create_rag_tables.sql`
   - `database/postgres/migrations/003_create_rag_indexes.sql`
-  - `configs/db/postgres.yaml`
-  - `configs/db/pgvector.yaml`
-- Work:
-  - Create DB
-  - Enable `vector` extension
-  - Create full schema for jobs/cv/recommendation/chatbot + documents/chunks/embeddings
-  - Create ANN indexes and metadata indexes
+  - `database/postgres/migrations/004_create_cv_scoring_tables.sql`
+- Config:
+  - `config/db/postgres.yaml`
+  - `config/db/pgvector.yaml`
+- Script:
+  - `deploy/scripts/db/init_postgres_pgvector.ps1`
 
-2. Setup Neo4j
-- Tool/app: Neo4j (Desktop or Docker)
+3. Khoi tao Neo4j schema
 - Files:
   - `database/neo4j/schema/constraints.cypher`
   - `database/neo4j/schema/indexes.cypher`
-  - `configs/db/neo4j.yaml`
-- Work:
-  - Create constraints for unique node keys
-  - Create indexes for frequent query properties
+  - `config/db/neo4j.yaml`
+- Script:
+  - `deploy/scripts/db/init_neo4j.ps1`
 
-3. Create startup scripts
-- Tool/app: PowerShell
+## Phase 1 - Data Processing
+
+4. Crawl va preprocess jobs
+- Crawl module:
+  - `src/data_processing/crawl/topcv_crawler.py`
+- Preprocess pipeline:
+  - `src/data_processing/pipelines/run_preprocess.py`
+- Artifacts output:
+  - `experiments/artifacts/matching/*.parquet`
+
+5. Extract CV + Gap analysis
+- CV extraction:
+  - `src/models/cv/extract_cv_info.py`
+  - `src/models/cv/extract_cv_batch.py`
+- Gap batch:
+  - `src/models/cv/run_gap_batch.py`
+- Output:
+  - `data/processed/cv_extracted/*`
+  - `data/processed/cv_gap_reports/*`
+
+6. Load core tables vao PostgreSQL
+- Loader:
+  - `src/data_processing/ingestion/load_core_tables.py`
+
+## Phase 2 - RAG Serving
+
+7. Chunking + Embedding + Index
 - Files:
-  - `scripts/db/init_postgres_pgvector.ps1`
-  - `scripts/db/init_neo4j.ps1`
-  - `scripts/db/load_graph_data.ps1`
+  - `src/models/rag/chunking.py`
+  - `src/models/rag/embed.py`
+  - `src/models/rag/index.py`
+  - `src/data_processing/ingestion/jobs_to_pgvector.py`
 
-## Phase 1 - RAG ingestion pipeline
-
-4. Build chunking policy
-- Tool/app: Python
+8. Retrieval + Prompting + Generation
 - Files:
-  - `src/rag/chunking.py`
-  - `configs/rag/chunking.yaml`
-- Work:
-  - Define chunk size/overlap/section strategy
-  - Keep chunk metadata (`job_id`, `section_type`, `source`)
-
-5. Build embedding layer
-- Tool/app: embedding model provider
-- Files:
-  - `src/rag/embed.py`
-  - `src/infrastructure/embeddings/provider.py`
-  - `configs/model/embedding.yaml`
-- Work:
-  - Standardize embedding interface
-  - Return consistent vector dimension
-
-6. Index chunks into pgvector
-- Tool/app: PostgreSQL + pgvector
-- Files:
-  - `src/rag/index.py`
-  - `src/infrastructure/db/postgres_client.py`
-  - `src/infrastructure/db/pgvector_store.py`
-  - `src/ingestion/jobs_to_pgvector.py`
-  - `scripts/pipelines/run_rag_ingest.ps1`
-- Work:
-  - Upsert chunks and embeddings
-  - Store version and timestamp
-  - Add incremental re-index mode
-
-## Phase 2 - RAG query serving
-
-7. Implement retrieval flow
-- Tool/app: SQL + pgvector cosine similarity
-- Files:
-  - `src/rag/retrieve.py`
-  - `configs/rag/retrieval.yaml`
+  - `src/models/rag/retrieve.py`
+  - `src/models/rag/prompting.py`
+  - `src/models/rag/generate.py`
   - `apps/api/app/services/rag/retrieval_service.py`
-- Work:
-  - Embed user query
-  - Retrieve top-k chunks
-  - Optional metadata filtering
-
-8. Implement prompt assembly + generation
-- Tool/app: LLM API (Ollama/OpenAI)
-- Files:
-  - `src/rag/prompting.py`
-  - `src/rag/generate.py`
-  - `src/infrastructure/llm/ollama_client.py`
-  - `src/infrastructure/llm/openai_client.py`
-  - `configs/rag/prompting.yaml`
   - `apps/api/app/services/rag/chat_service.py`
-- Work:
-  - Build grounded prompt from retrieved chunks
-  - Return answer with source citations
 
-9. Expose chatbot API
-- Tool/app: FastAPI
-- Files:
-  - `apps/api/app/main.py`
-  - `apps/api/app/api/v1/endpoints/chatbot.py`
+9. Chat API
+- Endpoint:
+  - `apps/api/app/api/v1/chatbot.py`
+- Schema:
   - `apps/api/app/schemas/rag/chat.py`
-  - `apps/api/app/api/v1/router.py`
-- Work:
-  - `POST /api/v1/chat/ask`
-  - response includes `answer`, `sources`, `latency_ms`
 
-## Phase 3 - Build knowledge graph for recommendation
+## Phase 3 - Knowledge Graph + Hybrid Recommend
 
-10. Define graph data model
-- Tool/app: Neo4j + Cypher
+10. Graph ETL
 - Files:
-  - `src/graph/models.py`
-  - `configs/graph/schema.yaml`
-  - `database/neo4j/schema/constraints.cypher`
-- Work:
-  - Nodes: `User`, `CV`, `Skill`, `Role`, `Job`, `Company`
-  - Relations: `HAS_SKILL`, `TARGETS_ROLE`, `REQUIRES_SKILL`, `LACKS_SKILL`, `MATCHES`
+  - `src/models/graph/etl.py`
+  - `src/data_processing/ingestion/jobs_to_neo4j.py`
+  - `src/data_processing/ingestion/cv_to_graph.py`
 
-11. ETL jobs/CV into graph
-- Tool/app: Python + Neo4j driver
+11. Graph Query Service
 - Files:
-  - `src/graph/etl.py`
-  - `src/ingestion/jobs_to_neo4j.py`
-  - `src/ingestion/cv_to_graph.py`
-  - `src/infrastructure/db/neo4j_client.py`
-  - `scripts/pipelines/run_graph_etl.ps1`
-- Work:
-  - Map parquet/json to graph entities
-  - Upsert nodes and edges
-
-12. Implement core Cypher queries
-- Tool/app: Cypher
-- Files:
+  - `src/models/graph/query_service.py`
   - `database/neo4j/queries/recommend_jobs.cypher`
   - `database/neo4j/queries/user_skill_gap.cypher`
   - `database/neo4j/queries/career_path.cypher`
-  - `src/graph/cypher_queries.py`
-  - `src/graph/query_service.py`
-- Work:
-  - Candidate jobs by role+skill fit
-  - Skill gap extraction
-  - Career path context graph
 
-## Phase 4 - Hybrid recommendation orchestration
-
-13. Candidate generation (vector side)
-- Tool/app: pgvector retriever
+12. Hybrid recommendation orchestration
 - Files:
-  - `src/recommendation/candidate_generation.py`
-- Work:
-  - Get semantic candidates from job chunks/text
-
-14. Graph re-ranking
-- Tool/app: Cypher + graph score
-- Files:
-  - `src/recommendation/graph_ranking.py`
-  - `src/recommendation/orchestrator.py`
-  - `configs/recommendation/hybrid.yaml`
-- Work:
-  - Re-rank candidates by graph signals:
-    - matched skill coverage
-    - missing critical skills
-    - role consistency
-
-15. LLM explanation layer
-- Tool/app: LLM API
-- Files:
-  - `src/recommendation/explanation.py`
+  - `src/models/recommendation/candidate_generation.py`
+  - `src/models/recommendation/graph_ranking.py`
+  - `src/models/recommendation/explanation.py`
+  - `src/models/recommendation/orchestrator.py`
   - `apps/api/app/services/recommendation/hybrid_recommender.py`
-  - `apps/api/app/schemas/recommendation/job.py`
-- Work:
-  - Explain recommendation from graph+retrieval evidence
-  - Force grounded responses (no unsupported claims)
 
-16. Expose recommendation API
-- Tool/app: FastAPI
+## Phase 4 - CV Scoring + API
+
+13. CV scoring batch
 - Files:
-  - `apps/api/app/api/v1/endpoints/recommend.py`
-  - `apps/api/app/schemas/graph/subgraph.py`
-- Work:
-  - `POST /api/v1/recommend/jobs`
-  - `POST /api/v1/recommend/explain`
+  - `src/models/scoring/cv_scoring.py`
+  - `src/models/scoring/run_cv_scoring_batch.py`
 
-## Phase 5 - Evaluation and hardening
+14. API entrypoint
+- App:
+  - `apps/api/app/server.py`
+- Main router:
+  - `apps/api/app/api/v1/router.py`
 
-17. Add RAG evaluation
-- Files:
-  - `src/evaluation/rag/eval_retrieval.py`
-  - `src/evaluation/rag/eval_groundedness.py`
-  - `tests/rag/test_retrieve.py`
+## Phase 5 - Evaluation and Quality Gate
 
-18. Add recommendation evaluation
-- Files:
-  - `src/evaluation/recommendation/eval_ranking.py`
-  - `src/evaluation/recommendation/eval_coverage.py`
-  - `tests/recommendation/test_hybrid_recommender.py`
-  - `tests/graph/test_cypher_queries.py`
+15. Evaluation modules
+- `src/evaluation/cv_extraction/*`
+- `src/evaluation/cv_scoring/*`
+- `src/evaluation/rag/*`
+- `src/evaluation/recommendation/*`
+- `src/evaluation/graph/*`
+- `src/evaluation/system/*`
 
-19. Add integration tests
-- Files:
-  - `tests/integration/test_chatbot_api.py`
-  - `tests/integration/test_recommendation_api.py`
+16. API tests
+- `apps/api/tests/*`
 
-20. Cut over from legacy modules
-- Legacy baseline:
-  - `src/chatbot/retrieval.py`
-  - `src/matching/recommend_engine.py`
-- Work:
-  - Keep legacy for benchmark comparison first
-  - Switch API to new services after parity checks
+## Recommended execution order
+
+1. `bootstrap`
+2. `db init`
+3. `run_local_pipeline.py --dry-run`
+4. `run_local_pipeline.py --stages preprocess_jobs extract_cv cv_gap load_core_tables cv_scoring rag_ingest graph_etl api_tests`
+5. `uvicorn apps.api.app.server:app`
+
+## Notes
+- Cac module trong `archive/` chi de tham khao, khong phai runtime chinh.
+- Nguon config chinh la thu muc `config/`, khong dung `configs/`.

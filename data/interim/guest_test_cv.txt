@@ -1,0 +1,5 @@
+﻿Nguyen Van A
+Data Analyst
+Skills: SQL, Python, Power BI, Tableau
+Experience: 2 years in data analytics
+Projects: Built dashboard and ETL pipeline

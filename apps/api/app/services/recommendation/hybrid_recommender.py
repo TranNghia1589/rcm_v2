@@ -1,9 +1,9 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
 
-from src.recommendation.orchestrator import run_hybrid_recommendation
+from src.models.recommendation.orchestrator import run_hybrid_recommendation
 
 
 @dataclass
@@ -24,3 +24,4 @@ class HybridRecommenderService:
             embedding_config_path=self.embedding_config_path,
             hybrid_config_path=self.hybrid_config_path,
         )
+

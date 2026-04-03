@@ -1,9 +1,9 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
 
-from src.graph.query_service import GraphQueryService as CoreGraphQueryService
+from src.models.graph.query_service import GraphQueryService as CoreGraphQueryService
 
 
 @dataclass
@@ -21,3 +21,4 @@ class GraphQueryAppService:
 
     def career_path(self, cv_id: int, limit: int = 5) -> list[dict]:
         return self._core().career_path(cv_id=cv_id, limit=limit)
+

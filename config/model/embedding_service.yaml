@@ -1,0 +1,5 @@
+# url: http://127.0.0.1:8081
+# timeout_sec: 10
+
+url: http://embedding:8081
+timeout_sec: 10

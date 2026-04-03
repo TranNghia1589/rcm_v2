@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
@@ -8,7 +8,7 @@ from typing import Any
 import pandas as pd
 
 from src.evaluation.common import mean, save_outputs
-from src.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
+from src.utils.infrastructure.db.postgres_client import PostgresClient, PostgresConfig
 
 
 def _to_list(value: Any) -> list[str]:
@@ -112,10 +112,10 @@ def evaluate_role_benchmark_quality(postgres_config: str | Path) -> tuple[pd.Dat
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate quality/completeness of role benchmark cache.")
-    parser.add_argument("--postgres_config", default="configs/db/postgres.yaml")
+    parser.add_argument("--postgres_config", default="config/db/postgres.yaml")
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/role_benchmark_quality.csv",
+        default="experiments/artifacts/evaluation/role_benchmark_quality.csv",
         help="Output summary path.",
     )
     return parser.parse_args()
@@ -132,4 +132,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 

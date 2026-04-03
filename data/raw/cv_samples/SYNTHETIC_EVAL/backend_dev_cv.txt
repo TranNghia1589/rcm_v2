@@ -1,0 +1,4 @@
+﻿Candidate profile: Backend developer with 3 years experience.
+Skills: Node.js, Express.js, REST API, SQL, PostgreSQL, Redis, Docker, Git.
+Built microservices and optimized API latency by 25%.
+Worked with CI/CD and unit/integration testing.

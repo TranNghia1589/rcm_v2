@@ -1,0 +1,4 @@
+﻿Candidate profile: Business analyst with 2 years experience.
+Skills: Business Analysis, Requirement Gathering, Documentation, BPMN/UML, SQL.
+Wrote user stories and acceptance criteria for multiple product releases.
+Coordinated with stakeholders and delivery teams.

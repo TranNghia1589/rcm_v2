@@ -1,0 +1,4 @@
+﻿Candidate profile: Frontend developer with 2 years experience.
+Skills: React, Next.js, TypeScript, HTML/CSS, Redux, API integration.
+Built responsive UI, improved Lighthouse performance score by 20 points.
+Worked closely with UX and product teams.

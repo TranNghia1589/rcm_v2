@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "updated_at": "2026-04-01T00:00:00Z",
+    "description": "External/seed skills used to enrich the canonical catalog.",
+    "rules": {
+      "canonical_should_be_title_case": true,
+      "aliases_lowercase_ascii_preferred": true,
+      "each_skill_requires_at_least_one_alias": true
+    }
+  },
+  "skills": {
+    "Python": [
+      "python"
+    ],
+    "SQL": [
+      "sql",
+      "postgresql",
+      "mysql",
+      "sql server"
+    ],
+    "Machine Learning": [
+      "machine learning",
+      "ml"
+    ],
+    "Deep Learning": [
+      "deep learning",
+      "dl"
+    ],
+    "NLP": [
+      "nlp",
+      "natural language processing"
+    ],
+    "Computer Vision": [
+      "computer vision"
+    ],
+    "MLOps": [
+      "mlops",
+      "machine learning operations"
+    ],
+    "Kubernetes": [
+      "kubernetes",
+      "k8s"
+    ],
+    "Docker": [
+      "docker",
+      "containerization"
+    ],
+    "Terraform": [
+      "terraform",
+      "infrastructure as code",
+      "iac"
+    ],
+    "FastAPI": [
+      "fastapi"
+    ],
+    "PostgreSQL": [
+      "postgresql",
+      "postgres"
+    ],
+    "Power BI": [
+      "power bi",
+      "powerbi"
+    ],
+    "Tableau": [
+      "tableau"
+    ],
+    "Business Analysis": [
+      "business analysis",
+      "ba"
+    ],
+    "Product Management": [
+      "product management",
+      "pm"
+    ]
+  }
+}
+

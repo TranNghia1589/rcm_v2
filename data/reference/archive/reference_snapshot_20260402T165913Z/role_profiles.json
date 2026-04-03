@@ -1,0 +1,164 @@
+{
+  "AI Engineer": {
+    "role_name": "AI Engineer",
+    "job_count": 101,
+    "common_skills": ["Python", "Machine Learning", "Deep Learning", "PyTorch", "TensorFlow", "LLM"],
+    "common_keywords": ["ai", "machine learning", "model", "deployment", "inference", "llm"],
+    "common_experience_patterns": ["2 nam", "3 nam", "1 nam", "Khong yeu cau", "Duoi 1 nam"],
+    "recommended_next_skills": ["MLOps", "Kubernetes", "Cloud Computing", "RAG"]
+  },
+  "AI Researcher": {
+    "role_name": "AI Researcher",
+    "job_count": 9,
+    "common_skills": ["Research", "Paper Reading", "Experiment Design", "Machine Learning", "Deep Learning", "Statistics"],
+    "common_keywords": ["research", "paper", "experiment", "theory", "benchmark", "publication"],
+    "common_experience_patterns": ["Khong yeu cau", "Duoi 1 nam", "1 nam", "2 nam"],
+    "recommended_next_skills": ["Scientific Writing", "PyTorch", "NLP", "Computer Vision"]
+  },
+  "Data Analyst": {
+    "role_name": "Data Analyst",
+    "job_count": 90,
+    "common_skills": ["SQL", "Excel", "Power BI", "Python", "Statistics", "Dashboarding"],
+    "common_keywords": ["dashboard", "report", "analysis", "insight", "business", "kpi"],
+    "common_experience_patterns": ["Khong yeu cau", "Duoi 1 nam", "1 nam", "2 nam", "3 nam"],
+    "recommended_next_skills": ["Tableau", "A/B Testing", "Business Analysis"]
+  },
+  "Data Engineer": {
+    "role_name": "Data Engineer",
+    "job_count": 51,
+    "common_skills": ["Python", "SQL", "ETL", "Airflow", "Spark", "Data Warehouse"],
+    "common_keywords": ["pipeline", "etl", "batch", "stream", "warehouse", "lake"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Kafka", "Kubernetes", "Terraform", "Cloud Computing"]
+  },
+  "Data Labeling": {
+    "role_name": "Data Labeling",
+    "job_count": 26,
+    "common_skills": ["Annotation", "Data Labeling", "Quality Control"],
+    "common_keywords": ["annotation", "labeling", "quality", "dataset", "review"],
+    "common_experience_patterns": ["Khong yeu cau", "Duoi 1 nam", "1 nam", "2 nam"],
+    "recommended_next_skills": ["Python", "SQL", "Data Analysis"]
+  },
+  "Data Scientist": {
+    "role_name": "Data Scientist",
+    "job_count": 30,
+    "common_skills": ["Python", "Machine Learning", "Statistics", "SQL", "Pandas", "Scikit-learn"],
+    "common_keywords": ["modeling", "prediction", "feature", "experiment", "insight", "ml"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "Khong yeu cau"],
+    "recommended_next_skills": ["Deep Learning", "MLOps", "A/B Testing", "LLM"]
+  },
+
+  "Software Engineer": {
+    "role_name": "Software Engineer",
+    "job_count": 120,
+    "common_skills": ["Java", "C#", ".NET", "Node.js", "SQL", "Git"],
+    "common_keywords": ["backend", "api", "system", "microservices", "scalable", "clean code"],
+    "common_experience_patterns": ["Khong yeu cau", "1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Docker", "Kubernetes", "CI/CD", "Cloud Computing"]
+  },
+  "Backend Developer": {
+    "role_name": "Backend Developer",
+    "job_count": 100,
+    "common_skills": ["Node.js", "Java", "Spring Boot", ".NET", "REST API", "SQL"],
+    "common_keywords": ["api", "backend", "database", "auth", "microservice", "performance"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Redis", "Kafka", "gRPC", "Kubernetes"]
+  },
+  "Frontend Developer": {
+    "role_name": "Frontend Developer",
+    "job_count": 60,
+    "common_skills": ["JavaScript", "TypeScript", "React", "Next.js", "HTML/CSS"],
+    "common_keywords": ["ui", "ux", "frontend", "responsive", "component", "state management"],
+    "common_experience_patterns": ["Khong yeu cau", "1 nam", "2 nam", "3 nam"],
+    "recommended_next_skills": ["Redux", "Testing", "Performance Testing", "GraphQL"]
+  },
+  "Fullstack Developer": {
+    "role_name": "Fullstack Developer",
+    "job_count": 90,
+    "common_skills": ["JavaScript", "TypeScript", "React", "Node.js", "SQL", "REST API"],
+    "common_keywords": ["fullstack", "frontend", "backend", "end-to-end", "api", "deployment"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Docker", "CI/CD", "Cloud Computing", "Monitoring"]
+  },
+  "Cloud Engineer": {
+    "role_name": "Cloud Engineer",
+    "job_count": 45,
+    "common_skills": ["AWS", "Azure", "GCP", "Kubernetes", "Terraform", "CI/CD"],
+    "common_keywords": ["cloud", "infrastructure", "iac", "deployment", "scaling", "availability"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["DevOps", "Monitoring", "Security", "FinOps"]
+  },
+  "Database Administrator (DBA)": {
+    "role_name": "Database Administrator (DBA)",
+    "job_count": 20,
+    "common_skills": ["SQL", "PostgreSQL", "MySQL", "SQL Server", "Performance Tuning", "Backup/Recovery"],
+    "common_keywords": ["dba", "database", "index", "query", "backup", "replication"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Cloud Computing", "Automation", "Security", "Monitoring"]
+  },
+  "Automation Tester": {
+    "role_name": "Automation Tester",
+    "job_count": 55,
+    "common_skills": ["Automation Testing", "API Testing", "Unit Testing", "Integration Testing", "SQL"],
+    "common_keywords": ["test automation", "selenium", "cypress", "playwright", "qa", "regression"],
+    "common_experience_patterns": ["Khong yeu cau", "1 nam", "2 nam", "3 nam"],
+    "recommended_next_skills": ["Performance Testing", "CI/CD", "DevOps", "Python"]
+  },
+  "DevOps Engineer": {
+    "role_name": "DevOps Engineer",
+    "job_count": 60,
+    "common_skills": ["DevOps", "Docker", "Kubernetes", "CI/CD", "Terraform", "Linux"],
+    "common_keywords": ["pipeline", "deployment", "infra", "k8s", "automation", "observability"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Cloud Computing", "Monitoring", "Security", "SRE"]
+  },
+  "IoT Engineer": {
+    "role_name": "IoT Engineer",
+    "job_count": 20,
+    "common_skills": ["IoT", "Embedded Systems", "MQTT", "C/C++", "Python"],
+    "common_keywords": ["iot", "sensor", "firmware", "gateway", "protocol", "embedded"],
+    "common_experience_patterns": ["Khong yeu cau", "1 nam", "2 nam", "3 nam"],
+    "recommended_next_skills": ["Cloud Computing", "RTOS", "Hardware Debugging"]
+  },
+  "Embedded Engineer": {
+    "role_name": "Embedded Engineer",
+    "job_count": 20,
+    "common_skills": ["Embedded Systems", "C/C++", "RTOS", "Hardware Debugging", "MQTT"],
+    "common_keywords": ["embedded", "firmware", "driver", "mcu", "rtos", "real-time"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["IoT", "Linux", "Security", "Cloud Integration"]
+  },
+  "Product Analyst": {
+    "role_name": "Product Analyst",
+    "job_count": 20,
+    "common_skills": ["SQL", "Data Analysis", "A/B Testing", "Dashboarding", "Product Management"],
+    "common_keywords": ["product", "metrics", "funnel", "experiment", "retention", "insight"],
+    "common_experience_patterns": ["Khong yeu cau", "1 nam", "2 nam", "3 nam"],
+    "recommended_next_skills": ["Business Analysis", "Statistics", "Roadmapping"]
+  },
+  "Business Analyst": {
+    "role_name": "Business Analyst",
+    "job_count": 80,
+    "common_skills": ["Business Analysis", "Requirement Gathering", "Documentation", "BPMN/UML", "SQL"],
+    "common_keywords": ["requirement", "stakeholder", "as-is", "to-be", "process", "analysis"],
+    "common_experience_patterns": ["Khong yeu cau", "1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["Product Management", "User Story", "Agile/Scrum"]
+  },
+  "Product Owner/Product Manager": {
+    "role_name": "Product Owner/Product Manager",
+    "job_count": 60,
+    "common_skills": ["Product Ownership", "Product Management", "Roadmapping", "Prioritization", "Agile/Scrum"],
+    "common_keywords": ["roadmap", "backlog", "prioritization", "stakeholder", "okr", "product strategy"],
+    "common_experience_patterns": ["1 nam", "2 nam", "3 nam", "5 nam"],
+    "recommended_next_skills": ["A/B Testing", "OKR/KPI", "Stakeholder Management"]
+  },
+
+  "Unknown": {
+    "role_name": "Unknown",
+    "job_count": 0,
+    "common_skills": [],
+    "common_keywords": [],
+    "common_experience_patterns": [],
+    "recommended_next_skills": []
+  }
+}

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import json
@@ -148,7 +148,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="artifacts/evaluation/recommendation_ranking_summary.csv",
+        default="experiments/artifacts/evaluation/recommendation_ranking_summary.csv",
         help="Output path for summary csv.",
     )
     return parser.parse_args()
@@ -181,3 +181,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
