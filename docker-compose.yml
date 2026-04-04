@@ -1,4 +1,4 @@
-﻿name: rcm_sys
+name: rcm_sys
 
 services:
   embedding:
@@ -76,6 +76,9 @@ services:
       HF_TOKEN: ${HF_TOKEN}
       EMBEDDING_SERVICE_URL: http://embedding:8081
       APP_WARMUP_ON_STARTUP: "0"
+      APP_CORS_ALLOW_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000,http://localhost:*"
+      OLLAMA_URL: "http://host.docker.internal:11434"
+      OLLAMA_MODEL: "qwen2.5:3b"
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: job_recommendation_system

@@ -21,7 +21,8 @@ $files = @(
   "$root/002_create_rag_tables.sql",
   "$root/003_create_rag_indexes.sql",
   "$root/004_create_cv_scoring_tables.sql",
-  "$root/005_create_cv_data_contract_tables.sql"
+  "$root/005_create_cv_data_contract_tables.sql",
+  "$root/006_add_auth_fields.sql"
 )
 
 foreach ($f in $files) {

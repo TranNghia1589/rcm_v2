@@ -130,6 +130,7 @@ class PgVectorStore:
                 SELECT
                     rc.chunk_id,
                     rd.document_id,
+                    rd.source_id,
                     rd.title,
                     rc.content,
                     (re.embedding <=> (%s)::vector) AS distance
@@ -153,6 +154,7 @@ class PgVectorStore:
                 SELECT
                     rc.chunk_id,
                     rd.document_id,
+                    rd.source_id,
                     rd.title,
                     rc.content,
                     (re.embedding <=> (%s)::vector) AS distance
@@ -174,10 +176,10 @@ class PgVectorStore:
                 {
                     "chunk_id": int(r[0]),
                     "document_id": int(r[1]),
-                    "title": str(r[2] or ""),
-                    "content": str(r[3] or ""),
-                    "distance": float(r[4]),
+                    "source_id": str(r[2] or ""),
+                    "title": str(r[3] or ""),
+                    "content": str(r[4] or ""),
+                    "distance": float(r[5]),
                 }
             )
         return out
-

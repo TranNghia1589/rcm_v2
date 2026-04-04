@@ -19,8 +19,9 @@ class GuestCVScore(BaseModel):
 class GuestRecommendationItem(BaseModel):
     rank: int
     job_title: str
-    distance: float
-    reason: str
+    compatibility_percent: float
+    job_description: str
+    job_url: str
 
 
 class GuestImproveItem(BaseModel):

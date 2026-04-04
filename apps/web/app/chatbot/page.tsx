@@ -1,83 +1,213 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { FormEvent, useMemo, useState } from "react";
-import { analyzeGuestCV, GuestAnalyzeResponse, GuestIntent } from "../../src/lib/api";
+import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
+import { getAccount } from "../../src/lib/account";
+import {
+  analyzeGuestCV,
+  askChat,
+  getLatestChatHistory,
+  GuestAnalyzeResponse,
+  GuestIntent,
+  saveChatTurn,
+} from "../../src/lib/api";
 
 type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   text: string;
   ts: string;
-  data?: GuestAnalyzeResponse;
 };
 
 const QUICK_PROMPTS = [
-  "Chấm điểm CV của tôi",
-  "Gợi ý việc làm phù hợp với CV này",
-  "Tôi cần cải thiện kỹ năng gì để ứng tuyển tốt hơn?",
+  "Hãy chấm điểm CV của tôi",
+  "CV này cần cải thiện điểm nào trước?",
+  "Gợi ý các kỹ năng tôi cần bổ sung để cải thiện CV",
 ];
 
-function gradeClass(grade: string): string {
-  const g = (grade || "").toUpperCase();
-  if (g === "A") return "badge badge-a";
-  if (g === "B") return "badge badge-b";
-  if (g === "C") return "badge badge-c";
-  return "badge badge-d";
+function intentToLabel(intent: GuestIntent | "general"): string {
+  if (intent === "score") return "chấm điểm CV";
+  if (intent === "recommend") return "gợi ý việc làm";
+  if (intent === "improve_cv") return "cải thiện CV";
+  return "tư vấn tổng quát";
 }
 
-function intentToLabel(intent: GuestIntent): string {
-  if (intent === "score") return "Chấm điểm CV";
-  if (intent === "recommend") return "Gợi ý việc làm";
-  if (intent === "improve_cv") return "Cải thiện CV";
-  return "Tự động";
+const SUBSCORE_LABELS: Record<string, string> = {
+  skills: "Kỹ năng",
+  experience: "Kinh nghiệm",
+  projects: "Dự án",
+  certifications: "Chứng chỉ",
+  education: "Học vấn",
+};
+
+function summarizeStrengthWeakness(subscores: Record<string, number>): {
+  strengths: string[];
+  weaknesses: string[];
+} {
+  const entries = Object.entries(subscores || {});
+  if (entries.length === 0) return { strengths: [], weaknesses: [] };
+
+  const sortedDesc = [...entries].sort((a, b) => b[1] - a[1]);
+  const sortedAsc = [...entries].sort((a, b) => a[1] - b[1]);
+
+  const strengths = sortedDesc.slice(0, 2).map(([k, v]) => `${SUBSCORE_LABELS[k] ?? k}: ${v}/100`);
+  const weaknesses = sortedAsc.slice(0, 2).map(([k, v]) => `${SUBSCORE_LABELS[k] ?? k}: ${v}/100`);
+  return { strengths, weaknesses };
 }
 
-function buildAssistantText(result: GuestAnalyzeResponse): string {
-  const parts: string[] = [];
-  parts.push(`Đã xử lý yêu cầu: ${intentToLabel(result.intent)}.`);
-  parts.push(`Điểm CV hiện tại: ${result.score.overall_score} (mức ${result.score.grade}).`);
+function buildScoreReply(result: GuestAnalyzeResponse): string {
+  const lines: string[] = [];
+  lines.push(`Mình đã ${intentToLabel("score")} cho CV của bạn. Điểm hiện tại là ${result.score.overall_score}/100 (${result.score.grade}).`);
 
-  if (result.recommendations.length > 0) {
-    const top = result.recommendations
-      .slice(0, 3)
-      .map((x) => x.job_title)
-      .join(", ");
-    parts.push(`Top vị trí phù hợp: ${top}.`);
+  if (result.snapshot.target_role && result.snapshot.target_role !== "Unknown") {
+    lines.push(`Đánh giá theo vai trò mục tiêu: ${result.snapshot.target_role}.`);
   }
 
-  if (result.improve_suggestions.length > 0) {
-    const top = result.improve_suggestions
-      .slice(0, 3)
-      .map((x) => x.skill)
-      .join(", ");
-    parts.push(`Nên ưu tiên cải thiện: ${top}.`);
+  const { strengths, weaknesses } = summarizeStrengthWeakness(result.score.subscores);
+  if (strengths.length > 0) {
+    lines.push(`Điểm mạnh: ${strengths.join("; ")}.`);
+  }
+  if (weaknesses.length > 0) {
+    lines.push(`Điểm cần cải thiện: ${weaknesses.join("; ")}.`);
   }
 
-  parts.push("Bạn có thể tiếp tục đặt câu hỏi để phân tích sâu hơn.");
-  return parts.join(" ");
+  lines.push("Nếu muốn, bạn có thể hỏi thêm để mình phân tích sâu cách cải thiện theo role bạn nhắm tới.");
+  return lines.join("\n\n");
+}
+
+function buildQuestionForChat(result: GuestAnalyzeResponse, userText: string): string {
+  const targetRole = result.snapshot.target_role || "Unknown";
+  const exp = result.snapshot.experience_years || "Unknown";
+  const skills = (result.snapshot.skills || []).slice(0, 15).join(", ") || "Unknown";
+  const hintIntent = intentToLabel((result.intent as GuestIntent | "general") || "general");
+
+  return [
+    `Intent phat hien: ${hintIntent}.`,
+    `CV snapshot: target_role=${targetRole}; experience_years=${exp}; skills=${skills}.`,
+    `Cau hoi nguoi dung: ${userText}`,
+  ].join("\n");
+}
+
+
+function compactForDisplay(text: string): string {
+  return String(text || "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/\n\s*\n/g, "\n");
+}
+function formatTime(input: string): string {
+  const d = new Date(input);
+  if (Number.isNaN(d.getTime())) return new Date().toLocaleTimeString();
+  return d.toLocaleTimeString();
 }
 
 export default function ChatbotPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [question, setQuestion] = useState("Tôi muốn gợi ý công việc phù hợp với CV này");
+  const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [latestResult, setLatestResult] = useState<GuestAnalyzeResponse | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [showNewMessageHint, setShowNewMessageHint] = useState(false);
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const chatHistoryRef = useRef<HTMLDivElement>(null);
+  const stickToBottomRef = useRef(true);
+  const prevMessageCountRef = useRef(0);
 
   const canSubmit = useMemo(() => !!file && !loading && !!question.trim(), [file, loading, question]);
+
+  const isNearBottom = () => {
+    const el = chatHistoryRef.current;
+    if (!el) return true;
+    const threshold = 28;
+    return el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+  };
+
+  const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
+    const el = chatHistoryRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior });
+  };
+
+  useEffect(() => {
+    const syncAccount = async () => {
+      const acc = getAccount();
+      const nextToken = acc?.token ?? null;
+      setToken(nextToken);
+      setSessionId(null);
+      setMessages([]);
+      setShowNewMessageHint(false);
+      stickToBottomRef.current = true;
+
+      if (!nextToken) return;
+      try {
+        const hist = await getLatestChatHistory(nextToken);
+        setSessionId(hist.session_id ?? null);
+        const mapped: ChatMessage[] = hist.messages
+          .filter((m) => m.role === "user" || m.role === "assistant")
+          .map((m, idx) => ({
+            id: `hist-${idx}-${m.created_at}`,
+            role: m.role as "user" | "assistant",
+            text: m.role === "assistant" ? compactForDisplay(m.content) : m.content,
+            ts: formatTime(m.created_at),
+          }));
+        setMessages(mapped);
+      } catch {
+        // ignore
+      }
+    };
+
+    syncAccount();
+    window.addEventListener("rcm-account-changed", syncAccount);
+    return () => window.removeEventListener("rcm-account-changed", syncAccount);
+  }, []);
+
+  useEffect(() => {
+    const currentCount = messages.length;
+    const prevCount = prevMessageCountRef.current;
+
+    if (currentCount > prevCount) {
+      if (stickToBottomRef.current) {
+        requestAnimationFrame(() => scrollToBottom("smooth"));
+      } else {
+        setShowNewMessageHint(true);
+      }
+    }
+
+    prevMessageCountRef.current = currentCount;
+  }, [messages]);
+
+  const onHistoryScroll = () => {
+    const nearBottom = isNearBottom();
+    stickToBottomRef.current = nearBottom;
+    if (nearBottom) setShowNewMessageHint(false);
+  };
+
+  const onJumpToLatest = () => {
+    stickToBottomRef.current = true;
+    setShowNewMessageHint(false);
+    scrollToBottom("smooth");
+  };
+
+  const onComposerKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (canSubmit) formRef.current?.requestSubmit();
+    }
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) {
-      setError("Vui lòng chọn tệp CV (.pdf/.docx/.txt)");
+      setError("Vui lòng tải CV trước khi chat.");
       return;
     }
 
     const userText = question.trim();
     if (!userText) {
-      setError("Vui lòng nhập nội dung yêu cầu");
+      setError("Vui lòng nhập câu hỏi.");
       return;
     }
 
@@ -94,17 +224,41 @@ export default function ChatbotPage() {
     setQuestion("");
 
     try {
-      // Always auto-detect from user question to avoid conflict with manual intent selection.
       const data = await analyzeGuestCV({ file, question: userText, intent: "auto", topK: 5 });
-      setLatestResult(data);
+      let answerText = "";
+
+      if (data.intent === "score") {
+        answerText = buildScoreReply(data);
+      } else {
+        const chatQuestion = buildQuestionForChat(data, userText);
+        const chat = await askChat({ question: chatQuestion, topK: 6 });
+        answerText = chat.answer || "Mình chưa có đủ dữ liệu để trả lời chính xác. Bạn có thể mô tả chi tiết hơn mục tiêu công việc và kỹ năng hiện có nhé.";
+
+        if (chat.used_fallback) {
+          answerText += "\n\nMình cần thêm thông tin để trả lời sát hơn: role mục tiêu, số năm kinh nghiệm, kỹ năng chính và mức lương mong muốn.";
+        }
+      }
+
+      answerText = compactForDisplay(answerText);
+
       const botMsg: ChatMessage = {
         id: `${Date.now()}-a`,
         role: "assistant",
-        text: buildAssistantText(data),
+        text: answerText,
         ts: new Date().toLocaleTimeString(),
-        data,
       };
       setMessages((prev) => [...prev, botMsg]);
+
+      if (token) {
+        const saved = await saveChatTurn({
+          token,
+          sessionId,
+          title: "Chat CV 1:1",
+          userMessage: userText,
+          assistantMessage: answerText,
+        });
+        setSessionId(saved.session_id);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Yêu cầu thất bại");
     } finally {
@@ -112,31 +266,20 @@ export default function ChatbotPage() {
     }
   };
 
-  const clearChat = () => {
-    setMessages([]);
-    setLatestResult(null);
-    setError("");
-  };
-
   return (
     <main className="container stack">
       <section className="panel">
-        <h1>Chat tư vấn CV 1-1</h1>
-        <p className="muted">Lịch sử chat chỉ lưu trong phiên hiện tại. Tải lại trang sẽ tự xóa.</p>
+        <h1>Chatbot tư vấn CV 1:1</h1>
+        <p className="muted">Chat theo dạng tin nhắn. Khi đăng nhập, lịch sử hội thoại sẽ lưu trong hệ thống theo tài khoản của bạn.</p>
         <p className="small">
-          Truy cập nhanh: <Link href="/job-recommendations">Trang gợi ý việc làm</Link>
+          Cần danh sách job chi tiết? <Link href="/job-recommendations">Mở tab Gợi ý việc làm</Link>
         </p>
       </section>
 
       <section className="panel stack">
         <div className="field">
           <label>Tệp CV</label>
-          <input
-            className="file"
-            type="file"
-            accept=".pdf,.docx,.txt"
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          />
+          <input className="file" type="file" accept=".pdf,.docx,.txt" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
         </div>
 
         <div className="field">
@@ -150,174 +293,51 @@ export default function ChatbotPage() {
           </div>
         </div>
 
-        <div className="panel" style={{ background: "#f8fbff" }}>
-          <div className="section-title">
-            <h2>Lịch sử hội thoại</h2>
-            <button className="btn" type="button" onClick={clearChat} style={{ padding: "6px 10px" }}>
-              Xóa lịch sử
-            </button>
-          </div>
-          <div style={{ display: "grid", gap: 10 }}>
-            {messages.length === 0 ? <p className="muted">Chưa có hội thoại. Hãy nhập câu hỏi đầu tiên.</p> : null}
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                style={{
-                  background: m.role === "user" ? "#e8f1ff" : "#ffffff",
-                  border: "1px solid #d8e3f6",
-                  borderRadius: 10,
-                  padding: 10,
-                }}
-              >
-                <div style={{ fontWeight: 700, marginBottom: 6 }}>
-                  {m.role === "user" ? "Bạn" : "Trợ lý"} <span className="muted">· {m.ts}</span>
+        <div className="chat-shell">
+          <div ref={chatHistoryRef} className="chat-history" onScroll={onHistoryScroll}>
+            {messages.length === 0 ? (
+              <div className="chat-empty">Chưa có hội thoại. Hãy gửi tin nhắn đầu tiên.</div>
+            ) : (
+              messages.map((m) => (
+                <div key={m.id} className={`chat-bubble ${m.role === "user" ? "chat-user" : "chat-assistant"}`}>
+                  <div className="chat-meta">
+                    <span>{m.role === "user" ? "Bạn" : "Chatbot"}</span>
+                    <span>{m.ts}</span>
+                  </div>
+                  <div className="chat-text">{m.text}</div>
                 </div>
-                <div>{m.text}</div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
-        </div>
 
-        <form onSubmit={onSubmit} className="stack">
-          <div className="field">
-            <label>Nội dung yêu cầu</label>
+          {showNewMessageHint ? (
+            <div className="new-message-bar">
+              <button type="button" className="new-message-btn" onClick={onJumpToLatest}>
+                Tin nhắn mới ↓
+              </button>
+            </div>
+          ) : null}
+
+          <form ref={formRef} className="chat-composer" onSubmit={onSubmit}>
             <textarea
-              className="textarea"
+              className="chat-input"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ví dụ: So sánh CV của tôi với vị trí Data Analyst và gợi ý cải thiện"
+              onKeyDown={onComposerKeyDown}
+              rows={1}
+              placeholder="Nhập câu hỏi của bạn..."
             />
-          </div>
-
-          <div>
             <button className="btn" type="submit" disabled={!canSubmit}>
-              {loading ? "Đang phân tích..." : "Gửi câu hỏi"}
+              {loading ? "Đang gửi..." : "Gửi"}
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </section>
 
       {error ? <div className="error">{error}</div> : null}
-
-      {latestResult ? (
-        <>
-          <section className="panel">
-            <div className="section-title">
-              <h2>Tóm tắt CV</h2>
-              <span className="badge badge-intent">Loại yêu cầu: {intentToLabel(latestResult.intent)}</span>
-            </div>
-            <div className="kv">
-              <div className="kv-key">Vai trò mục tiêu</div>
-              <div className="kv-value">{latestResult.snapshot.target_role}</div>
-            </div>
-            <div className="kv">
-              <div className="kv-key">Số năm kinh nghiệm</div>
-              <div className="kv-value">{latestResult.snapshot.experience_years}</div>
-            </div>
-            <div className="kv">
-              <div className="kv-key">Số dự án</div>
-              <div className="kv-value">{latestResult.snapshot.projects_count}</div>
-            </div>
-            <div style={{ marginTop: 10 }}>
-              <div className="kv-key" style={{ marginBottom: 8 }}>
-                Kỹ năng trích xuất
-              </div>
-              <div className="chips">
-                {latestResult.snapshot.skills.length > 0 ? (
-                  latestResult.snapshot.skills.map((s) => (
-                    <span className="chip" key={s}>
-                      {s}
-                    </span>
-                  ))
-                ) : (
-                  <span className="muted">Chưa trích xuất được kỹ năng</span>
-                )}
-              </div>
-            </div>
-          </section>
-
-          <section className="panel">
-            <div className="section-title">
-              <h2>Điểm CV</h2>
-              <span className={gradeClass(latestResult.score.grade)}>Mức {latestResult.score.grade}</span>
-            </div>
-            <div className="kv">
-              <div className="kv-key">Điểm tổng</div>
-              <div className="kv-value">{latestResult.score.overall_score}</div>
-            </div>
-            <div className="table-wrap" style={{ marginTop: 10 }}>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Tiêu chí</th>
-                    <th>Điểm</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(latestResult.score.subscores).map(([k, v]) => (
-                    <tr key={k}>
-                      <td>{k}</td>
-                      <td>{v}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {latestResult.recommendations.length > 0 ? (
-            <section className="panel">
-              <h2>Danh sách việc làm gợi ý</h2>
-              <div className="table-wrap">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Vị trí</th>
-                      <th>Khoảng cách</th>
-                      <th>Lý do</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {latestResult.recommendations.map((r) => (
-                      <tr key={`${r.rank}-${r.job_title}`}>
-                        <td>{r.rank}</td>
-                        <td>{r.job_title}</td>
-                        <td>{r.distance}</td>
-                        <td>{r.reason}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          ) : null}
-
-          {latestResult.improve_suggestions.length > 0 ? (
-            <section className="panel">
-              <h2>Gợi ý cải thiện CV</h2>
-              <div className="table-wrap">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Kỹ năng</th>
-                      <th>Vì sao cần bổ sung</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {latestResult.improve_suggestions.map((it) => (
-                      <tr key={it.skill}>
-                        <td>{it.skill}</td>
-                        <td>{it.why}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          ) : null}
-        </>
-      ) : null}
     </main>
   );
 }
+
+
+
